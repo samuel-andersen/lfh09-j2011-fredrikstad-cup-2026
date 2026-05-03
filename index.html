@@ -26,7 +26,76 @@
   --green-mid: #86efac;
   --shadow:    0 2px 16px rgba(0,48,135,0.09);
   --r:         13px;
+  --card-bg:   #ffffff;
+  --card-border: rgba(0,48,135,0.10);
 }
+
+/* DARK MODE */
+body.dark {
+  --off:       #0a0c14;
+  --text:      #e8edf5;
+  --light:     #151b2e;
+  --mid:       #3a4a6b;
+  --grey:      #6b7a96;
+  --shadow:    0 2px 20px rgba(0,0,0,0.4);
+  --card-bg:   #111827;
+  --card-border: rgba(255,255,255,0.07);
+  --blue:      #0a1628;
+  --blue-dark: #060d1a;
+  --blue-mid:  #1a3a7a;
+  background: #0a0c14;
+  color: #e8edf5;
+}
+body.dark .info-card,
+body.dark .match-card,
+body.dark .contact-card,
+body.dark .rule-card,
+body.dark .poi-card,
+body.dark .lag-card,
+body.dark .feel-summary,
+body.dark .log-form-card,
+body.dark .week-card,
+body.dark .access-box {
+  background: #111827 !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4) !important;
+  border-color: rgba(255,255,255,0.07) !important;
+}
+body.dark .info-card-title { color: #7eb3f5; }
+body.dark .info-label { color: #6b7a96; }
+body.dark .info-val   { color: #e8edf5; }
+body.dark .info-row   { border-color: rgba(255,255,255,0.07); }
+body.dark .info-card-header { border-color: rgba(255,255,255,0.07); }
+body.dark .tip-box    { background:#0d1929; color:#7eb3f5; border-color:#1a3a7a; }
+body.dark .match-header { background:#0d1929; border-color:rgba(255,255,255,0.07); }
+body.dark .match-day  { color:#7eb3f5; }
+body.dark .match-teams { color:#e8edf5; }
+body.dark .check-box  { background:#111827; border-color:#3a4a6b; }
+body.dark .check-label { color:#e8edf5; }
+body.dark .check-item { border-color:rgba(255,255,255,0.07); }
+body.dark .check-item.checked-item .check-label { color:#3a4a6b; }
+body.dark .prog-wrap  { background:#1a2235; }
+body.dark .prog-label { color:#6b7a96; }
+body.dark .st         { color:#3a4a6b; }
+body.dark .poi-name   { color:#e8edf5; }
+body.dark .contact-name { color:#e8edf5; }
+body.dark .rule-title { color:#e8edf5; }
+body.dark .rule-text  { color:#6b7a96; }
+body.dark .lag-tab    { background:#111827; border-color:#3a4a6b; color:#6b7a96; }
+body.dark .lag-tab.active { background:#1a3a7a; color:white; border-color:#1a3a7a; }
+body.dark table td, body.dark table th { color:#6b7a96; }
+body.dark .hero-card  { background: linear-gradient(135deg,#0d1929,#0a1628); }
+body.dark .map-btn    { background:#1a3a7a; }
+
+/* DARK TOGGLE */
+.dark-toggle {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; padding: 4px 6px; border-radius: 8px;
+  transition: transform .3s ease; line-height:1;
+  flex-shrink:0;
+}
+.dark-toggle:active { transform: rotate(20deg) scale(0.9); }
+
+* { transition: background-color .25s ease, color .2s ease, border-color .2s ease; }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
 body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--text); padding-bottom: env(safe-area-inset-bottom); }
@@ -234,6 +303,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
   </div>
   <div class="auth-bar" id="auth-bar">
     <div class="auth-info"><span class="auth-name">Laster…</span></div>
+    <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()" title="Bytt tema">🌙</button>
   </div>
 </header>
 
@@ -913,6 +983,22 @@ globalThis.sjekkKode = () => {
 };
 sjekkTilgang();
 
+// ── Dark mode ─────────────────────────────────────────────────
+function initDark() {
+  if (localStorage.getItem('lfh-dark') === '1') {
+    document.body.classList.add('dark');
+    const btn = document.getElementById('dark-toggle');
+    if (btn) btn.textContent = '☀️';
+  }
+}
+globalThis.toggleDark = () => {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('lfh-dark', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-toggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+};
+initDark();
+
 // ── Auth ─────────────────────────────────────────────────────
 onAuthStateChanged(auth, user => {
   currentUser = user;
@@ -973,6 +1059,14 @@ function updateAuthUI() {
     bar.appendChild(info);
     bar.appendChild(btn);
   }
+  // Alltid legg til dark-toggle på slutten
+  const toggle = document.createElement('button');
+  toggle.className = 'dark-toggle';
+  toggle.id = 'dark-toggle';
+  toggle.title = 'Bytt tema';
+  toggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  toggle.onclick = () => globalThis.toggleDark();
+  bar.appendChild(toggle);
 }
 
 // ── Firestore pakkliste sync ──────────────────────────────────
