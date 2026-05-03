@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fredrikstad Cup 2026">
+<meta name="theme-color" content="#003087">
+<title>LFH09 J2011 · Fredrikstad Cup 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:      #003087;
+  --blue-dark: #001f5a;
+  --blue-mid:  #0044bb;
+  --red:       #C8102E;
+  --light:     #e8eef7;
+  --mid:       #c5d3ee;
+  --white:     #ffffff;
+  --off:       #f7f9fc;
+  --grey:      #8895aa;
+  --text:      #1a2540;
+  --green:     #22c55e;
+  --green-bg:  #f0fdf4;
+  --green-mid: #86efac;
+  --shadow:    0 2px 16px rgba(0,48,135,0.09);
+  --r:         13px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--text); padding-bottom: env(safe-area-inset-bottom); }
+
+/* TILGANGSKODE */
+.access-screen {
+  position: fixed; inset: 0; z-index: 2000;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.access-box {
+  background: white; border-radius: 20px; padding: 32px 24px;
+  max-width: 320px; width: 100%; text-align: center;
+}
+.access-logo { height: 56px; width: auto; margin-bottom: 16px; }
+.access-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; color:var(--blue); margin-bottom:4px; }
+.access-cup   { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; color:var(--red); margin-bottom:16px; letter-spacing:1px; }
+.access-sub   { font-size:13px; color:var(--grey); margin-bottom:20px; line-height:1.5; }
+.access-input {
+  width:100%; padding:13px 16px; border:2px solid var(--mid);
+  border-radius:10px; font-family:'Barlow Condensed',sans-serif;
+  font-weight:700; font-size:18px; letter-spacing:3px;
+  text-align:center; text-transform:uppercase; outline:none;
+  margin-bottom:12px; transition:border-color .2s;
+}
+.access-input:focus { border-color:var(--blue); }
+.access-input.feil  { border-color:var(--red); animation:rist .3s ease; }
+@keyframes rist { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.access-btn {
+  width:100%; padding:14px; background:var(--blue); color:white;
+  border:none; border-radius:10px;
+  font-family:'Barlow Condensed',sans-serif; font-weight:800;
+  font-size:16px; letter-spacing:1px; cursor:pointer; transition:background .15s;
+}
+.access-btn:hover { background:var(--blue-mid); }
+.access-feilmelding { font-size:12px; color:var(--red); margin-top:8px; font-family:'Barlow Condensed',sans-serif; font-weight:700; min-height:18px; }
+
+/* HEADER */
+.header { background: var(--blue); padding-top: max(env(safe-area-inset-top),0px); }
+.header-inner { display:flex; align-items:center; justify-content:space-between; padding:14px 18px 10px; }
+.header-left  { display:flex; align-items:center; gap:12px; }
+.club-logo    { height:44px; width:auto; }
+.logo-club    { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; color:white; letter-spacing:1px; }
+.logo-sub     { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--mid); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
+.cup-badge    { background:var(--red); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:4px 9px; border-radius:4px; text-align:center; line-height:1.3; }
+.date-bar     { display:flex; align-items:center; justify-content:center; gap:16px; padding:8px 18px 13px; border-top:1px solid rgba(255,255,255,0.08); }
+.date-pill    { background:rgba(255,255,255,0.12); color:var(--mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; padding:5px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.15); }
+.date-pill.red { background:var(--red); color:white; border-color:var(--red); }
+
+/* NAV */
+.nav { display:flex; background:var(--blue-dark); border-bottom:3px solid var(--red); overflow-x:auto; }
+.nav::-webkit-scrollbar { display:none; }
+.nav-btn { flex:1; min-width:60px; padding:11px 4px; background:none; border:none; color:var(--mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:color .2s; display:flex; flex-direction:column; align-items:center; gap:2px; border-bottom:3px solid transparent; margin-bottom:-3px; white-space:nowrap; }
+.nav-btn .ni { font-size:16px; }
+.nav-btn.active { color:white; border-bottom-color:var(--red); }
+
+/* MAIN */
+.main { padding:18px 15px 90px; max-width:480px; margin:0 auto; }
+.view { display:none; } .view.active { display:block; }
+.st { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--grey); margin:22px 0 10px; }
+.st:first-child { margin-top:0; }
+
+/* HERO CARD */
+.hero-card { background:var(--blue); border-radius:var(--r); padding:18px; color:white; position:relative; overflow:hidden; margin-bottom:12px; }
+.hero-card::before { content:'🤾'; position:absolute; top:-10px; right:10px; font-size:90px; opacity:0.07; line-height:1; }
+.hero-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--mid); margin-bottom:4px; }
+.hero-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:28px; line-height:1.1; }
+.hero-sub   { font-size:13px; color:var(--mid); margin-top:5px; line-height:1.5; }
+.hero-grid  { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+.hero-stat  { background:rgba(255,255,255,0.1); border-radius:9px; padding:10px 12px; }
+.hero-stat-num   { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; line-height:1; }
+.hero-stat-label { font-size:11px; color:var(--mid); margin-top:2px; }
+
+/* INFO CARD */
+.info-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:15px 18px; margin-bottom:10px; }
+.info-card-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding-bottom:9px; border-bottom:2px solid var(--light); }
+.info-card-icon { width:34px; height:34px; border-radius:9px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.info-card-title { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; color:var(--blue); }
+.info-card-sub   { font-size:11px; color:var(--grey); margin-top:1px; }
+.info-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:6px 0; border-bottom:1px solid var(--light); font-size:13px; }
+.info-row:last-child { border-bottom:none; padding-bottom:0; }
+.info-label { color:var(--grey); flex-shrink:0; min-width:110px; font-size:12px; }
+.info-val   { color:var(--text); font-weight:600; text-align:right; font-family:'Barlow Condensed',sans-serif; font-size:14px; line-height:1.3; }
+.info-val.placeholder { color:var(--mid); font-weight:400; font-family:'Barlow',sans-serif; font-style:italic; font-size:12px; }
+.tip-box { background:var(--light); border-radius:9px; padding:10px 13px; font-size:12px; color:var(--blue); line-height:1.6; margin-top:10px; border-left:3px solid var(--blue); }
+
+/* PAKKLISTE */
+.checklist { list-style:none; }
+.check-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--light); cursor:pointer; }
+.check-item:last-child { border-bottom:none; }
+.check-box { width:24px; height:24px; border-radius:6px; border:2px solid var(--mid); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; background:white; color:white; transition:all .2s; }
+.check-box.checked { background:var(--green); border-color:var(--green); }
+.check-item.checked-item .check-label { color:var(--grey); text-decoration:line-through; }
+.check-label { font-size:13px; color:var(--text); line-height:1.3; }
+.check-category { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--grey); margin:4px 0; }
+.prog-wrap { background:var(--light); border-radius:6px; height:8px; margin:8px 0 4px; overflow:hidden; }
+.prog-fill { height:100%; background:var(--blue); border-radius:6px; transition:width .5s ease; }
+.prog-label { font-family:'Barlow Condensed',sans-serif; font-size:12px; color:var(--grey); text-align:right; margin-bottom:6px; }
+
+/* KAMPER */
+.match-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; margin-bottom:10px; }
+.match-header { background:var(--light); padding:9px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--mid); }
+.match-day   { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; color:var(--blue); }
+.match-badge { background:var(--blue); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; padding:3px 9px; border-radius:20px; }
+.match-badge.done { background:var(--green); }
+.match-body  { padding:12px 14px; }
+.match-teams { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:17px; color:var(--text); margin-bottom:4px; }
+.match-meta  { display:flex; gap:14px; flex-wrap:wrap; }
+.match-meta span { font-size:12px; color:var(--grey); display:flex; align-items:center; gap:4px; }
+
+/* KONTAKTER */
+.contact-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:13px 15px; display:flex; align-items:center; gap:13px; margin-bottom:9px; }
+.contact-avatar { width:42px; height:42px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:15px; color:white; flex-shrink:0; }
+.contact-name { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; color:var(--text); }
+.contact-role { font-size:11px; color:var(--grey); margin-top:1px; }
+.contact-tel  { font-size:12px; color:var(--blue-mid); margin-top:3px; font-weight:600; }
+.contact-tel.placeholder { color:var(--mid); font-style:italic; font-weight:400; }
+
+/* REGLER */
+.rule-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:13px 15px; display:flex; align-items:flex-start; gap:13px; margin-bottom:9px; }
+.rule-num  { width:32px; height:32px; border-radius:8px; background:var(--blue); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.rule-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; color:var(--text); margin-bottom:2px; }
+.rule-text  { font-size:12px; color:var(--grey); line-height:1.5; }
+
+/* KART */
+.poi-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:13px 15px; display:flex; align-items:flex-start; gap:12px; margin-bottom:9px; cursor:pointer; transition:box-shadow .2s; }
+.poi-card:hover { box-shadow:0 4px 20px rgba(0,48,135,0.16); }
+.poi-dot-wrap { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.poi-name  { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px; color:var(--text); }
+.poi-addr  { font-size:12px; color:var(--grey); margin-top:2px; }
+.poi-tag   { display:inline-block; font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; border-radius:4px; margin-top:4px; }
+
+.map-btn { width:100%; padding:14px; background:var(--blue); color:white; border:none; border-radius:10px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; letter-spacing:1px; cursor:pointer; transition:background .15s; margin-top:4px; }
+.map-btn:hover { background:var(--blue-mid); }
+
+/* LAGOPPSETT */
+.spiller-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--light); font-size:13px; }
+.spiller-row:last-child { border-bottom:none; }
+.nr-badge { width:28px; height:28px; border-radius:6px; background:var(--blue); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.spiller-navn { flex:1; font-weight:600; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:14px; }
+.spiller-pos  { font-size:11px; color:white; background:var(--grey); padding:2px 7px; border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:700; }
+.spiller-pos.mv { background:var(--red); }
+.spiller-pos.back { background:var(--blue-mid); }
+.spiller-pos.kant { background:#7c3aed; }
+.spiller-pos.str  { background:#059669; }
+
+/* LAG-TABS */
+.lag-tab { flex:1; padding:10px 8px; background:white; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--grey); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.lag-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
+
+/* TOAST */
+.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* EMPTY */
+.empty { text-align:center; padding:40px 20px; color:var(--grey); }
+.empty-icon { font-size:44px; margin-bottom:9px; }
+.empty-text { font-size:14px; line-height:1.5; }
+</style>
+</head>
+<body>
+
+<!-- TILGANGSKODE -->
+<div class="access-screen" id="access-screen">
+  <div class="access-box">
+    <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="access-logo" alt="LFH09">
+    <div class="access-title">LFH09 J2011</div>
+    <div class="access-cup">FREDRIKSTAD CUP 2026</div>
+    <div class="access-sub">Skriv inn lagets kode for å gå inn i turappen.</div>
+    <input type="text" class="access-input" id="access-input" placeholder="KODE" maxlength="10" onkeydown="if(event.key==='Enter') sjekkKode()">
+    <button class="access-btn" onclick="sjekkKode()">Gå inn →</button>
+    <div class="access-feilmelding" id="access-feil"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="club-logo" alt="LFH09">
+      <div>
+        <div class="logo-club">J2011</div>
+        <div class="logo-sub">Lillehammer Fåberg Håndball</div>
+      </div>
+    </div>
+    <div class="cup-badge">FREDRIKSTAD<br>CUP 2026</div>
+  </div>
+  <div class="date-bar">
+    <div class="date-pill">22.–25. mai 2026</div>
+    <div class="date-pill red">PINSEN</div>
+    <div class="date-pill">Fredrikstad</div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showView('oversikt')"  id="nav-oversikt"><span class="ni">🏠</span>Oversikt</button>
+  <button class="nav-btn"        onclick="showView('avreise')"   id="nav-avreise"><span class="ni">🚌</span>Reise</button>
+  <button class="nav-btn"        onclick="showView('overnatting')" id="nav-overnatting"><span class="ni">🏨</span>Bo</button>
+  <button class="nav-btn"        onclick="showView('pakkliste')" id="nav-pakkliste"><span class="ni">🎒</span>Pakk</button>
+  <button class="nav-btn"        onclick="showView('kamper')"    id="nav-kamper"><span class="ni">🤾</span>Kamper</button>
+  <button class="nav-btn"        onclick="showView('kontakt')"   id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
+  <button class="nav-btn"        onclick="showView('regler')"    id="nav-regler"><span class="ni">📋</span>Regler</button>
+  <button class="nav-btn"        onclick="showView('kart')"      id="nav-kart"><span class="ni">📍</span>Kart</button>
+</nav>
+
+<div class="main">
+
+  <!-- OVERSIKT -->
+  <div class="view active" id="view-oversikt">
+    <div class="hero-card">
+      <div class="hero-label">TURINFO</div>
+      <div class="hero-title">Fredrikstad Cup 2026</div>
+      <div class="hero-sub">LFH09 J2011 · Lillehammer Fåberg Håndball<br>Pinsetur 22.–25. mai 2026</div>
+      <div class="hero-grid">
+        <div class="hero-stat">
+          <div class="hero-stat-num">4</div>
+          <div class="hero-stat-label">Dager på tur</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="ov-kamper">—</div>
+          <div class="hero-stat-label">Kamper</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="ov-dager">—</div>
+          <div class="hero-stat-label">Dager til avreise</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="ov-pakket">0%</div>
+          <div class="hero-stat-label">Pakket</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="st">Hurtiginfo</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚌</div>
+        <div>
+          <div class="info-card-title">Avreise</div>
+          <div class="info-card-sub">Fredag 22. mai 2026</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Møteplass</span><span class="info-val placeholder">Oppdateres</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🏨</div>
+        <div>
+          <div class="info-card-title">Overnatting</div>
+          <div class="info-card-sub">Fredrikstad</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Sted</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag 22. mai</span></div>
+      <div class="info-row"><span class="info-label">Utsjekk</span><span class="info-val">Mandag 25. mai</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">📞</div>
+        <div>
+          <div class="info-card-title">Turansvarlig</div>
+          <div class="info-card-sub">Kontaktperson på turen</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Navn</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Telefon</span><span class="info-val placeholder">Oppdateres</span></div>
+    </div>
+  </div>
+
+  <!-- AVREISE -->
+  <div class="view" id="view-avreise">
+    <div class="st" style="margin-top:0">Avreise – fredag 22. mai</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚌</div>
+        <div>
+          <div class="info-card-title">Avreise Lillehammer</div>
+          <div class="info-card-sub">Fredag 22. mai 2026</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Møtested</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Avgang</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Transport</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="tip-box">⚠️ Møt <strong>alltid</strong> 15 minutter før angitt tid. Bussen venter ikke!</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🧳</div>
+        <div>
+          <div class="info-card-title">Bagasje på reisen</div>
+          <div class="info-card-sub">Hva du tar med i bussen</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Håndbagasje</span><span class="info-val">Liten sekk / skolesekk</span></div>
+      <div class="info-row"><span class="info-label">Stor sekk</span><span class="info-val">Merkes med navn</span></div>
+      <div class="info-row"><span class="info-label">Sportsbag</span><span class="info-val">Fotballutstyr</span></div>
+      <div class="tip-box">💡 Merk ALL bagasje med navn og telefonnummer.</div>
+    </div>
+
+    <div class="st">Hjemreise – mandag 25. mai</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🏠</div>
+        <div>
+          <div class="info-card-title">Hjemreise Fredrikstad</div>
+          <div class="info-card-sub">Mandag 25. mai 2026</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Avgang</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Fra</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Estimert hjemkomst</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="tip-box">📦 Husk å rydde rommet og ta med alt før avreise. Sjekk under senger!</div>
+    </div>
+  </div>
+
+  <!-- OVERNATTING -->
+  <div class="view" id="view-overnatting">
+    <div class="st" style="margin-top:0">Overnattingssted</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🏨</div>
+        <div>
+          <div class="info-card-title">Overnattingssted</div>
+          <div class="info-card-sub">Fredrikstad</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Navn</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag 22. mai</span></div>
+      <div class="info-row"><span class="info-label">Utsjekk</span><span class="info-val">Mandag 25. mai</span></div>
+      <div class="info-row"><span class="info-label">Ansvarlig</span><span class="info-val placeholder">Oppdateres</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🛏</div>
+        <div>
+          <div class="info-card-title">Romfordeling</div>
+          <div class="info-card-sub">Hvem bor med hvem</div>
+        </div>
+      </div>
+      <div class="empty" style="padding:20px 0 8px">
+        <div class="empty-icon" style="font-size:32px">🛏</div>
+        <div class="empty-text" style="font-size:12px">Romfordeling legges inn<br>når det er klart.</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">📜</div>
+        <div>
+          <div class="info-card-title">Husregler</div>
+          <div class="info-card-sub">Gjelder hele oppholdet</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Frokost</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Leggetid</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Felles samling</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="tip-box">🔇 Respekter andre gjester. Innendørs er vi rolige.</div>
+    </div>
+  </div>
+
+  <!-- PAKKLISTE -->
+  <div class="view" id="view-pakkliste">
+    <div class="st" style="margin-top:0">Pakkliste</div>
+    <div class="info-card" style="margin-bottom:6px">
+      <div class="prog-wrap"><div class="prog-fill" id="pack-bar" style="width:0%"></div></div>
+      <div class="prog-label" id="pack-label">0 av 0 pakket</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🤾</div>
+        <div><div class="info-card-title">Håndballutstyr</div><div class="info-card-sub">Alt til hallen</div></div>
+      </div>
+      <ul class="checklist" id="list-fotball">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Drakt – hjemme og borte</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Innendørssko / hallsko</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Shorts og strømpebukse</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Knestrømper / ankelbeskytter</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Tape / sportstape</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Harpiks / kolofonium</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Harpiksfjerning (aceton / renseservietter)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Vannflaske – merket med navn</span></li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">👕</div>
+        <div><div class="info-card-title">Klær og personlig</div><div class="info-card-sub">For 3 overnattinger</div></div>
+      </div>
+      <ul class="checklist" id="list-klar">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Skift klær (3 dager)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Regnjakke / vindjakke</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Sko til dagligbruk</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Toalettsaker og tannbørste</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Håndkle</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Sovepose / sengetøy</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Solkrem</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Eventuell medisin (navngitt)</span></li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">📱</div>
+        <div><div class="info-card-title">Praktisk</div><div class="info-card-sub">Ikke glem</div></div>
+      </div>
+      <ul class="checklist" id="list-praktisk">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Mobiltelefon + lader</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Powerbank</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Lommepenger</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Forsikringskort</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">God stemning 💛</span></li>
+      </ul>
+    </div>
+
+    <button class="map-btn" style="background:var(--grey)" onclick="nullstillPakkliste()">Nullstill pakkliste</button>
+  </div>
+
+  <!-- KAMPER -->
+  <div class="view" id="view-kamper">
+
+    <!-- LAG-TABS -->
+    <div style="display:flex; gap:8px; margin-bottom:14px;">
+      <button class="lag-tab active" id="tab-rod" onclick="visLag('rod')">
+        <span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block;margin-right:6px;"></span>LFH09 Rød
+      </button>
+      <button class="lag-tab" id="tab-sort" onclick="visLag('sort')">
+        <span style="width:10px;height:10px;border-radius:50%;background:#1a2540;display:inline-block;margin-right:6px;"></span>LFH09 Sort
+      </button>
+    </div>
+
+    <!-- LFH09 RØD -->
+    <div id="lag-rod">
+      <div class="tip-box" style="margin-bottom:12px">📊 Hentet fra Profixio · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487203" target="_blank" style="color:var(--blue)">Se live på profixio.com</a></div>
+
+      <div class="st" style="margin-top:0">Lørdag 23. mai</div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #0214 · 11:18</div>
+          <div class="match-badge">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">LFH09 Rød vs. Lervik</div>
+          <div class="match-meta">
+            <span>🕐 11:18</span>
+            <span>📍 Kongsten · Bane 02</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #1114 · 13:59</div>
+          <div class="match-badge">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">LFH09 Rød vs. Skedsmo 1</div>
+          <div class="match-meta">
+            <span>🕐 13:59</span>
+            <span>📍 Lisleby · Bane 11</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="st">Søndag 24. mai</div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #3132 · 12:27</div>
+          <div class="match-badge">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">Tindlund 2 vs. LFH09 Rød</div>
+          <div class="match-meta">
+            <span>🕐 12:27</span>
+            <span>📍 Merkur · Bane 31</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #2342 · 14:45</div>
+          <div class="match-badge">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">Hødd vs. LFH09 Rød</div>
+          <div class="match-meta">
+            <span>🕐 14:45</span>
+            <span>📍 Merkur · Bane 23</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="st">Tabell – Rød gruppe</div>
+      <div class="info-card">
+        <div style="overflow-x:auto">
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--light);">
+                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">#</th>
+                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">Lag</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">K</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">V</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">U</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">T</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">Mål</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">P</th>
+              </tr>
+            </thead>
+            <tbody id="tabell-rod">
+              <tr style="border-bottom:1px solid var(--light);background:var(--light);">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Lervik</td>
+                <td style="padding:7px 4px;text-align:center;">1</td><td style="padding:7px 4px;text-align:center;">1</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">1-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">2</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--light);">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">2</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Skedsmo 1</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--light);">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">2</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Hødd</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--light);background:#fff7f7;">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">2</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--red);">LFH09 Rød</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">5</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Tindlund 2</td>
+                <td style="padding:7px 4px;text-align:center;">1</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">1</td>
+                <td style="padding:7px 4px;text-align:center;">0-1</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- LFH09 SORT -->
+    <div id="lag-sort" style="display:none">
+      <div class="tip-box" style="margin-bottom:12px">📊 Hentet fra Profixio · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204" target="_blank" style="color:var(--blue)">Se live på profixio.com</a></div>
+
+      <div class="st" style="margin-top:0">Lørdag 23. mai</div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #1116 · 14:45</div>
+          <div class="match-badge" style="background:#1a2540">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">Steinkjer vs. LFH09 Sort</div>
+          <div class="match-meta">
+            <span>🕐 14:45</span>
+            <span>📍 Lisleby · Bane 11</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #1121 · 16:40</div>
+          <div class="match-badge" style="background:#1a2540">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">LFH09 Sort vs. Gimletroll 1</div>
+          <div class="match-meta">
+            <span>🕐 16:40</span>
+            <span>📍 Lisleby · Bane 11</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="st">Søndag 24. mai</div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #3125 · 09:46</div>
+          <div class="match-badge" style="background:#1a2540">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">LFH09 Sort vs. Ull/Kisa</div>
+          <div class="match-meta">
+            <span>🕐 09:46</span>
+            <span>📍 Merkur · Bane 31</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-header">
+          <div class="match-day">Kamp #3130 · 11:41</div>
+          <div class="match-badge" style="background:#1a2540">Gruppe</div>
+        </div>
+        <div class="match-body">
+          <div class="match-teams">Rygge vs. LFH09 Sort</div>
+          <div class="match-meta">
+            <span>🕐 11:41</span>
+            <span>📍 Merkur · Bane 31</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="st">Tabell – Sort gruppe</div>
+      <div class="info-card">
+        <div style="overflow-x:auto">
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--light);">
+                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">#</th>
+                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">Lag</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">K</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">V</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">U</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">T</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">Mål</th>
+                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">P</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--light);background:#f7f7fa;">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#1a2540;">LFH09 Sort</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--light);">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Gimletroll 1</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--light);">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Ull/Kisa</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--light);">
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Rygge</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+              <tr>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
+                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Steinkjer</td>
+                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
+                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="st">Lagoppsett (Rubic)</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">👥</div>
+        <div><div class="info-card-title">Spillere</div><div class="info-card-sub">Importert fra Rubic</div></div>
+      </div>
+      <div class="empty" style="padding:20px 0 8px">
+        <div class="empty-icon" style="font-size:32px">👕</div>
+        <div class="empty-text" style="font-size:12px">Lagoppsett legges inn<br>når det er klart fra Rubic.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAKTER -->
+  <div class="view" id="view-kontakt">
+    <div class="st" style="margin-top:0">Ansvarlige</div>
+
+    <div class="contact-card">
+      <div class="contact-avatar">SA</div>
+      <div style="flex:1">
+        <div class="contact-name">Samuel Andersen</div>
+        <div class="contact-role">Trener / turansvarlig</div>
+        <div class="contact-tel"><a href="tel:+4740044442" style="color:var(--blue-mid);text-decoration:none">+47 400 44 442</a></div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">AR</div>
+      <div style="flex:1">
+        <div class="contact-name">Anne-Line Rosenberg Rotevatn</div>
+        <div class="contact-role">Trener</div>
+        <div class="contact-tel"><a href="tel:+4795864622" style="color:var(--blue-mid);text-decoration:none">+47 958 64 622</a></div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">FK</div>
+      <div style="flex:1">
+        <div class="contact-name">Foreldrekontakt</div>
+        <div class="contact-role">Foreldreansvarlig</div>
+        <div class="contact-tel placeholder">Telefon oppdateres</div>
+      </div>
+    </div>
+
+    <div class="st">Nødnumre</div>
+    <div class="info-card">
+      <div class="info-row"><span class="info-label">Nødetatene</span><span class="info-val" style="color:var(--red)">112</span></div>
+      <div class="info-row"><span class="info-label">Brann</span><span class="info-val" style="color:var(--red)">110</span></div>
+      <div class="info-row"><span class="info-label">Politi</span><span class="info-val" style="color:var(--red)">112</span></div>
+      <div class="info-row"><span class="info-label">Legevakt</span><span class="info-val">116 117</span></div>
+      <div class="info-row"><span class="info-label">Giftinfolinjen</span><span class="info-val">22 59 13 00</span></div>
+    </div>
+
+    <div class="st">Turneringskontakt</div>
+    <div class="info-card">
+      <div class="info-row"><span class="info-label">Fredrikstad Cup</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Profixio</span><span class="info-val">profixio.no</span></div>
+    </div>
+  </div>
+
+  <!-- REGLER -->
+  <div class="view" id="view-regler">
+    <div class="st" style="margin-top:0">Lagregler på tur</div>
+    <div class="rule-card"><div class="rule-num">1</div><div><div class="rule-title">Møt alltid presis</div><div class="rule-text">Presis til avreise, kamper og felles samling. Respekter lagets tid – og lagets tillit til deg.</div></div></div>
+    <div class="rule-card"><div class="rule-num">2</div><div><div class="rule-title">Vi er LFH09-ambassadører</div><div class="rule-text">Oppfør deg pent mot motstandere, dommere, arrangør og vertskap. Vi representerer klubben med stolthet.</div></div></div>
+    <div class="rule-card"><div class="rule-num">3</div><div><div class="rule-title">Ingen alene ute om natten</div><div class="rule-text">Vi holder oss i grupper og informerer alltid trenere om hvor vi er. Trygghet er viktigere enn frihet.</div></div></div>
+    <div class="rule-card"><div class="rule-num">4</div><div><div class="rule-title">Mobilfri leggetid</div><div class="rule-text">Leggetid bestemmes av trenere/ledere. Mobil legges bort til avtalt tid – alle trenger søvn for å prestere.</div></div></div>
+    <div class="rule-card"><div class="rule-num">5</div><div><div class="rule-title">Rydd etter deg</div><div class="rule-text">Vi rydder etter oss – på overnatting, i buss og på banen. Vi tar vare på andres eiendeler og oss selv.</div></div></div>
+    <div class="rule-card"><div class="rule-num">6</div><div><div class="rule-title">God lagånd alltid</div><div class="rule-text">Vi heier på hverandre uansett resultat. Lagånd bygges ikke bare med seier – men med hvordan vi behandler hverandre.</div></div></div>
+    <div class="rule-card"><div class="rule-num">7</div><div><div class="rule-title">Ta det med trener, ikke nett</div><div class="rule-text">Problemer og konflikter løses med laget – ikke på sosiale medier. Vær løsningsorientert, ikke bakoverkritisk.</div></div></div>
+    <div class="rule-card"><div class="rule-num">8</div><div><div class="rule-title">Mat og hvile gir kampkraft</div><div class="rule-text">Spis godt, drikk vann og hvil mellom kampene. Kroppen din er verktøyet – ta godt vare på det.</div></div></div>
+  </div>
+
+  <!-- KART -->
+  <div class="view" id="view-kart">
+    <div class="st" style="margin-top:0">Viktige steder</div>
+    <div class="tip-box" style="margin-bottom:12px">📍 Trykk på et sted for å åpne i Google Maps.</div>
+
+    <div class="poi-card" onclick="openMaps('Kongsten idrettshall Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
+      <div>
+        <div class="poi-name">Kongsten idrettshall</div>
+        <div class="poi-addr">Kampbane – LFH09 Rød kamp 1</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Rød</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Lisleby idrettshall Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
+      <div>
+        <div class="poi-name">Lisleby idrettshall</div>
+        <div class="poi-addr">Kampbane – Rød kamp 2 · Sort kamp 1 & 2</div>
+        <span class="poi-tag" style="background:#1a2540;color:white">Rød + Sort</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Merkur Arena Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🏟</div>
+      <div>
+        <div class="poi-name">Merkur Arena</div>
+        <div class="poi-addr">Kampbane – Rød kamp 3 & 4 · Sort kamp 3 & 4</div>
+        <span class="poi-tag" style="background:var(--blue);color:white">Rød + Sort</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🏨</div>
+      <div>
+        <div class="poi-name">Overnattingssted</div>
+        <div class="poi-addr" style="color:var(--mid);font-style:italic">Adresse oppdateres</div>
+        <span class="poi-tag" style="background:var(--blue-mid);color:white">Bo</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Legevakta Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#fef2f2">🏥</div>
+      <div>
+        <div class="poi-name">Legevakt Fredrikstad</div>
+        <div class="poi-addr">Legevakta, Fredrikstad</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🍕</div>
+      <div>
+        <div class="poi-name">Matservering / kiosk</div>
+        <div class="poi-addr" style="color:var(--mid);font-style:italic">Adresse oppdateres</div>
+        <span class="poi-tag" style="background:var(--grey);color:white">Mat</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">👨‍👩‍👧</div>
+      <div>
+        <div class="poi-name">Foreldremøtepunkt</div>
+        <div class="poi-addr" style="color:var(--mid);font-style:italic">Adresse oppdateres</div>
+        <span class="poi-tag" style="background:var(--grey);color:white">Foreldre</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
+      <div>
+        <div class="poi-name">Oppvarmingsflate</div>
+        <div class="poi-addr" style="color:var(--mid);font-style:italic">Adresse oppdateres</div>
+        <span class="poi-tag" style="background:var(--blue);color:white">Trening</span>
+      </div>
+    </div>
+
+    <button class="map-btn" onclick="openMaps('Fredrikstad sentrum')">🗺 Åpne Fredrikstad i Google Maps</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// TILGANGSKODE
+const KODE = "FRSTAD26";
+function sjekkTilgang() {
+  if (localStorage.getItem('lfh-cup-tilgang') === KODE) {
+    document.getElementById('access-screen').style.display = 'none';
+  }
+}
+window.sjekkKode = () => {
+  const inp  = document.getElementById('access-input');
+  const feil = document.getElementById('access-feil');
+  const kode = inp.value.trim().toUpperCase();
+  if (kode === KODE) {
+    localStorage.setItem('lfh-cup-tilgang', KODE);
+    document.getElementById('access-screen').style.display = 'none';
+  } else {
+    inp.classList.add('feil');
+    feil.textContent = 'Feil kode – prøv igjen';
+    setTimeout(() => inp.classList.remove('feil'), 400);
+    inp.value = '';
+    inp.focus();
+  }
+};
+sjekkTilgang();
+
+// NAVIGASJON
+window.showView = name => {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.getElementById('nav-'  + name).classList.add('active');
+  window.scrollTo(0, 0);
+};
+
+// PAKKLISTE
+function hentPakket() {
+  return JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}');
+}
+function lagrePakket(data) {
+  localStorage.setItem('lfh-cup-pakket', JSON.stringify(data));
+}
+window.toggleCheck = el => {
+  const box = el.querySelector('.check-box');
+  const lbl = el.querySelector('.check-label');
+  const key = lbl.textContent.trim();
+  const pakket = hentPakket();
+  const erChecked = box.classList.contains('checked');
+  if (erChecked) {
+    box.classList.remove('checked');
+    box.textContent = '';
+    el.classList.remove('checked-item');
+    delete pakket[key];
+  } else {
+    box.classList.add('checked');
+    box.textContent = '✓';
+    el.classList.add('checked-item');
+    pakket[key] = true;
+  }
+  lagrePakket(pakket);
+  oppdaterPakkProgress();
+};
+function oppdaterPakkProgress() {
+  const alle    = document.querySelectorAll('.view#view-pakkliste .check-item').length;
+  const checked = document.querySelectorAll('.view#view-pakkliste .check-box.checked').length;
+  const pct = alle ? Math.round(checked / alle * 100) : 0;
+  document.getElementById('pack-bar').style.width   = pct + '%';
+  document.getElementById('pack-label').textContent = checked + ' av ' + alle + ' pakket';
+  document.getElementById('ov-pakket').textContent  = pct + '%';
+}
+function lastInnPakket() {
+  const pakket = hentPakket();
+  document.querySelectorAll('.view#view-pakkliste .check-item').forEach(el => {
+    const key = el.querySelector('.check-label').textContent.trim();
+    if (pakket[key]) {
+      const box = el.querySelector('.check-box');
+      box.classList.add('checked');
+      box.textContent = '✓';
+      el.classList.add('checked-item');
+    }
+  });
+  oppdaterPakkProgress();
+}
+window.nullstillPakkliste = () => {
+  localStorage.removeItem('lfh-cup-pakket');
+  document.querySelectorAll('.view#view-pakkliste .check-box').forEach(b => {
+    b.classList.remove('checked');
+    b.textContent = '';
+  });
+  document.querySelectorAll('.view#view-pakkliste .check-item').forEach(el => el.classList.remove('checked-item'));
+  oppdaterPakkProgress();
+  showToast('Pakkliste nullstilt', '#888');
+};
+
+// LAG-TABS
+window.visLag = lag => {
+  document.getElementById('lag-rod').style.display  = lag === 'rod'  ? 'block' : 'none';
+  document.getElementById('lag-sort').style.display = lag === 'sort' ? 'block' : 'none';
+  document.getElementById('tab-rod').classList.toggle('active',  lag === 'rod');
+  document.getElementById('tab-sort').classList.toggle('active', lag === 'sort');
+};
+
+// KART
+window.openMaps = addr => {
+  if (!addr) { showToast('Adresse kommer snart!', '#f59e0b'); return; }
+  window.open('https://maps.google.com/?q=' + encodeURIComponent(addr), '_blank');
+};
+
+// DAGER TIL AVREISE
+function oppdaterOversikt() {
+  const avreise = new Date('2026-05-22');
+  const idag    = new Date(); idag.setHours(0,0,0,0);
+  const diff    = Math.ceil((avreise - idag) / 86400000);
+  document.getElementById('ov-dager').textContent = diff > 0 ? diff : diff === 0 ? '0 – i dag!' : 'Avreist!';
+  document.getElementById('ov-kamper').textContent = '8';
+}
+
+// TOAST
+function showToast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = color || '#22c55e';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// INIT
+lastInnPakket();
+oppdaterOversikt();
+</script>
+</body>
+</html>
