@@ -92,6 +92,9 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 .nav-btn { padding:9px 4px 7px; background:none; border:none; color:var(--mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:color .2s; display:flex; flex-direction:column; align-items:center; gap:2px; border-bottom:3px solid transparent; margin-bottom:-3px; white-space:nowrap; }
 .nav .nav-btn { border-bottom:0.5px solid rgba(255,255,255,0.07); margin-bottom:0; }
 .nav-row2 .nav-btn { border-bottom:3px solid transparent; margin-bottom:-3px; }
+.nav-btn.active { color:white; }
+.nav-row2 .nav-btn.active { border-bottom-color:var(--red); }
+.nav .nav-btn.active { background:rgba(255,255,255,0.07); }
 .nav-btn .ni { font-size:16px; }
 .nav-btn.active { color:white; border-bottom-color:var(--red); }
 
@@ -238,14 +241,16 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 
 <!-- NAV -->
 <nav class="nav">
-  <button class="nav-btn active" onclick="showView('oversikt')"  id="nav-oversikt"><span class="ni">🏠</span>Oversikt</button>
-  <button class="nav-btn"        onclick="showView('avreise')"   id="nav-avreise"><span class="ni">🚌</span>Reise</button>
+  <button class="nav-btn active" onclick="showView('oversikt')"    id="nav-oversikt"><span class="ni">🏠</span>Oversikt</button>
+  <button class="nav-btn"        onclick="showView('avreise')"     id="nav-avreise"><span class="ni">🚌</span>Reise</button>
   <button class="nav-btn"        onclick="showView('overnatting')" id="nav-overnatting"><span class="ni">🏨</span>Bo</button>
-  <button class="nav-btn"        onclick="showView('pakkliste')" id="nav-pakkliste"><span class="ni">🎒</span>Pakk</button>
-  <button class="nav-btn"        onclick="showView('kamper')"    id="nav-kamper"><span class="ni">🤾</span>Kamper</button>
-  <button class="nav-btn"        onclick="showView('kontakt')"   id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
-  <button class="nav-btn"        onclick="showView('regler')"    id="nav-regler"><span class="ni">📋</span>Regler</button>
-  <button class="nav-btn"        onclick="showView('kart')"      id="nav-kart"><span class="ni">📍</span>Kart</button>
+  <button class="nav-btn"        onclick="showView('pakkliste')"   id="nav-pakkliste"><span class="ni">🎒</span>Pakk</button>
+</nav>
+<nav class="nav-row2">
+  <button class="nav-btn"        onclick="showView('kamper')"      id="nav-kamper"><span class="ni">🤾</span>Kamper</button>
+  <button class="nav-btn"        onclick="showView('kontakt')"     id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
+  <button class="nav-btn"        onclick="showView('regler')"      id="nav-regler"><span class="ni">📋</span>Regler</button>
+  <button class="nav-btn"        onclick="showView('kart')"        id="nav-kart"><span class="ni">📍</span>Kart</button>
 </nav>
 
 <div class="main">
