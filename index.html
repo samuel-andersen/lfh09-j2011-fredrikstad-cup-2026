@@ -73,10 +73,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 .logo-club    { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; color:white; letter-spacing:1px; }
 .logo-sub     { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--mid); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
 .cup-badge    { background:var(--red); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:4px 9px; border-radius:4px; text-align:center; line-height:1.3; }
-.date-bar     { display:flex; align-items:center; justify-content:center; gap:16px; padding:8px 18px 13px; border-top:1px solid rgba(255,255,255,0.08); }
-.date-pill    { background:rgba(255,255,255,0.12); color:var(--mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; padding:5px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.15); }
-.date-pill.red { background:var(--red); color:white; border-color:var(--red); }
-.auth-bar  { display:flex; align-items:center; justify-content:space-between; padding:8px 18px 10px; border-bottom:1px solid rgba(255,255,255,0.08); }
+.auth-bar  { display:flex; align-items:center; justify-content:space-between; padding:8px 18px 12px; }
 .auth-info { display:flex; align-items:center; gap:9px; }
 .auth-avatar { width:26px; height:26px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); }
 .auth-name { display:block; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:white; }
@@ -88,15 +85,21 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 
 /* NAV */
 .nav { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); }
-.nav-row2 { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); border-bottom:3px solid var(--red); }
-.nav-btn { padding:9px 4px 7px; background:none; border:none; color:var(--mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:color .2s; display:flex; flex-direction:column; align-items:center; gap:2px; border-bottom:3px solid transparent; margin-bottom:-3px; white-space:nowrap; }
-.nav .nav-btn { border-bottom:0.5px solid rgba(255,255,255,0.07); margin-bottom:0; }
-.nav-row2 .nav-btn { border-bottom:3px solid transparent; margin-bottom:-3px; }
-.nav-btn.active { color:white; }
-.nav-row2 .nav-btn.active { border-bottom-color:var(--red); }
-.nav .nav-btn.active { background:rgba(255,255,255,0.07); }
-.nav-btn .ni { font-size:16px; }
-.nav-btn.active { color:white; border-bottom-color:var(--red); }
+.nav-row2 { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
+.nav-btn {
+  padding:10px 4px 8px; background:none; border:none;
+  color:rgba(255,255,255,0.45);
+  font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  font-size:10px; letter-spacing:1.2px; text-transform:uppercase;
+  cursor:pointer; transition:all .18s;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  position:relative; border-top:3px solid transparent;
+}
+.nav-btn .ni { font-size:20px; line-height:1; transition:transform .18s; }
+.nav .nav-btn { border-bottom:1px solid rgba(255,255,255,0.06); }
+.nav-btn:active .ni { transform:scale(0.88); }
+.nav-btn.active { color:white; border-top-color:var(--red); background:rgba(255,255,255,0.06); }
+.nav-btn.active .ni { transform:scale(1.1); }
 
 /* MAIN */
 .main { padding:18px 15px 90px; max-width:480px; margin:0 auto; }
@@ -231,11 +234,6 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
   </div>
   <div class="auth-bar" id="auth-bar">
     <div class="auth-info"><span class="auth-name">Laster…</span></div>
-  </div>
-  <div class="date-bar">
-    <div class="date-pill">22.–25. mai 2026</div>
-    <div class="date-pill red">PINSEN</div>
-    <div class="date-pill">Fredrikstad</div>
   </div>
 </header>
 
