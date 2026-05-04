@@ -264,7 +264,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 .lag-tab { flex:1; padding:10px 8px; background:white; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--grey); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
 .lag-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
 
-.nav-row3 { display:grid; grid-template-columns:1fr; background:var(--blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
+.nav-row3 { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
 
 /* Q&A FORUM */
 .qa-input-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:14px 16px; margin-bottom:12px; }
@@ -351,18 +351,21 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
 <!-- NAV -->
 <nav class="nav">
   <button class="nav-btn active" onclick="showView('oversikt')"    id="nav-oversikt"><span class="ni">🏠</span>Oversikt</button>
+  <button class="nav-btn"        onclick="showView('program')"     id="nav-program"><span class="ni">🗓</span>Program</button>
   <button class="nav-btn"        onclick="showView('avreise')"     id="nav-avreise"><span class="ni">🚌</span>Reise</button>
   <button class="nav-btn"        onclick="showView('overnatting')" id="nav-overnatting"><span class="ni">🏨</span>Bo</button>
-  <button class="nav-btn"        onclick="showView('pakkliste')"   id="nav-pakkliste"><span class="ni">🎒</span>Pakk</button>
 </nav>
 <nav class="nav-row2">
+  <button class="nav-btn"        onclick="showView('pakkliste')"   id="nav-pakkliste"><span class="ni">🎒</span>Pakk</button>
   <button class="nav-btn"        onclick="showView('kamper')"      id="nav-kamper"><span class="ni">🤾</span>Kamper</button>
-  <button class="nav-btn"        onclick="showView('kontakt')"     id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
-  <button class="nav-btn"        onclick="showView('regler')"      id="nav-regler"><span class="ni">📋</span>Regler</button>
+  <button class="nav-btn"        onclick="showView('mat')"         id="nav-mat"><span class="ni">🍽</span>Mat</button>
   <button class="nav-btn"        onclick="showView('kart')"        id="nav-kart"><span class="ni">📍</span>Kart</button>
 </nav>
 <nav class="nav-row3">
+  <button class="nav-btn"        onclick="showView('kontakt')"     id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
+  <button class="nav-btn"        onclick="showView('regler')"      id="nav-regler"><span class="ni">📋</span>Regler</button>
   <button class="nav-btn"        onclick="showView('sporsmal')"    id="nav-sporsmal"><span class="ni">💬</span>Spør laget</button>
+  <button class="nav-btn"        onclick="showView('oversikt')"    id="nav-dummy" style="visibility:hidden"></button>
 </nav>
 
 <div class="main">
@@ -396,26 +399,27 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
     <div class="st">Hurtiginfo</div>
     <div class="info-card">
       <div class="info-card-header">
-        <div class="info-card-icon">🚌</div>
+        <div class="info-card-icon">🚗</div>
         <div>
           <div class="info-card-title">Avreise</div>
           <div class="info-card-sub">Fredag 22. mai 2026</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val">Kl. 14:45</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val">Kl. 15:00 – private biler</span></div>
       <div class="info-row"><span class="info-label">Møteplass</span><span class="info-val placeholder">Oppdateres</span></div>
     </div>
     <div class="info-card">
       <div class="info-card-header">
-        <div class="info-card-icon">🏨</div>
+        <div class="info-card-icon">🏫</div>
         <div>
           <div class="info-card-title">Overnatting</div>
-          <div class="info-card-sub">Fredrikstad</div>
+          <div class="info-card-sub">Rød Skole Krakerøy</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Sted</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag 22. mai</span></div>
-      <div class="info-row"><span class="info-label">Utsjekk</span><span class="info-val">Mandag 25. mai</span></div>
+      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val">Dueveien 2, 1679 Kråkerøy</span></div>
+      <div class="info-row"><span class="info-label">Rom</span><span class="info-val">225 og 229</span></div>
+      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag fra 16:30</span></div>
     </div>
     <div class="info-card">
       <div class="info-card-header">
@@ -425,35 +429,156 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
           <div class="info-card-sub">Kontaktperson på turen</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Navn</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Telefon</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Navn</span><span class="info-val">Samuel Andersen</span></div>
+      <div class="info-row"><span class="info-label">Telefon</span><span class="info-val"><a href="tel:+4740044442" style="color:var(--blue-mid);text-decoration:none">+47 400 44 442</a></span></div>
     </div>
   </div>
 
-  <!-- AVREISE -->
+  <!-- PROGRAM -->
+  <div class="view" id="view-program">
+    <div class="hero-card" style="margin-bottom:12px">
+      <div class="hero-label">DAGSPROGRAM</div>
+      <div class="hero-title">Fredrikstad Cup</div>
+      <div class="hero-sub">22.–25. mai 2026 · Offisielt program + lagets tider</div>
+    </div>
+
+    <div class="st" style="margin-top:0">Fredag 22. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🚗</div><div><div class="info-card-title">Avreisedag</div></div></div>
+      <div class="info-row"><span class="info-label">14:45</span><span class="info-val">Oppmøte Lillehammer</span></div>
+      <div class="info-row"><span class="info-label">15:00</span><span class="info-val">Avreise – private biler</span></div>
+      <div class="info-row"><span class="info-label">16:00</span><span class="info-val">Sport 1-butikken åpner</span></div>
+      <div class="info-row"><span class="info-label">16:30</span><span class="info-val">Innsjekk bosted åpner</span></div>
+      <div class="info-row"><span class="info-label">Ca. 18:30</span><span class="info-val">Estimert ankomst Fredrikstad</span></div>
+      <div class="info-row"><span class="info-label">Kveld</span><span class="info-val">Middag ved ankomst</span></div>
+    </div>
+
+    <div class="st">Lørdag 23. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 1</div></div></div>
+      <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
+      <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">11:18 🔴</span><span class="info-val">LFH09 Rød – Kongsten</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">13:59 🔴</span><span class="info-val">LFH09 Rød – Lisleby</span></div>
+      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">14:45 ⚫</span><span class="info-val">LFH09 Sort – Lisleby</span></div>
+      <div class="info-row"><span class="info-label">14:00–18:30</span><span class="info-val">🍽 Middag Kongsten Arena</span></div>
+      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">16:40 ⚫</span><span class="info-val">LFH09 Sort – Lisleby</span></div>
+      <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">18:30</span><span class="info-val" style="color:var(--red)">🎵 Konsert – dørene åpner</span></div>
+      <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">19:40–21:20</span><span class="info-val" style="color:var(--red)">🎵 Konsert-show</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🎵</div><div><div class="info-card-title">Konserten lørdag kveld</div><div class="info-card-sub">Kongsten Arena</div></div></div>
+      <div class="info-row"><span class="info-label">Artister</span><span class="info-val">Bausa, Tigergutt, Puls, Emma, YLVA, Sander Elstad, Streetboys m.fl.</span></div>
+      <div class="info-row"><span class="info-label">Billetter</span><span class="info-val">Inkludert i cupbånd</span></div>
+      <div class="info-row"><span class="info-label">Familie</span><span class="info-val">Kr 400 per ekstra billett</span></div>
+      <div class="tip-box">🎟 Billetten er inkludert i SUPER/BASIC cupbåndet. Familie kjøper ekstra gjennom laget.</div>
+    </div>
+
+    <div class="st">Søndag 24. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 2</div></div></div>
+      <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
+      <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
+      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">09:46 ⚫</span><span class="info-val">LFH09 Sort – Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">11:41 ⚫</span><span class="info-val">LFH09 Sort – Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">12:27 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
+      <div class="info-row"><span class="info-label">14:00–19:00</span><span class="info-val">🍽 Middag Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">14:45 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
+      <div class="info-row"><span class="info-label">11:00–17:00</span><span class="info-val">🏊 Friluftsbad (egne priser)</span></div>
+    </div>
+
+    <div class="st">Mandag 25. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🏆</div><div><div class="info-card-title">Sluttspill & avreise</div></div></div>
+      <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
+      <div class="info-row"><span class="info-label">08:00</span><span class="info-val">Sluttspill starter</span></div>
+      <div class="info-row"><span class="info-label">Ca. 13:00</span><span class="info-val">Finalestart</span></div>
+      <div class="info-row"><span class="info-label">16:30</span><span class="info-val">Fredrikstad Cup 2026 over</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val placeholder">Etter sluttspill – TBD</span></div>
+    </div>
+  </div>
+
+  <!-- MAT -->
+  <div class="view" id="view-mat">
+    <div class="st" style="margin-top:0">Mat og drikke</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🍳</div><div><div class="info-card-title">Frokost</div><div class="info-card-sub">Lør, søn og man</div></div></div>
+      <div class="info-row"><span class="info-label">Tid</span><span class="info-val">06:15–10:00</span></div>
+      <div class="info-row"><span class="info-label">Sted</span><span class="info-val">På bostedet (Rød Skole)</span></div>
+      <div class="tip-box">⚠️ Det er ikke mulig å smøre matpakke til lunsj på bostedet.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🥙</div><div><div class="info-card-title">Lunsj</div><div class="info-card-sub">Ordnes selv</div></div></div>
+      <div class="info-row"><span class="info-label">Ordnes</span><span class="info-val">Selv</span></div>
+      <div class="info-row"><span class="info-label">Betaling</span><span class="info-val">Kort og Vipps</span></div>
+      <div class="tip-box">🛒 Det finnes butikker rundt skolen og matsalg ved Kongsten, Merkur og Østsiden arena.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🍽</div><div><div class="info-card-title">Middag</div><div class="info-card-sub">Inkludert i cupbånd</div></div></div>
+      <div class="info-row"><span class="info-label">Lørdag</span><span class="info-val">Kongsten Arena 14:00–18:30</span></div>
+      <div class="info-row"><span class="info-label">Lørdag meny</span><span class="info-val">🌮 Taco med storfe</span></div>
+      <div class="info-row"><span class="info-label">Søndag</span><span class="info-val">Merkur Arena 14:00–19:00</span></div>
+      <div class="info-row"><span class="info-label">Søndag meny</span><span class="info-val">🍛 Baligryte med kylling</span></div>
+      <div class="tip-box">💡 Lag som er ferdig på Merkur før kl. 14:00 søndag kan spise på Kongsten i stedet. Siste innslipp lørdag er kl. 18:00 pga. konsert.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🌙</div><div><div class="info-card-title">Kveldsmat</div><div class="info-card-sub">Ordnes selv</div></div></div>
+      <div class="info-row"><span class="info-label">Ordnes</span><span class="info-val">Selv</span></div>
+      <div class="info-row"><span class="info-label">KIWI</span><span class="info-val">600 m fra skolen</span></div>
+      <div class="info-row"><span class="info-label">Kiosk</span><span class="info-val">På bostedet</span></div>
+    </div>
+
+    <div class="st">Aktiviteter</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🎉</div><div><div class="info-card-title">Mer enn håndball!</div><div class="info-card-sub">Fredrikstad Cup-opplevelser</div></div></div>
+      <div class="info-row"><span class="info-label">Fan Zone</span><span class="info-val">Gratis, lør+søn 09:00–18:00</span></div>
+      <div class="info-row"><span class="info-label">Axels Tivoli</span><span class="info-val">Skandinavias største tivoli</span></div>
+      <div class="info-row"><span class="info-label">Friluftsbad</span><span class="info-val">27° vann, 11:00–17:00</span></div>
+      <div class="info-row"><span class="info-label">Minigolf</span><span class="info-val">12 hull ved Kongsten Arena</span></div>
+      <div class="info-row"><span class="info-label">SUMO-håndball</span><span class="info-val">Gratis hele helgen</span></div>
+      <div class="info-row"><span class="info-label">Silent Disco</span><span class="info-val">Dans med hodetelefoner 🎧</span></div>
+      <div class="info-row"><span class="info-label">DNB Glitter</span><span class="info-val">Gratis ansiktspynt lør+søn</span></div>
+      <div class="info-row"><span class="info-label">Sport 1</span><span class="info-val">Cuptilbud på utstyr</span></div>
+      <div class="info-row"><span class="info-label">SELECT Skills</span><span class="info-val">Styrke, spenst og teknikk</span></div>
+      <button class="map-btn" style="margin-top:12px;background:var(--blue-mid)" onclick="window.open('https://www.fredrikstadcup.no/opplevelser','_blank')">🔗 Se alle aktiviteter på fredrikstadcup.no</button>
+    </div>
+  </div>
   <div class="view" id="view-avreise">
     <div class="st" style="margin-top:0">Avreise – fredag 22. mai</div>
     <div class="info-card">
       <div class="info-card-header">
-        <div class="info-card-icon">🚌</div>
+        <div class="info-card-icon">🚗</div>
         <div>
           <div class="info-card-title">Avreise Lillehammer</div>
           <div class="info-card-sub">Fredag 22. mai 2026</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val">Ca. kl. 14:45</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val">Kl. 15:00</span></div>
       <div class="info-row"><span class="info-label">Møtested</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Avgang</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Transport</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="tip-box">⚠️ Møt <strong>alltid</strong> 15 minutter før angitt tid. Bussen venter ikke!</div>
+      <div class="info-row"><span class="info-label">Transport</span><span class="info-val">Private biler</span></div>
+      <div class="info-row"><span class="info-label">Kjøretid</span><span class="info-val">Ca. 3,5 timer</span></div>
+      <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val">Ca. kl. 18:30</span></div>
+      <div class="tip-box">⚠️ Møt <strong>alltid</strong> 15 minutter før angitt tid. Vi kjører ikke uten deg!</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">💰</div>
+        <div>
+          <div class="info-card-title">Reisekostnader</div>
+          <div class="info-card-sub">Deling av kjørekostnader</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Passasjer betaler</span><span class="info-val">Kr 500 til sjåfør</span></div>
+      <div class="info-row"><span class="info-label">Antall biler</span><span class="info-val">Minst 8 biler</span></div>
+      <div class="tip-box">💡 Betales direkte til sjåfør – samme pris for alle passasjerer.</div>
     </div>
     <div class="info-card">
       <div class="info-card-header">
         <div class="info-card-icon">🧳</div>
         <div>
-          <div class="info-card-title">Bagasje på reisen</div>
-          <div class="info-card-sub">Hva du tar med i bussen</div>
+          <div class="info-card-title">Bagasje</div>
+          <div class="info-card-sub">Hva du tar med</div>
         </div>
       </div>
       <div class="info-row"><span class="info-label">Håndbagasje</span><span class="info-val">Liten sekk / skolesekk</span></div>
@@ -462,19 +587,34 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
       <div class="tip-box">💡 Merk ALL bagasje med navn og telefonnummer.</div>
     </div>
 
+    <div class="st">Buss under turneringen</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚌</div>
+        <div>
+          <div class="info-card-title">Cup-bussene</div>
+          <div class="info-card-sub">Gratis med deltagerbånd</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
+      <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">2x i timen</span></div>
+      <div class="info-row"><span class="info-label">Fra skolen</span><span class="info-val">2x i timen</span></div>
+      <div class="info-row"><span class="info-label">Fra Kongsten Arena</span><span class="info-val">2x i timen</span></div>
+      <div class="tip-box">⚠️ Beregn ekstra venting etter konserten lørdag kveld.</div>
+    </div>
+
     <div class="st">Hjemreise – mandag 25. mai</div>
     <div class="info-card">
       <div class="info-card-header">
         <div class="info-card-icon">🏠</div>
         <div>
-          <div class="info-card-title">Hjemreise Fredrikstad</div>
+          <div class="info-card-title">Hjemreise</div>
           <div class="info-card-sub">Mandag 25. mai 2026</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Avgang</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Fra</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Estimert hjemkomst</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="tip-box">📦 Husk å rydde rommet og ta med alt før avreise. Sjekk under senger!</div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val placeholder">Etter sluttspill</span></div>
+      <div class="info-row"><span class="info-label">Fra</span><span class="info-val">Rød Skole Krakerøy</span></div>
+      <div class="tip-box">📦 Husk å rydde rommet og ta med alt. Sjekk under madrassen!</div>
     </div>
   </div>
 
@@ -483,24 +623,26 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
     <div class="st" style="margin-top:0">Overnattingssted</div>
     <div class="info-card">
       <div class="info-card-header">
-        <div class="info-card-icon">🏨</div>
+        <div class="info-card-icon">🏫</div>
         <div>
-          <div class="info-card-title">Overnattingssted</div>
-          <div class="info-card-sub">Fredrikstad</div>
+          <div class="info-card-title">Rød Skole Krakerøy</div>
+          <div class="info-card-sub">Dueveien 2, 1679 Kråkerøy</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Navn</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag 22. mai</span></div>
+      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val">Dueveien 2, 1679 Kråkerøy</span></div>
+      <div class="info-row"><span class="info-label">Rom</span><span class="info-val">225 og 229</span></div>
+      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag 22. mai, fra 16:30</span></div>
       <div class="info-row"><span class="info-label">Utsjekk</span><span class="info-val">Mandag 25. mai</span></div>
-      <div class="info-row"><span class="info-label">Ansvarlig</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Fasiliteter</span><span class="info-val">Dusj + kiosk</span></div>
+      <div class="info-row"><span class="info-label">Nærmeste butikk</span><span class="info-val">KIWI – 600 m</span></div>
+      <button class="map-btn" style="margin-top:12px" onclick="openMaps('Dueveien 2, 1679 Kråkerøy')">📍 Åpne i Google Maps</button>
     </div>
     <div class="info-card">
       <div class="info-card-header">
         <div class="info-card-icon">🛏</div>
         <div>
           <div class="info-card-title">Romfordeling</div>
-          <div class="info-card-sub">Hvem bor med hvem</div>
+          <div class="info-card-sub">Hvem sover hvor</div>
         </div>
       </div>
       <div class="empty" style="padding:20px 0 8px">
@@ -516,7 +658,7 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
           <div class="info-card-sub">Gjelder hele oppholdet</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Frokost</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Frokost</span><span class="info-val">06:15–10:00 på skolen</span></div>
       <div class="info-row"><span class="info-label">Leggetid</span><span class="info-val placeholder">Oppdateres</span></div>
       <div class="info-row"><span class="info-label">Felles samling</span><span class="info-val placeholder">Oppdateres</span></div>
       <div class="tip-box">🔇 Respekter andre gjester. Innendørs er vi rolige.</div>
@@ -872,6 +1014,22 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
         <div class="contact-tel placeholder">Telefon oppdateres</div>
       </div>
     </div>
+    <div class="contact-card">
+      <div class="contact-avatar">HH</div>
+      <div style="flex:1">
+        <div class="contact-name">Hege Havn</div>
+        <div class="contact-role">Leder (stedfortreder TBD)</div>
+        <div class="contact-tel placeholder">Telefon oppdateres</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">+1</div>
+      <div style="flex:1">
+        <div class="contact-name">Leder TBD</div>
+        <div class="contact-role">Leder</div>
+        <div class="contact-tel placeholder">Telefon oppdateres</div>
+      </div>
+    </div>
 
     <div class="st">Nødnumre</div>
     <div class="info-card">
@@ -932,11 +1090,11 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
         <span class="poi-tag" style="background:var(--blue);color:white">Rød + Sort</span>
       </div>
     </div>
-    <div class="poi-card" onclick="openMaps('')">
-      <div class="poi-dot-wrap" style="background:#e8eef7">🏨</div>
+    <div class="poi-card" onclick="openMaps('Dueveien 2, 1679 Kråkerøy')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🏫</div>
       <div>
-        <div class="poi-name">Overnattingssted</div>
-        <div class="poi-addr" style="color:var(--mid);font-style:italic">Adresse oppdateres</div>
+        <div class="poi-name">Rød Skole Krakerøy</div>
+        <div class="poi-addr">Dueveien 2, 1679 Kråkerøy – rom 225 og 229</div>
         <span class="poi-tag" style="background:var(--blue-mid);color:white">Bo</span>
       </div>
     </div>
