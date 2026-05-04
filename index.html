@@ -1066,6 +1066,7 @@ initDark();
 onAuthStateChanged(auth, user => {
   currentUser = user;
   updateAuthUI();
+  renderQAInput();
   if (user) {
     subscribePakkliste(user.uid);
   } else {
@@ -1503,6 +1504,7 @@ function renderQA(liste) {
 // ── Init ──────────────────────────────────────────────────────
 oppdaterOversikt();
 lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
+initQA();
 </script>
 </body>
 </html>
