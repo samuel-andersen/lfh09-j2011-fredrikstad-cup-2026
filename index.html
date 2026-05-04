@@ -264,7 +264,48 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 .lag-tab { flex:1; padding:10px 8px; background:white; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--grey); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
 .lag-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
 
-/* TOAST */
+.nav-row3 { display:grid; grid-template-columns:1fr; background:var(--blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
+
+/* Q&A FORUM */
+.qa-input-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:14px 16px; margin-bottom:12px; }
+.qa-textarea { width:100%; padding:10px 13px; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow',sans-serif; font-size:14px; color:var(--text); background:var(--off); resize:none; outline:none; transition:border-color .2s; min-height:70px; }
+.qa-textarea:focus { border-color:var(--blue); }
+.qa-submit-btn { width:100%; margin-top:10px; padding:12px; background:var(--blue); color:white; border:none; border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px; letter-spacing:1px; cursor:pointer; transition:background .15s; }
+.qa-submit-btn:hover { background:var(--blue-mid); }
+.qa-submit-btn:disabled { opacity:.5; cursor:default; }
+.qa-login-hint { text-align:center; padding:12px; font-size:13px; color:var(--grey); }
+.qa-thread { background:white; border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:10px; overflow:hidden; }
+.qa-question { padding:13px 15px; }
+.qa-q-header { display:flex; align-items:center; gap:9px; margin-bottom:8px; }
+.qa-avatar { width:30px; height:30px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:12px; color:white; flex-shrink:0; overflow:hidden; }
+.qa-avatar img { width:100%; height:100%; object-fit:cover; }
+.qa-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--text); }
+.qa-time { font-size:11px; color:var(--grey); margin-left:auto; }
+.qa-delete { background:none; border:none; color:var(--mid); font-size:13px; cursor:pointer; padding:2px 5px; border-radius:4px; transition:color .15s; margin-left:4px; }
+.qa-delete:hover { color:var(--red); }
+.qa-body { font-size:13px; color:var(--text); line-height:1.55; margin-bottom:10px; }
+.qa-reactions { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+.qa-react-btn { background:var(--light); border:1.5px solid var(--mid); border-radius:20px; padding:4px 10px; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--grey); transition:all .15s; }
+.qa-react-btn.reacted { background:var(--blue); border-color:var(--blue); color:white; }
+.qa-react-btn:hover { border-color:var(--blue); }
+.qa-reply-toggle { background:none; border:none; color:var(--blue-mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; cursor:pointer; padding:0; }
+.qa-replies { background:var(--light); border-top:1px solid var(--mid); padding:10px 15px; display:flex; flex-direction:column; gap:8px; }
+.qa-reply { display:flex; gap:9px; }
+.qa-reply-bubble { flex:1; background:white; border-radius:9px; padding:9px 12px; box-shadow:0 1px 4px rgba(0,48,135,0.07); }
+.qa-reply-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; color:var(--blue); margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; }
+.qa-reply-text { font-size:12px; color:var(--text); line-height:1.5; }
+.qa-reply-reactions { display:flex; gap:4px; margin-top:6px; flex-wrap:wrap; }
+.qa-reply-reactions .qa-react-btn { font-size:11px; padding:3px 8px; }
+.qa-reply-form { display:flex; gap:8px; margin-top:6px; align-items:flex-end; }
+.qa-reply-input { flex:1; padding:9px 12px; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text); background:white; outline:none; transition:border-color .2s; }
+.qa-reply-input:focus { border-color:var(--blue); }
+.qa-reply-send { background:var(--blue); color:white; border:none; border-radius:9px; padding:9px 14px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; cursor:pointer; white-space:nowrap; }
+.qa-empty { text-align:center; padding:40px 20px; color:var(--grey); }
+body.dark .qa-input-card, body.dark .qa-thread, body.dark .qa-reply-bubble { background:#111827 !important; }
+body.dark .qa-textarea, body.dark .qa-reply-input { background:#0a0c14; border-color:#3a4a6b; color:#e8edf5; }
+body.dark .qa-replies { background:#0d1929; border-color:#3a4a6b; }
+body.dark .qa-react-btn { background:#1a2235; border-color:#3a4a6b; color:#6b7a96; }
+body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
 .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
@@ -319,6 +360,9 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
   <button class="nav-btn"        onclick="showView('kontakt')"     id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
   <button class="nav-btn"        onclick="showView('regler')"      id="nav-regler"><span class="ni">📋</span>Regler</button>
   <button class="nav-btn"        onclick="showView('kart')"        id="nav-kart"><span class="ni">📍</span>Kart</button>
+</nav>
+<nav class="nav-row3">
+  <button class="nav-btn"        onclick="showView('sporsmal')"    id="nav-sporsmal"><span class="ni">💬</span>Spør laget</button>
 </nav>
 
 <div class="main">
@@ -932,6 +976,22 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
     <button class="map-btn" onclick="openMaps('Fredrikstad sentrum')">🗺 Åpne Fredrikstad i Google Maps</button>
   </div>
 
+  <!-- SPØRSMÅL & SVAR -->
+  <div class="view" id="view-sporsmal">
+    <div class="st" style="margin-top:0">Spør laget 💬</div>
+
+    <div id="qa-input-wrap">
+      <div class="qa-login-hint">🔒 Logg inn med Google for å stille spørsmål og svare</div>
+    </div>
+
+    <div id="qa-list">
+      <div class="qa-empty">
+        <div style="font-size:40px;margin-bottom:8px">💬</div>
+        <div style="font-size:14px">Ingen spørsmål ennå.<br>Vær den første!</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -940,7 +1000,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, onSnapshot }
+import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, deleteDoc, updateDoc, query, orderBy, serverTimestamp }
                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ── Firebase config ─────────────────────────────────────────
@@ -1177,6 +1237,267 @@ function showToast(msg, color) {
   t.textContent = msg; t.style.background = color || '#22c55e';
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── Q&A Forum ─────────────────────────────────────────────────
+const ADMINS = ['samuel.andersen@gmail.com']; // trenere som kan slette alt
+const REACTIONS = ['👍','❤️','😂'];
+
+function isAdmin() {
+  return currentUser && ADMINS.includes(currentUser.email);
+}
+
+function initQA() {
+  // Alltid les spørsmål (alle kan lese)
+  const q = query(collection(db, 'qa'), orderBy('ts', 'desc'));
+  onSnapshot(q, snap => {
+    const sporsmal = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderQA(sporsmal);
+  });
+  // Oppdater input-felt basert på innlogging
+  renderQAInput();
+}
+
+function renderQAInput() {
+  const wrap = document.getElementById('qa-input-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!currentUser) {
+    wrap.innerHTML = '<div class="qa-login-hint">🔒 Logg inn med Google for å stille spørsmål og svare</div>';
+    return;
+  }
+  const card = document.createElement('div');
+  card.className = 'qa-input-card';
+  card.innerHTML = '<div class="form-label" style="margin-bottom:6px">Still et spørsmål til laget</div>';
+  const ta = document.createElement('textarea');
+  ta.className = 'qa-textarea';
+  ta.placeholder = 'Hva lurer du på? F.eks. «Hva tar vi med til konserten?»';
+  ta.id = 'qa-new-text';
+  const btn = document.createElement('button');
+  btn.className = 'qa-submit-btn';
+  btn.textContent = '💬 Send spørsmål';
+  btn.onclick = async () => {
+    const tekst = ta.value.trim();
+    if (!tekst || !currentUser) return;
+    btn.disabled = true;
+    await addDoc(collection(db, 'qa'), {
+      tekst,
+      uid:    currentUser.uid,
+      navn:   currentUser.displayName || currentUser.email.split('@')[0],
+      foto:   currentUser.photoURL || '',
+      ts:     serverTimestamp(),
+      svar:   {},
+      reaks:  {}
+    });
+    ta.value = '';
+    btn.disabled = false;
+  };
+  card.appendChild(ta);
+  card.appendChild(btn);
+  wrap.appendChild(card);
+}
+
+function tidSiden(ts) {
+  if (!ts) return '';
+  const sek = Math.floor((Date.now() - ts.toMillis()) / 1000);
+  if (sek < 60)  return 'nå nettopp';
+  if (sek < 3600) return Math.floor(sek/60) + ' min siden';
+  if (sek < 86400) return Math.floor(sek/3600) + 't siden';
+  return Math.floor(sek/86400) + 'd siden';
+}
+
+function initials(navn) {
+  return navn ? navn.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase() : '?';
+}
+
+function renderQA(liste) {
+  const el = document.getElementById('qa-list');
+  if (!el) return;
+  if (!liste.length) {
+    el.innerHTML = '<div class="qa-empty"><div style="font-size:40px;margin-bottom:8px">💬</div><div style="font-size:14px">Ingen spørsmål ennå.<br>Vær den første!</div></div>';
+    return;
+  }
+  el.innerHTML = '';
+  liste.forEach(q => {
+    const thread = document.createElement('div');
+    thread.className = 'qa-thread';
+
+    // --- Spørsmål ---
+    const qDiv = document.createElement('div');
+    qDiv.className = 'qa-question';
+
+    // Header
+    const hdr = document.createElement('div');
+    hdr.className = 'qa-q-header';
+    const av = document.createElement('div');
+    av.className = 'qa-avatar';
+    if (q.foto) { const img = document.createElement('img'); img.src = q.foto; av.appendChild(img); }
+    else av.textContent = initials(q.navn);
+    const nm = document.createElement('span');
+    nm.className = 'qa-name';
+    nm.textContent = q.navn;
+    const tid = document.createElement('span');
+    tid.className = 'qa-time';
+    tid.textContent = tidSiden(q.ts);
+    hdr.appendChild(av); hdr.appendChild(nm); hdr.appendChild(tid);
+
+    // Slett-knapp
+    if (currentUser && (currentUser.uid === q.uid || isAdmin())) {
+      const del = document.createElement('button');
+      del.className = 'qa-delete'; del.textContent = '✕'; del.title = 'Slett';
+      del.onclick = async () => { if (confirm('Slette spørsmålet?')) await deleteDoc(doc(db,'qa',q.id)); };
+      hdr.appendChild(del);
+    }
+
+    // Tekst
+    const body = document.createElement('div');
+    body.className = 'qa-body';
+    body.textContent = q.tekst;
+
+    // Reaksjoner på spørsmål
+    const reakDiv = document.createElement('div');
+    reakDiv.className = 'qa-reactions';
+    REACTIONS.forEach(emoji => {
+      const rBtn = document.createElement('button');
+      rBtn.className = 'qa-react-btn';
+      const reaks = q.reaks || {};
+      const uids = reaks[emoji] || [];
+      const harReagert = currentUser && uids.includes(currentUser.uid);
+      if (harReagert) rBtn.classList.add('reacted');
+      rBtn.innerHTML = emoji + ' <span>' + (uids.length || '') + '</span>';
+      rBtn.onclick = async () => {
+        if (!currentUser) { showToast('Logg inn for å reagere', '#f59e0b'); return; }
+        const nyReaks = JSON.parse(JSON.stringify(reaks));
+        if (!nyReaks[emoji]) nyReaks[emoji] = [];
+        const idx = nyReaks[emoji].indexOf(currentUser.uid);
+        if (idx > -1) nyReaks[emoji].splice(idx, 1);
+        else nyReaks[emoji].push(currentUser.uid);
+        await updateDoc(doc(db,'qa',q.id), { reaks: nyReaks });
+      };
+      reakDiv.appendChild(rBtn);
+    });
+
+    // Svar-toggle
+    const svarArr = Object.values(q.svar || {});
+    const toggle = document.createElement('button');
+    toggle.className = 'qa-reply-toggle';
+    toggle.textContent = svarArr.length ? svarArr.length + ' svar – vis/svar' : '+ Svar';
+
+    qDiv.appendChild(hdr); qDiv.appendChild(body); qDiv.appendChild(reakDiv); qDiv.appendChild(toggle);
+
+    // --- Svar-seksjon ---
+    const svarSek = document.createElement('div');
+    svarSek.className = 'qa-replies';
+    svarSek.style.display = 'none';
+
+    // Eksisterende svar
+    svarArr.sort((a,b) => (a.ts?.toMillis?.() || 0) - (b.ts?.toMillis?.() || 0)).forEach(s => {
+      const row = document.createElement('div');
+      row.className = 'qa-reply';
+      const sAv = document.createElement('div');
+      sAv.className = 'qa-avatar';
+      sAv.style.width = '24px'; sAv.style.height = '24px'; sAv.style.fontSize = '10px';
+      if (s.foto) { const img = document.createElement('img'); img.src = s.foto; sAv.appendChild(img); }
+      else sAv.textContent = initials(s.navn);
+      const bbl = document.createElement('div');
+      bbl.className = 'qa-reply-bubble';
+      const rnm = document.createElement('div');
+      rnm.className = 'qa-reply-name';
+      const navnSpan = document.createElement('span');
+      navnSpan.textContent = s.navn;
+      const metaSpan = document.createElement('span');
+      metaSpan.style.cssText = 'font-size:10px;color:var(--grey);font-weight:400';
+      metaSpan.textContent = tidSiden(s.ts);
+      rnm.appendChild(navnSpan); rnm.appendChild(metaSpan);
+      if (currentUser && (currentUser.uid === s.uid || isAdmin())) {
+        const sdel = document.createElement('button');
+        sdel.className = 'qa-delete'; sdel.textContent = '✕';
+        sdel.onclick = async () => {
+          const nyttSvar = JSON.parse(JSON.stringify(q.svar||{}));
+          delete nyttSvar[s.svarId];
+          await updateDoc(doc(db,'qa',q.id), { svar: nyttSvar });
+        };
+        rnm.appendChild(sdel);
+      }
+      const rtxt = document.createElement('div');
+      rtxt.className = 'qa-reply-text';
+      rtxt.textContent = s.tekst;
+
+      // Reaksjoner på svar
+      const srDiv = document.createElement('div');
+      srDiv.className = 'qa-reply-reactions';
+      REACTIONS.forEach(emoji => {
+        const rBtn = document.createElement('button');
+        rBtn.className = 'qa-react-btn';
+        const reaks = s.reaks || {};
+        const uids = reaks[emoji] || [];
+        const harReagert = currentUser && uids.includes(currentUser.uid);
+        if (harReagert) rBtn.classList.add('reacted');
+        rBtn.innerHTML = emoji + ' <span>' + (uids.length || '') + '</span>';
+        rBtn.onclick = async () => {
+          if (!currentUser) { showToast('Logg inn for å reagere', '#f59e0b'); return; }
+          const nyttSvar = JSON.parse(JSON.stringify(q.svar||{}));
+          if (!nyttSvar[s.svarId].reaks) nyttSvar[s.svarId].reaks = {};
+          if (!nyttSvar[s.svarId].reaks[emoji]) nyttSvar[s.svarId].reaks[emoji] = [];
+          const idx = nyttSvar[s.svarId].reaks[emoji].indexOf(currentUser.uid);
+          if (idx > -1) nyttSvar[s.svarId].reaks[emoji].splice(idx,1);
+          else nyttSvar[s.svarId].reaks[emoji].push(currentUser.uid);
+          await updateDoc(doc(db,'qa',q.id), { svar: nyttSvar });
+        };
+        srDiv.appendChild(rBtn);
+      });
+
+      bbl.appendChild(rnm); bbl.appendChild(rtxt); bbl.appendChild(srDiv);
+      row.appendChild(sAv); row.appendChild(bbl);
+      svarSek.appendChild(row);
+    });
+
+    // Skriv svar
+    if (currentUser) {
+      const form = document.createElement('div');
+      form.className = 'qa-reply-form';
+      const inp = document.createElement('input');
+      inp.className = 'qa-reply-input';
+      inp.placeholder = 'Skriv et svar…';
+      const send = document.createElement('button');
+      send.className = 'qa-reply-send';
+      send.textContent = 'Send';
+      send.onclick = async () => {
+        const tekst = inp.value.trim();
+        if (!tekst || !currentUser) return;
+        const svarId = Date.now().toString();
+        const nyttSvar = JSON.parse(JSON.stringify(q.svar||{}));
+        nyttSvar[svarId] = {
+          svarId,
+          tekst,
+          uid:  currentUser.uid,
+          navn: currentUser.displayName || currentUser.email.split('@')[0],
+          foto: currentUser.photoURL || '',
+          ts:   { toMillis: () => Date.now() },
+          reaks: {}
+        };
+        await updateDoc(doc(db,'qa',q.id), { svar: nyttSvar });
+        inp.value = '';
+      };
+      form.appendChild(inp); form.appendChild(send);
+      svarSek.appendChild(form);
+    } else {
+      const hint = document.createElement('div');
+      hint.style.cssText = 'font-size:12px;color:var(--grey);text-align:center;padding:6px 0';
+      hint.textContent = 'Logg inn for å svare';
+      svarSek.appendChild(hint);
+    }
+
+    toggle.onclick = () => {
+      const vis = svarSek.style.display === 'none';
+      svarSek.style.display = vis ? 'flex' : 'none';
+      svarSek.style.flexDirection = 'column';
+    };
+
+    thread.appendChild(qDiv);
+    thread.appendChild(svarSek);
+    el.appendChild(thread);
+  });
 }
 
 // ── Init ──────────────────────────────────────────────────────
