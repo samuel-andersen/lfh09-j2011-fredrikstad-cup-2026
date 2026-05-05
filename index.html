@@ -306,6 +306,38 @@ body.dark .qa-textarea, body.dark .qa-reply-input { background:#0a0c14; border-c
 body.dark .qa-replies { background:#0d1929; border-color:#3a4a6b; }
 body.dark .qa-react-btn { background:#1a2235; border-color:#3a4a6b; color:#6b7a96; }
 body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
+/* ADMIN PANEL */
+.admin-panel { position:fixed; inset:0; z-index:800; background:var(--off); overflow-y:auto; display:none; flex-direction:column; }
+.admin-panel.show { display:flex; }
+.admin-header { background:var(--blue-dark); padding:14px 18px; padding-top:max(env(safe-area-inset-top),14px); display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:10; border-bottom:3px solid var(--red); }
+.admin-back { background:rgba(255,255,255,0.15); border:none; color:white; border-radius:8px; padding:7px 12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; }
+.admin-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:18px; color:white; flex:1; }
+.admin-body { padding:16px 15px 40px; max-width:480px; margin:0 auto; width:100%; }
+.admin-kamp { background:white; border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:10px; overflow:hidden; }
+.admin-kamp-header { background:var(--light); padding:10px 14px; display:flex; align-items:center; gap:8px; justify-content:space-between; border-bottom:1px solid var(--mid); }
+.admin-kamp-id { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; color:var(--grey); letter-spacing:1px; }
+.admin-kamp-status { font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; padding:2px 8px; border-radius:10px; }
+.admin-kamp-status.snart  { background:#fef3c7; color:#92400e; }
+.admin-kamp-status.klar   { background:#dcfce7; color:#15803d; animation:admpuls 1.5s ease-in-out infinite; }
+.admin-kamp-status.ferdig { background:var(--light); color:var(--grey); }
+@keyframes admpuls { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.admin-kamp-body { padding:12px 14px; }
+.admin-teams { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; color:var(--text); margin-bottom:10px; }
+.admin-score-wrap { display:flex; align-items:center; gap:10px; }
+.admin-score-inp { width:58px; padding:8px; border:2px solid var(--mid); border-radius:8px; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; text-align:center; color:var(--text); background:var(--off); outline:none; transition:border-color .2s; }
+.admin-score-inp:focus { border-color:var(--blue); }
+.admin-score-dash { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; color:var(--grey); }
+.admin-save-btn { margin-left:auto; background:var(--blue); color:white; border:none; border-radius:8px; padding:9px 16px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; cursor:pointer; transition:all .2s; }
+.admin-save-btn.saved { background:var(--green); }
+.admin-lag-tag { display:inline-block; font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; padding:2px 7px; border-radius:4px; margin-bottom:6px; }
+body.dark .admin-kamp { background:#111827; }
+body.dark .admin-kamp-header { background:#0d1929; border-color:#3a4a6b; }
+body.dark .admin-score-inp { background:#0a0c14; border-color:#3a4a6b; color:#e8edf5; }
+body.dark .admin-teams { color:#e8edf5; }
+.score-badge { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:17px; color:white; background:var(--blue); padding:3px 10px; border-radius:8px; letter-spacing:1px; }
+.score-badge.win  { background:#15803d; }
+.score-badge.loss { background:var(--red); }
+.score-badge.draw { background:#d97706; }
 .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
@@ -748,20 +780,20 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
       <div class="st" style="margin-top:0">Lørdag 23. mai</div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #0214 · 11:18</div><div class="match-badge">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">LFH09 Rød vs. Lervik</div><div class="match-meta"><span>🕐 11:18</span><span>📍 Kongsten · Bane 02</span></div></div>
+        <div class="match-body" data-kamp-id="0214"><div class="match-teams">LFH09 Rød vs. Lervik</div><div class="match-meta"><span>🕐 11:18</span><span>📍 Kongsten · Bane 02</span></div></div>
       </div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #1114 · 13:59</div><div class="match-badge">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">LFH09 Rød vs. Skedsmo 1</div><div class="match-meta"><span>🕐 13:59</span><span>📍 Lisleby · Bane 11</span></div></div>
+        <div class="match-body" data-kamp-id="1114"><div class="match-teams">LFH09 Rød vs. Skedsmo 1</div><div class="match-meta"><span>🕐 13:59</span><span>📍 Lisleby · Bane 11</span></div></div>
       </div>
       <div class="st">Søndag 24. mai</div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #3132 · 12:27</div><div class="match-badge">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Tindlund 2 vs. LFH09 Rød</div><div class="match-meta"><span>🕐 12:27</span><span>📍 Merkur · Bane 31</span></div></div>
+        <div class="match-body" data-kamp-id="3132"><div class="match-teams">Tindlund 2 vs. LFH09 Rød</div><div class="match-meta"><span>🕐 12:27</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #2342 · 14:45</div><div class="match-badge">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Hødd vs. LFH09 Rød</div><div class="match-meta"><span>🕐 14:45</span><span>📍 Merkur · Bane 23</span></div></div>
+        <div class="match-body" data-kamp-id="2342"><div class="match-teams">Hødd vs. LFH09 Rød</div><div class="match-meta"><span>🕐 14:45</span><span>📍 Merkur · Bane 23</span></div></div>
       </div>
     </div>
 
@@ -771,20 +803,20 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
       <div class="st" style="margin-top:0">Lørdag 23. mai</div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #1116 · 14:45</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Steinkjer vs. LFH09 Sort</div><div class="match-meta"><span>🕐 14:45</span><span>📍 Lisleby · Bane 11</span></div></div>
+        <div class="match-body" data-kamp-id="1116"><div class="match-teams">Steinkjer vs. LFH09 Sort</div><div class="match-meta"><span>🕐 14:45</span><span>📍 Lisleby · Bane 11</span></div></div>
       </div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #1121 · 16:40</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">LFH09 Sort vs. Gimletroll 1</div><div class="match-meta"><span>🕐 16:40</span><span>📍 Lisleby · Bane 11</span></div></div>
+        <div class="match-body" data-kamp-id="1121"><div class="match-teams">LFH09 Sort vs. Gimletroll 1</div><div class="match-meta"><span>🕐 16:40</span><span>📍 Lisleby · Bane 11</span></div></div>
       </div>
       <div class="st">Søndag 24. mai</div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #3125 · 09:46</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">LFH09 Sort vs. Ull/Kisa</div><div class="match-meta"><span>🕐 09:46</span><span>📍 Merkur · Bane 31</span></div></div>
+        <div class="match-body" data-kamp-id="3125"><div class="match-teams">LFH09 Sort vs. Ull/Kisa</div><div class="match-meta"><span>🕐 09:46</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #3130 · 11:41</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Rygge vs. LFH09 Sort</div><div class="match-meta"><span>🕐 11:41</span><span>📍 Merkur · Bane 31</span></div></div>
+        <div class="match-body" data-kamp-id="3130"><div class="match-teams">Rygge vs. LFH09 Sort</div><div class="match-meta"><span>🕐 11:41</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
     </div>
 
@@ -794,20 +826,20 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
       <div class="st" style="margin-top:0">Lørdag 23. mai</div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #0913 · 13:36</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Oppsal 2 vs. Biri/LFH</div><div class="match-meta"><span>🕐 13:36</span><span>📍 Kvernhuset · Bane 09</span></div></div>
+        <div class="match-body" data-kamp-id="0913"><div class="match-teams">Oppsal 2 vs. Biri/LFH</div><div class="match-meta"><span>🕐 13:36</span><span>📍 Kvernhuset · Bane 09</span></div></div>
       </div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #0919 · 15:54</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Biri/LFH vs. Linje 5</div><div class="match-meta"><span>🕐 15:54</span><span>📍 Kvernhuset · Bane 09</span></div></div>
+        <div class="match-body" data-kamp-id="0919"><div class="match-teams">Biri/LFH vs. Linje 5</div><div class="match-meta"><span>🕐 15:54</span><span>📍 Kvernhuset · Bane 09</span></div></div>
       </div>
       <div class="st">Søndag 24. mai</div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #3540 · 15:31</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Biri/LFH vs. Vålerenga 1</div><div class="match-meta"><span>🕐 15:31</span><span>📍 Merkur · Bane 35</span></div></div>
+        <div class="match-body" data-kamp-id="3540"><div class="match-teams">Biri/LFH vs. Vålerenga 1</div><div class="match-meta"><span>🕐 15:31</span><span>📍 Merkur · Bane 35</span></div></div>
       </div>
       <div class="match-card">
         <div class="match-header"><div class="match-day">Kamp #3146 · 17:49</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
-        <div class="match-body"><div class="match-teams">Reistad vs. Biri/LFH</div><div class="match-meta"><span>🕐 17:49</span><span>📍 Merkur · Bane 31</span></div></div>
+        <div class="match-body" data-kamp-id="3146"><div class="match-teams">Reistad vs. Biri/LFH</div><div class="match-meta"><span>🕐 17:49</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
     </div>
 
@@ -999,6 +1031,17 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
 
 <div class="toast" id="toast"></div>
 
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="admin-panel">
+  <div class="admin-header">
+    <button class="admin-back" onclick="lukkAdmin()">← Tilbake</button>
+    <div class="admin-title">⚙️ Admin – Resultater</div>
+  </div>
+  <div class="admin-body" id="admin-body">
+    <div class="tip-box" style="margin-bottom:14px">Fyll inn resultater etter kampene. Oppdateres live for alle brukere.</div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
@@ -1105,6 +1148,15 @@ function updateAuthUI() {
     btn.textContent = 'Logg ut';
     btn.onclick = () => signOut(auth);
     bar.appendChild(info);
+    // Admin-knapp for Samuel
+    if (currentUser && currentUser.email === ADMIN_EMAIL) {
+      const adminBtn = document.createElement('button');
+      adminBtn.className = 'auth-btn';
+      adminBtn.style.cssText = 'background:var(--red);color:white;margin-right:4px';
+      adminBtn.textContent = '⚙️ Admin';
+      adminBtn.onclick = () => globalThis.apneAdmin();
+      bar.appendChild(adminBtn);
+    }
     bar.appendChild(btn);
   } else {
     const info = document.createElement('div');
@@ -1506,10 +1558,192 @@ function renderQA(liste) {
   });
 }
 
+// ── Admin panel ───────────────────────────────────────────────
+const ADMIN_EMAIL = 'samuel.andersen@gmail.com';
+
+const ALLE_KAMPER = [
+  // J14 Rød
+  { id:'0214', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'LFH09 Rød',   borte:'Lervik',     dato:'2026-05-23', tid:'11:18', bane:'Kongsten · Bane 02' },
+  { id:'1114', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'LFH09 Rød',   borte:'Skedsmo 1',  dato:'2026-05-23', tid:'13:59', bane:'Lisleby · Bane 11' },
+  { id:'3132', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'Tindlund 2',  borte:'LFH09 Rød',  dato:'2026-05-24', tid:'12:27', bane:'Merkur · Bane 31' },
+  { id:'2342', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'Hødd',        borte:'LFH09 Rød',  dato:'2026-05-24', tid:'14:45', bane:'Merkur · Bane 23' },
+  // J14 Sort
+  { id:'1116', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'Steinkjer',   borte:'LFH09 Sort', dato:'2026-05-23', tid:'14:45', bane:'Lisleby · Bane 11' },
+  { id:'1121', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'LFH09 Sort',  borte:'Gimletroll 1', dato:'2026-05-23', tid:'16:40', bane:'Lisleby · Bane 11' },
+  { id:'3125', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'LFH09 Sort',  borte:'Ull/Kisa',   dato:'2026-05-24', tid:'09:46', bane:'Merkur · Bane 31' },
+  { id:'3130', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'Rygge',       borte:'LFH09 Sort', dato:'2026-05-24', tid:'11:41', bane:'Merkur · Bane 31' },
+  // G14 Biri/LFH
+  { id:'0913', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Oppsal 2',    borte:'Biri/LFH',   dato:'2026-05-23', tid:'13:36', bane:'Kvernhuset · Bane 09' },
+  { id:'0919', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Biri/LFH',    borte:'Linje 5',    dato:'2026-05-23', tid:'15:54', bane:'Kvernhuset · Bane 09' },
+  { id:'3540', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Biri/LFH',    borte:'Vålerenga 1',dato:'2026-05-24', tid:'15:31', bane:'Merkur · Bane 35' },
+  { id:'3146', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Reistad',     borte:'Biri/LFH',   dato:'2026-05-24', tid:'17:49', bane:'Merkur · Bane 31' },
+];
+
+let resultater = {};
+let unsubResultater = null;
+
+function kampTidstempel(dato, tid) {
+  return new Date(dato + 'T' + tid + ':00+02:00');
+}
+
+function kampStatus(dato, tid) {
+  const start = kampTidstempel(dato, tid);
+  const slutt = new Date(start.getTime() + 50 * 60000); // 50 min kamp
+  const klar  = new Date(slutt.getTime() + 10 * 60000); // 10 min etter
+  const now   = new Date();
+  if (now < start) return 'snart';
+  if (now >= start && now < klar) return 'klar';
+  return 'ferdig';
+}
+
+function kampStatusTekst(status) {
+  if (status === 'snart')  return '⏰ Ikke spilt';
+  if (status === 'klar')   return '✅ Klar for resultat!';
+  return '📋 Spilt';
+}
+
+function initResultater() {
+  unsubResultater = onSnapshot(doc(db, 'resultater', 'kamper'), snap => {
+    resultater = snap.exists() ? (snap.data() || {}) : {};
+    oppdaterKampkort();
+    if (document.getElementById('admin-panel').classList.contains('show')) {
+      byggAdminPanel();
+    }
+  });
+}
+
+function oppdaterKampkort() {
+  ALLE_KAMPER.forEach(k => {
+    const res = resultater[k.id];
+    if (!res) return;
+    // Oppdater alle match-body elementer med denne kampens ID
+    document.querySelectorAll('[data-kamp-id="' + k.id + '"]').forEach(el => {
+      let badge = el.querySelector('.score-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'score-badge';
+        el.querySelector('.match-meta').after(badge);
+      }
+      const score = res.hjemme + ' – ' + res.borte;
+      badge.textContent = score;
+      // Finn om LFH09-laget vant
+      const lfhHjemme = k.hjemme.includes('LFH09') || k.hjemme.includes('Biri');
+      const lfhBorte  = k.borte.includes('LFH09')  || k.borte.includes('Biri');
+      const h = parseInt(res.hjemme), b = parseInt(res.borte);
+      if (lfhHjemme) badge.className = 'score-badge ' + (h > b ? 'win' : h < b ? 'loss' : 'draw');
+      else if (lfhBorte) badge.className = 'score-badge ' + (b > h ? 'win' : b < h ? 'loss' : 'draw');
+      else badge.className = 'score-badge';
+    });
+  });
+}
+
+function byggAdminPanel() {
+  const body = document.getElementById('admin-body');
+  body.innerHTML = '<div class="tip-box" style="margin-bottom:14px">Fyll inn resultater etter kampene. ✅ = klar for resultat.</div>';
+
+  ['2026-05-23', '2026-05-24'].forEach(dato => {
+    const dagNavn = dato === '2026-05-23' ? 'Lørdag 23. mai' : 'Søndag 24. mai';
+    const dagSt = document.createElement('div');
+    dagSt.className = 'st';
+    dagSt.style.marginTop = '8px';
+    dagSt.textContent = dagNavn;
+    body.appendChild(dagSt);
+
+    ALLE_KAMPER.filter(k => k.dato === dato).forEach(k => {
+      const res    = resultater[k.id] || {};
+      const status = kampStatus(k.dato, k.tid);
+
+      const card = document.createElement('div');
+      card.className = 'admin-kamp';
+
+      // Header
+      const hdr = document.createElement('div');
+      hdr.className = 'admin-kamp-header';
+      hdr.innerHTML = '<span class="admin-kamp-id">#' + k.id + ' · ' + k.tid + ' · ' + k.bane + '</span>';
+      const st = document.createElement('span');
+      st.className = 'admin-kamp-status ' + status;
+      st.textContent = kampStatusTekst(status);
+      hdr.appendChild(st);
+
+      // Body
+      const bd = document.createElement('div');
+      bd.className = 'admin-kamp-body';
+
+      const tag = document.createElement('div');
+      tag.className = 'admin-lag-tag';
+      tag.style.cssText = 'background:' + k.lagFarge + '22;color:' + k.lagFarge + ';border:1px solid ' + k.lagFarge + '44';
+      tag.textContent = k.lag;
+
+      const teams = document.createElement('div');
+      teams.className = 'admin-teams';
+      teams.textContent = k.hjemme + ' vs. ' + k.borte;
+
+      const scoreWrap = document.createElement('div');
+      scoreWrap.className = 'admin-score-wrap';
+
+      const inp1 = document.createElement('input');
+      inp1.type = 'number'; inp1.min = '0'; inp1.max = '99';
+      inp1.className = 'admin-score-inp';
+      inp1.placeholder = '–';
+      inp1.value = res.hjemme !== undefined ? res.hjemme : '';
+
+      const dash = document.createElement('span');
+      dash.className = 'admin-score-dash';
+      dash.textContent = '–';
+
+      const inp2 = document.createElement('input');
+      inp2.type = 'number'; inp2.min = '0'; inp2.max = '99';
+      inp2.className = 'admin-score-inp';
+      inp2.placeholder = '–';
+      inp2.value = res.borte !== undefined ? res.borte : '';
+
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'admin-save-btn';
+      saveBtn.textContent = res.hjemme !== undefined ? '✓ Lagret' : 'Lagre';
+      if (res.hjemme !== undefined) saveBtn.classList.add('saved');
+
+      saveBtn.onclick = async () => {
+        const h = inp1.value.trim();
+        const b = inp2.value.trim();
+        if (h === '' || b === '') { showToast('Fyll inn begge scorene!', '#f59e0b'); return; }
+        saveBtn.textContent = 'Lagrer…';
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        nyeRes[k.id] = { hjemme: h, borte: b, oppdatert: new Date().toISOString() };
+        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        saveBtn.textContent = '✓ Lagret';
+        saveBtn.classList.add('saved');
+        showToast('Resultat lagret! 🎉');
+      };
+
+      scoreWrap.appendChild(inp1);
+      scoreWrap.appendChild(dash);
+      scoreWrap.appendChild(inp2);
+      scoreWrap.appendChild(saveBtn);
+
+      bd.appendChild(tag);
+      bd.appendChild(teams);
+      bd.appendChild(scoreWrap);
+      card.appendChild(hdr);
+      card.appendChild(bd);
+      body.appendChild(card);
+    });
+  });
+}
+
+globalThis.apneAdmin = () => {
+  document.getElementById('admin-panel').classList.add('show');
+  byggAdminPanel();
+};
+
+globalThis.lukkAdmin = () => {
+  document.getElementById('admin-panel').classList.remove('show');
+};
+
 // ── Init ──────────────────────────────────────────────────────
 oppdaterOversikt();
 lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
 initQA();
+initResultater();
 </script>
 </body>
 </html>
