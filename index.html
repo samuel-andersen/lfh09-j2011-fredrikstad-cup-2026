@@ -977,6 +977,25 @@ body.dark .admin-teams { color:#e8edf5; }
   </div>
 </div>
 
+<script>
+// Safari-bro: eksponerer modul-funksjoner til globalt scope
+// Disse settes av modulen når den er lastet
+window._moduleKlar = false;
+window._ventFunksjoner = [];
+window._kjørNårKlar = function(fn) {
+  if (window._moduleKlar) fn();
+  else window._ventFunksjoner.push(fn);
+};
+// Proxy-funksjoner som venter til modulen er lastet
+['sjekkKode','showView','toggleCheck','nullstillPakkliste','visLag','openMaps','toggleDark','apneAdmin','lukkAdmin'].forEach(function(navn) {
+  window[navn] = function() {
+    var args = arguments;
+    window._kjørNårKlar(function() {
+      if (window['_fn_' + navn]) window['_fn_' + navn].apply(null, args);
+    });
+  };
+});
+</script>
 <script type="module">
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
@@ -2025,16 +2044,29 @@ lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
 initQA();
 initResultater();
 
-// Safari-kompatibilitet: eksponér globalThis-funksjoner til window
-window.sjekkKode        = globalThis.sjekkKode;
-window.showView         = globalThis.showView;
-window.toggleCheck      = globalThis.toggleCheck;
+// Safari-bro: registrer funksjoner
+window._fn_sjekkKode          = globalThis.sjekkKode;
+window._fn_showView           = globalThis.showView;
+window._fn_toggleCheck        = globalThis.toggleCheck;
+window._fn_nullstillPakkliste = globalThis.nullstillPakkliste;
+window._fn_visLag             = globalThis.visLag;
+window._fn_openMaps           = globalThis.openMaps;
+window._fn_toggleDark         = globalThis.toggleDark;
+window._fn_apneAdmin          = globalThis.apneAdmin;
+window._fn_lukkAdmin          = globalThis.lukkAdmin;
+// Sett direkte også for sikkerhet
+window.sjekkKode          = globalThis.sjekkKode;
+window.showView           = globalThis.showView;
+window.toggleCheck        = globalThis.toggleCheck;
 window.nullstillPakkliste = globalThis.nullstillPakkliste;
-window.visLag           = globalThis.visLag;
-window.openMaps         = globalThis.openMaps;
-window.toggleDark       = globalThis.toggleDark;
-window.apneAdmin        = globalThis.apneAdmin;
-window.lukkAdmin        = globalThis.lukkAdmin;
+window.visLag             = globalThis.visLag;
+window.openMaps           = globalThis.openMaps;
+window.toggleDark         = globalThis.toggleDark;
+window.apneAdmin          = globalThis.apneAdmin;
+window.lukkAdmin          = globalThis.lukkAdmin;
+window._moduleKlar = true;
+window._ventFunksjoner.forEach(function(fn) { fn(); });
+window._ventFunksjoner = [];
 </script>
 </body>
 </html>
