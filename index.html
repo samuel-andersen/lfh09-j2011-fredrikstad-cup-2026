@@ -996,8 +996,8 @@ const firebaseConfig = {
 };
 
 const fbApp    = firebase.initializeApp(firebaseConfig);
-const auth     = firebase.auth();
-const db       = firebase.firestore();
+const auth     = firebase.auth(fbApp);
+const db       = firebase.firestore(fbApp);
 const provider = new firebase.auth.GoogleAuthProvider();
 
 let currentUser = null;
