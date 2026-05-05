@@ -1000,11 +1000,11 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
-                              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+                              from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, deleteDoc, updateDoc, query, orderBy, serverTimestamp, initializeFirestore, persistentLocalCache }
-                              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+                              from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 // ── Firebase config ─────────────────────────────────────────
 const firebaseConfig = {
@@ -1018,7 +1018,7 @@ const firebaseConfig = {
 
 const fbApp    = initializeApp(firebaseConfig);
 const auth     = getAuth(fbApp);
-const db       = initializeFirestore(fbApp, { experimentalForceLongPolling: true });
+const db       = initializeFirestore(fbApp, { experimentalAutoDetectLongPolling: true, useFetchStreams: false });
 const provider = new GoogleAuthProvider();
 
 let currentUser = null;
