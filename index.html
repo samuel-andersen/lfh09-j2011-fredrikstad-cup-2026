@@ -977,31 +977,13 @@ body.dark .admin-teams { color:#e8edf5; }
   </div>
 </div>
 
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
-// Safari-bro: eksponerer modul-funksjoner til globalt scope
-// Disse settes av modulen når den er lastet
-window._moduleKlar = false;
-window._ventFunksjoner = [];
-window._kjørNårKlar = function(fn) {
-  if (window._moduleKlar) fn();
-  else window._ventFunksjoner.push(fn);
-};
-// Proxy-funksjoner som venter til modulen er lastet
-['sjekkKode','showView','toggleCheck','nullstillPakkliste','visLag','openMaps','toggleDark','apneAdmin','lukkAdmin'].forEach(function(navn) {
-  window[navn] = function() {
-    var args = arguments;
-    window._kjørNårKlar(function() {
-      if (window['_fn_' + navn]) window['_fn_' + navn].apply(null, args);
-    });
-  };
-});
-</script>
-<script type="module">
-import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
-                              from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, deleteDoc, updateDoc, query, orderBy, serverTimestamp, initializeFirestore, persistentLocalCache }
-                              from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+// Firebase compat – ingen ES modules, fungerer i alle nettlesere inkl. Safari
+// Firebase compat API - alle funksjoner er tilgjengelige direkte
 
 // ── Firebase config ─────────────────────────────────────────
 const firebaseConfig = {
@@ -1013,10 +995,10 @@ const firebaseConfig = {
   appId:             "1:768923333200:web:11ff119871e9c4be511755"
 };
 
-const fbApp    = initializeApp(firebaseConfig);
-const auth     = getAuth(fbApp);
-const db       = initializeFirestore(fbApp, { experimentalAutoDetectLongPolling: true, useFetchStreams: false });
-const provider = new GoogleAuthProvider();
+const fbApp    = firebase.initializeApp(firebaseConfig);
+const auth     = firebase.auth();
+const db       = firebase.firestore();
+const provider = new firebase.auth.GoogleAuthProvider();
 
 let currentUser = null;
 let unsubPakk   = null;
@@ -1029,7 +1011,7 @@ function sjekkTilgang() {
     document.getElementById('access-screen').style.display = 'none';
 }
 
-globalThis.sjekkKode = () => {
+window.sjekkKode = () => {
   const inp  = document.getElementById('access-input');
   const feil = document.getElementById('access-feil');
   const kode = inp.value.trim().toUpperCase();
@@ -1054,7 +1036,7 @@ function initDark() {
     if (btn) btn.textContent = '☀️';
   }
 }
-globalThis.toggleDark = () => {
+window.toggleDark = () => {
   const isDark = document.body.classList.toggle('dark');
   localStorage.setItem('lfh-dark', isDark ? '1' : '0');
   const btn = document.getElementById('dark-toggle');
@@ -1063,7 +1045,7 @@ globalThis.toggleDark = () => {
 initDark();
 
 // ── Auth ─────────────────────────────────────────────────────
-onAuthStateChanged(auth, user => {
+auth.onAuthStateChanged(user => {
   currentUser = user;
   updateAuthUI();
   renderQAInput();
@@ -1100,7 +1082,7 @@ function updateAuthUI() {
     const btn = document.createElement('button');
     btn.className = 'auth-btn sign-out';
     btn.textContent = 'Logg ut';
-    btn.onclick = () => signOut(auth);
+    btn.onclick = () => auth.signOut();
     bar.appendChild(info);
     // Admin-knapp for Samuel
     if (currentUser && currentUser.email === ADMIN_EMAIL) {
@@ -1128,7 +1110,7 @@ function updateAuthUI() {
     const btn = document.createElement('button');
     btn.className = 'auth-btn sign-in';
     btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24"><path fill="white" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="white" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="white" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="white" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Google';
-    btn.onclick = () => signInWithPopup(auth, provider).catch(console.error);
+    btn.onclick = () => auth.signInWithPopup(provider).catch(console.error);
     bar.appendChild(info);
     bar.appendChild(btn);
   }
@@ -1145,8 +1127,8 @@ function updateAuthUI() {
 // ── Firestore pakkliste sync ──────────────────────────────────
 function subscribePakkliste(uid) {
   if (unsubPakk) unsubPakk();
-  unsubPakk = onSnapshot(doc(db, "pakkliste", uid), snap => {
-    const data = snap.exists() ? (snap.data().items || {}) : {};
+  unsubPakk = db.collection("pakkliste").doc(uid).onSnapshot(snap => {
+    const data = snap.exists ? (snap.data().items || {}) : {};
     lastInnPakket(data);
   });
 }
@@ -1160,7 +1142,7 @@ async function lagrePakketCloud(data) {
 }
 
 // ── Pakkliste UI ──────────────────────────────────────────────
-globalThis.toggleCheck = async el => {
+window.toggleCheck = async el => {
   const box = el.querySelector('.check-box');
   const lbl = el.querySelector('.check-label');
   const erChecked = box.classList.contains('checked');
@@ -1200,7 +1182,7 @@ function oppdaterPakkProgress() {
   document.getElementById('ov-pakket').textContent  = pct + '%';
 }
 
-globalThis.nullstillPakkliste = async () => {
+window.nullstillPakkliste = async () => {
   document.querySelectorAll('#view-pakkliste .check-box').forEach(b => { b.classList.remove('checked'); b.textContent = ''; });
   document.querySelectorAll('#view-pakkliste .check-item').forEach(el => el.classList.remove('checked-item'));
   oppdaterPakkProgress();
@@ -1210,7 +1192,7 @@ globalThis.nullstillPakkliste = async () => {
 };
 
 // ── Navigasjon ────────────────────────────────────────────────
-globalThis.showView = name => {
+window.showView = name => {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
@@ -1219,7 +1201,7 @@ globalThis.showView = name => {
 };
 
 // ── Lag-tabs ──────────────────────────────────────────────────
-globalThis.visLag = lag => {
+window.visLag = lag => {
   document.getElementById('lag-rod').style.display  = lag === 'rod'  ? 'block' : 'none';
   document.getElementById('lag-sort').style.display = lag === 'sort' ? 'block' : 'none';
   document.getElementById('lag-g14').style.display  = lag === 'g14'  ? 'block' : 'none';
@@ -1230,7 +1212,7 @@ globalThis.visLag = lag => {
 };
 
 // ── Kart ──────────────────────────────────────────────────────
-globalThis.openMaps = addr => {
+window.openMaps = addr => {
   if (!addr) { showToast('Adresse kommer snart!', '#f59e0b'); return; }
   window.open('https://maps.google.com/?q=' + encodeURIComponent(addr), '_blank');
 };
@@ -1472,8 +1454,8 @@ function isAdmin() {
 
 function initQA() {
   // Alltid les spørsmål (alle kan lese)
-  const q = query(collection(db, 'qa'), orderBy('ts', 'desc'));
-  onSnapshot(q, snap => {
+  const q = db.collection('qa').orderBy('ts', 'desc');
+  q.onSnapshot(snap => {
     const sporsmal = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderQA(sporsmal);
   });
@@ -1503,12 +1485,12 @@ function renderQAInput() {
     const tekst = ta.value.trim();
     if (!tekst || !currentUser) return;
     btn.disabled = true;
-    await addDoc(collection(db, 'qa'), {
+    await db.collection('qa').add({
       tekst,
       uid:    currentUser.uid,
       navn:   currentUser.displayName || currentUser.email.split('@')[0],
       foto:   currentUser.photoURL || '',
-      ts:     serverTimestamp(),
+      ts:     firebase.firestore.FieldValue.serverTimestamp(),
       svar:   {},
       reaks:  {}
     });
@@ -1568,7 +1550,7 @@ function renderQA(liste) {
     if (currentUser && (currentUser.uid === q.uid || isAdmin())) {
       const del = document.createElement('button');
       del.className = 'qa-delete'; del.textContent = '✕'; del.title = 'Slett';
-      del.onclick = async () => { if (confirm('Slette spørsmålet?')) await deleteDoc(doc(db,'qa',q.id)); };
+      del.onclick = async () => { if (confirm('Slette spørsmålet?')) await db.collection('qa').doc(q.id).delete(); };
       hdr.appendChild(del);
     }
 
@@ -1595,7 +1577,7 @@ function renderQA(liste) {
         const idx = nyReaks[emoji].indexOf(currentUser.uid);
         if (idx > -1) nyReaks[emoji].splice(idx, 1);
         else nyReaks[emoji].push(currentUser.uid);
-        await updateDoc(doc(db,'qa',q.id), { reaks: nyReaks });
+        await db.collection('qa').doc(q.id).update({ reaks: nyReaks });
       };
       reakDiv.appendChild(rBtn);
     });
@@ -1638,7 +1620,7 @@ function renderQA(liste) {
         sdel.onclick = async () => {
           const nyttSvar = JSON.parse(JSON.stringify(q.svar||{}));
           delete nyttSvar[s.svarId];
-          await updateDoc(doc(db,'qa',q.id), { svar: nyttSvar });
+          await db.collection('qa').doc(q.id).update({ svar: nyttSvar });
         };
         rnm.appendChild(sdel);
       }
@@ -1665,7 +1647,7 @@ function renderQA(liste) {
           const idx = nyttSvar[s.svarId].reaks[emoji].indexOf(currentUser.uid);
           if (idx > -1) nyttSvar[s.svarId].reaks[emoji].splice(idx,1);
           else nyttSvar[s.svarId].reaks[emoji].push(currentUser.uid);
-          await updateDoc(doc(db,'qa',q.id), { svar: nyttSvar });
+          await db.collection('qa').doc(q.id).update({ svar: nyttSvar });
         };
         srDiv.appendChild(rBtn);
       });
@@ -1699,7 +1681,7 @@ function renderQA(liste) {
           ts:   { toMillis: () => Date.now() },
           reaks: {}
         };
-        await updateDoc(doc(db,'qa',q.id), { svar: nyttSvar });
+        await db.collection('qa').doc(q.id).update({ svar: nyttSvar });
         inp.value = '';
       };
       form.appendChild(inp); form.appendChild(send);
@@ -1768,8 +1750,8 @@ function kampStatusTekst(status) {
 }
 
 function initResultater() {
-  unsubResultater = onSnapshot(doc(db, 'resultater', 'kamper'), snap => {
-    resultater = snap.exists() ? (snap.data() || {}) : {};
+  unsubResultater = db.collection('resultater').doc('kamper').onSnapshot(snap => {
+    resultater = snap.exists ? (snap.data() || {}) : {};
     oppdaterKampkort();
     if (document.getElementById('admin-panel').classList.contains('show')) {
       byggAdminPanel();
@@ -1885,7 +1867,7 @@ function byggAdminPanel() {
         saveBtn.textContent = 'Lagrer…';
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         nyeRes[k.id] = { hjemme: h, borte: b, oppdatert: new Date().toISOString() };
-        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        await setDoc(db.collection('resultater').doc('kamper'), nyeRes);
         saveBtn.textContent = '✓ Lagret'; saveBtn.classList.add('saved');
         resetBtn.style.display = 'inline-flex';
         showToast('Resultat lagret! 🎉');
@@ -1895,7 +1877,7 @@ function byggAdminPanel() {
         if (!confirm('Nullstille resultatet?')) return;
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         delete nyeRes[k.id];
-        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        await setDoc(db.collection('resultater').doc('kamper'), nyeRes);
         resultater = nyeRes;
         inp1.value = ''; inp2.value = '';
         saveBtn.textContent = 'Lagre'; saveBtn.classList.remove('saved');
@@ -1999,7 +1981,7 @@ function byggAdminPanel() {
         gSave.textContent='…';
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         nyeRes[k.id] = { hjemme:h, borte:b };
-        await setDoc(doc(db,'resultater','kamper'), nyeRes);
+        await db.collection('resultater').doc('kamper').set(nyeRes);
         gSave.textContent='✓'; gSave.classList.add('saved');
         gReset.style.display='inline-flex';
         showToast('Grupperesultat lagret!');
@@ -2009,7 +1991,7 @@ function byggAdminPanel() {
         if (!confirm('Nullstille?')) return;
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         delete nyeRes[k.id];
-        await setDoc(doc(db,'resultater','kamper'), nyeRes);
+        await db.collection('resultater').doc('kamper').set(nyeRes);
         resultater = nyeRes;
         gi1.value=''; gi2.value='';
         gSave.textContent='Lagre'; gSave.classList.remove('saved');
@@ -2029,12 +2011,12 @@ function byggAdminPanel() {
     body.appendChild(seksjon);
   });
 }
-globalThis.apneAdmin = () => {
+window.apneAdmin = () => {
   document.getElementById('admin-panel').classList.add('show');
   byggAdminPanel();
 };
 
-globalThis.lukkAdmin = () => {
+window.lukkAdmin = () => {
   document.getElementById('admin-panel').classList.remove('show');
 };
 
@@ -2044,29 +2026,7 @@ lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
 initQA();
 initResultater();
 
-// Safari-bro: registrer funksjoner
-window._fn_sjekkKode          = globalThis.sjekkKode;
-window._fn_showView           = globalThis.showView;
-window._fn_toggleCheck        = globalThis.toggleCheck;
-window._fn_nullstillPakkliste = globalThis.nullstillPakkliste;
-window._fn_visLag             = globalThis.visLag;
-window._fn_openMaps           = globalThis.openMaps;
-window._fn_toggleDark         = globalThis.toggleDark;
-window._fn_apneAdmin          = globalThis.apneAdmin;
-window._fn_lukkAdmin          = globalThis.lukkAdmin;
-// Sett direkte også for sikkerhet
-window.sjekkKode          = globalThis.sjekkKode;
-window.showView           = globalThis.showView;
-window.toggleCheck        = globalThis.toggleCheck;
-window.nullstillPakkliste = globalThis.nullstillPakkliste;
-window.visLag             = globalThis.visLag;
-window.openMaps           = globalThis.openMaps;
-window.toggleDark         = globalThis.toggleDark;
-window.apneAdmin          = globalThis.apneAdmin;
-window.lukkAdmin          = globalThis.lukkAdmin;
-window._moduleKlar = true;
-window._ventFunksjoner.forEach(function(fn) { fn(); });
-window._ventFunksjoner = [];
+
 </script>
 </body>
 </html>
