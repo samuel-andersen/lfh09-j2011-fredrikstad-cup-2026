@@ -730,246 +730,84 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
   <div class="view" id="view-kamper">
 
     <!-- LAG-TABS -->
-    <div style="display:flex; gap:8px; margin-bottom:14px;">
-      <button class="lag-tab active" id="tab-rod" onclick="visLag('rod')">
-        <span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block;margin-right:6px;"></span>LFH09 Rød
+    <div style="display:flex; gap:6px; margin-bottom:14px;">
+      <button class="lag-tab active" id="tab-rod" onclick="visLag('rod')" style="flex:1">
+        <span style="width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-right:5px;"></span>J14 Rød
       </button>
-      <button class="lag-tab" id="tab-sort" onclick="visLag('sort')">
-        <span style="width:10px;height:10px;border-radius:50%;background:#1a2540;display:inline-block;margin-right:6px;"></span>LFH09 Sort
+      <button class="lag-tab" id="tab-sort" onclick="visLag('sort')" style="flex:1">
+        <span style="width:9px;height:9px;border-radius:50%;background:#1a2540;display:inline-block;margin-right:5px;"></span>J14 Sort
+      </button>
+      <button class="lag-tab" id="tab-g14" onclick="visLag('g14')" style="flex:1">
+        <span style="width:9px;height:9px;border-radius:50%;background:#059669;display:inline-block;margin-right:5px;"></span>G14 Biri
       </button>
     </div>
 
-    <!-- LFH09 RØD -->
+    <!-- J14 RØD -->
     <div id="lag-rod">
-      <div class="tip-box" style="margin-bottom:12px">📊 Hentet fra Profixio · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487203" target="_blank" style="color:var(--blue)">Se live på profixio.com</a></div>
-
+      <div class="tip-box" style="margin-bottom:12px">📊 J14 Jenter · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487203" target="_blank" style="color:var(--blue)">Live på Profixio</a></div>
       <div class="st" style="margin-top:0">Lørdag 23. mai</div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #0214 · 11:18</div>
-          <div class="match-badge">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">LFH09 Rød vs. Lervik</div>
-          <div class="match-meta">
-            <span>🕐 11:18</span>
-            <span>📍 Kongsten · Bane 02</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #0214 · 11:18</div><div class="match-badge">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">LFH09 Rød vs. Lervik</div><div class="match-meta"><span>🕐 11:18</span><span>📍 Kongsten · Bane 02</span></div></div>
       </div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #1114 · 13:59</div>
-          <div class="match-badge">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">LFH09 Rød vs. Skedsmo 1</div>
-          <div class="match-meta">
-            <span>🕐 13:59</span>
-            <span>📍 Lisleby · Bane 11</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #1114 · 13:59</div><div class="match-badge">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">LFH09 Rød vs. Skedsmo 1</div><div class="match-meta"><span>🕐 13:59</span><span>📍 Lisleby · Bane 11</span></div></div>
       </div>
-
       <div class="st">Søndag 24. mai</div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #3132 · 12:27</div>
-          <div class="match-badge">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">Tindlund 2 vs. LFH09 Rød</div>
-          <div class="match-meta">
-            <span>🕐 12:27</span>
-            <span>📍 Merkur · Bane 31</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #3132 · 12:27</div><div class="match-badge">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Tindlund 2 vs. LFH09 Rød</div><div class="match-meta"><span>🕐 12:27</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #2342 · 14:45</div>
-          <div class="match-badge">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">Hødd vs. LFH09 Rød</div>
-          <div class="match-meta">
-            <span>🕐 14:45</span>
-            <span>📍 Merkur · Bane 23</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="st">Tabell – Rød gruppe</div>
-      <div class="info-card">
-        <div style="overflow-x:auto">
-          <table style="width:100%;font-size:12px;border-collapse:collapse;">
-            <thead>
-              <tr style="border-bottom:2px solid var(--light);">
-                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">#</th>
-                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">Lag</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">K</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">V</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">U</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">T</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">Mål</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">P</th>
-              </tr>
-            </thead>
-            <tbody id="tabell-rod">
-              <tr style="border-bottom:1px solid var(--light);background:var(--light);">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Lervik</td>
-                <td style="padding:7px 4px;text-align:center;">1</td><td style="padding:7px 4px;text-align:center;">1</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">1-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">2</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--light);">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">2</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Skedsmo 1</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--light);">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">2</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Hødd</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--light);background:#fff7f7;">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">2</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--red);">LFH09 Rød</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">5</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Tindlund 2</td>
-                <td style="padding:7px 4px;text-align:center;">1</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">1</td>
-                <td style="padding:7px 4px;text-align:center;">0-1</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #2342 · 14:45</div><div class="match-badge">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Hødd vs. LFH09 Rød</div><div class="match-meta"><span>🕐 14:45</span><span>📍 Merkur · Bane 23</span></div></div>
       </div>
     </div>
 
-    <!-- LFH09 SORT -->
+    <!-- J14 SORT -->
     <div id="lag-sort" style="display:none">
-      <div class="tip-box" style="margin-bottom:12px">📊 Hentet fra Profixio · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204" target="_blank" style="color:var(--blue)">Se live på profixio.com</a></div>
-
+      <div class="tip-box" style="margin-bottom:12px">📊 J14 Jenter · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204" target="_blank" style="color:var(--blue)">Live på Profixio</a></div>
       <div class="st" style="margin-top:0">Lørdag 23. mai</div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #1116 · 14:45</div>
-          <div class="match-badge" style="background:#1a2540">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">Steinkjer vs. LFH09 Sort</div>
-          <div class="match-meta">
-            <span>🕐 14:45</span>
-            <span>📍 Lisleby · Bane 11</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #1116 · 14:45</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Steinkjer vs. LFH09 Sort</div><div class="match-meta"><span>🕐 14:45</span><span>📍 Lisleby · Bane 11</span></div></div>
       </div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #1121 · 16:40</div>
-          <div class="match-badge" style="background:#1a2540">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">LFH09 Sort vs. Gimletroll 1</div>
-          <div class="match-meta">
-            <span>🕐 16:40</span>
-            <span>📍 Lisleby · Bane 11</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #1121 · 16:40</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">LFH09 Sort vs. Gimletroll 1</div><div class="match-meta"><span>🕐 16:40</span><span>📍 Lisleby · Bane 11</span></div></div>
       </div>
-
       <div class="st">Søndag 24. mai</div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #3125 · 09:46</div>
-          <div class="match-badge" style="background:#1a2540">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">LFH09 Sort vs. Ull/Kisa</div>
-          <div class="match-meta">
-            <span>🕐 09:46</span>
-            <span>📍 Merkur · Bane 31</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #3125 · 09:46</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">LFH09 Sort vs. Ull/Kisa</div><div class="match-meta"><span>🕐 09:46</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
-
       <div class="match-card">
-        <div class="match-header">
-          <div class="match-day">Kamp #3130 · 11:41</div>
-          <div class="match-badge" style="background:#1a2540">Gruppe</div>
-        </div>
-        <div class="match-body">
-          <div class="match-teams">Rygge vs. LFH09 Sort</div>
-          <div class="match-meta">
-            <span>🕐 11:41</span>
-            <span>📍 Merkur · Bane 31</span>
-          </div>
-        </div>
+        <div class="match-header"><div class="match-day">Kamp #3130 · 11:41</div><div class="match-badge" style="background:#1a2540">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Rygge vs. LFH09 Sort</div><div class="match-meta"><span>🕐 11:41</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
+    </div>
 
-      <div class="st">Tabell – Sort gruppe</div>
-      <div class="info-card">
-        <div style="overflow-x:auto">
-          <table style="width:100%;font-size:12px;border-collapse:collapse;">
-            <thead>
-              <tr style="border-bottom:2px solid var(--light);">
-                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">#</th>
-                <th style="text-align:left;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;letter-spacing:1px;">Lag</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">K</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">V</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">U</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">T</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">Mål</th>
-                <th style="padding:6px 4px;font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-weight:700;">P</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom:1px solid var(--light);background:#f7f7fa;">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#1a2540;">LFH09 Sort</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--light);">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Gimletroll 1</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--light);">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Ull/Kisa</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--light);">
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Rygge</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-              <tr>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">1</td>
-                <td style="padding:7px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;">Steinkjer</td>
-                <td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td><td style="padding:7px 4px;text-align:center;">0</td>
-                <td style="padding:7px 4px;text-align:center;">0-0</td><td style="padding:7px 4px;text-align:center;font-weight:700;color:var(--blue);">0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <!-- G14 BIRI/LFH -->
+    <div id="lag-g14" style="display:none">
+      <div class="tip-box" style="margin-bottom:12px;border-left-color:#059669;color:#059669;background:#f0fdf4">📊 G14 Gutter · <a href="https://www.profixio.com/app/fredrikstad-cup-2026/teams/1489145" target="_blank" style="color:#059669">Live på Profixio</a></div>
+      <div class="st" style="margin-top:0">Lørdag 23. mai</div>
+      <div class="match-card">
+        <div class="match-header"><div class="match-day">Kamp #0913 · 13:36</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Oppsal 2 vs. Biri/LFH</div><div class="match-meta"><span>🕐 13:36</span><span>📍 Kvernhuset · Bane 09</span></div></div>
+      </div>
+      <div class="match-card">
+        <div class="match-header"><div class="match-day">Kamp #0919 · 15:54</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Biri/LFH vs. Linje 5</div><div class="match-meta"><span>🕐 15:54</span><span>📍 Kvernhuset · Bane 09</span></div></div>
+      </div>
+      <div class="st">Søndag 24. mai</div>
+      <div class="match-card">
+        <div class="match-header"><div class="match-day">Kamp #3540 · 15:31</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Biri/LFH vs. Vålerenga 1</div><div class="match-meta"><span>🕐 15:31</span><span>📍 Merkur · Bane 35</span></div></div>
+      </div>
+      <div class="match-card">
+        <div class="match-header"><div class="match-day">Kamp #3146 · 17:49</div><div class="match-badge" style="background:#059669">Gruppe</div></div>
+        <div class="match-body"><div class="match-teams">Reistad vs. Biri/LFH</div><div class="match-meta"><span>🕐 17:49</span><span>📍 Merkur · Bane 31</span></div></div>
       </div>
     </div>
 
@@ -1098,7 +936,14 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
         <span class="poi-tag" style="background:var(--blue-mid);color:white">Bo</span>
       </div>
     </div>
-    <div class="poi-card" onclick="openMaps('Legevakta Fredrikstad')">
+    <div class="poi-card" onclick="openMaps('Kvernhuset idrettshall Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#f0fdf4">🏐</div>
+      <div>
+        <div class="poi-name">Kvernhuset idrettshall</div>
+        <div class="poi-addr">G14 Biri/LFH – begge kamper lørdag</div>
+        <span class="poi-tag" style="background:#059669;color:white">G14</span>
+      </div>
+    </div>
       <div class="poi-dot-wrap" style="background:#fef2f2">🏥</div>
       <div>
         <div class="poi-name">Legevakt Fredrikstad</div>
@@ -1158,7 +1003,7 @@ body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, deleteDoc, updateDoc, query, orderBy, serverTimestamp }
+import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, deleteDoc, updateDoc, query, orderBy, serverTimestamp, initializeFirestore, persistentLocalCache }
                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ── Firebase config ─────────────────────────────────────────
@@ -1173,7 +1018,7 @@ const firebaseConfig = {
 
 const fbApp    = initializeApp(firebaseConfig);
 const auth     = getAuth(fbApp);
-const db       = getFirestore(fbApp);
+const db       = initializeFirestore(fbApp, { experimentalForceLongPolling: true });
 const provider = new GoogleAuthProvider();
 
 let currentUser = null;
@@ -1371,8 +1216,10 @@ globalThis.showView = name => {
 globalThis.visLag = lag => {
   document.getElementById('lag-rod').style.display  = lag === 'rod'  ? 'block' : 'none';
   document.getElementById('lag-sort').style.display = lag === 'sort' ? 'block' : 'none';
+  document.getElementById('lag-g14').style.display  = lag === 'g14'  ? 'block' : 'none';
   document.getElementById('tab-rod').classList.toggle('active',  lag === 'rod');
   document.getElementById('tab-sort').classList.toggle('active', lag === 'sort');
+  document.getElementById('tab-g14').classList.toggle('active',  lag === 'g14');
 };
 
 // ── Kart ──────────────────────────────────────────────────────
@@ -1387,7 +1234,7 @@ function oppdaterOversikt() {
   const idag    = new Date(); idag.setHours(0,0,0,0);
   const diff    = Math.ceil((avreise - idag) / 86400000);
   document.getElementById('ov-dager').textContent  = diff > 0 ? diff : diff === 0 ? 'I dag! 🎉' : 'Avreist!';
-  document.getElementById('ov-kamper').textContent = '8';
+  document.getElementById('ov-kamper').textContent = '12';
 }
 
 // ── Toast ─────────────────────────────────────────────────────
