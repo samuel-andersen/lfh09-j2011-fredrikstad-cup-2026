@@ -1764,9 +1764,252 @@ function oppdaterKampkort() {
 
 function byggAdminPanel() {
   const body = document.getElementById('admin-body');
-  body.innerHTML = '<div class="tip-box" style="margin-bottom:14px">Fyll inn resultater etter kampene. ✅ = klar for resultat.</div>';
+  body.innerHTML = '';
 
-  ['2026-05-23', '2026-05-24'].forEach(dato => {
+  // Lag-tabs
+  const tabWrap = document.createElement('div');
+  tabWrap.style.cssText = 'display:flex;gap:6px;margin-bottom:14px;';
+
+  const tabs = [
+    { key:'rod',  farge:'#C8102E', label:'J14 Rød' },
+    { key:'sort', farge:'#1a2540', label:'J14 Sort' },
+    { key:'g14',  farge:'#059669', label:'G14 Biri' },
+  ];
+
+  tabs.forEach((tab, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'lag-tab' + (i === 0 ? ' active' : '');
+    btn.id = 'admin-tab-' + tab.key;
+    btn.style.flex = '1';
+    btn.innerHTML = '<span style="width:9px;height:9px;border-radius:50%;background:' + tab.farge + ';display:inline-block;margin-right:5px;"></span>' + tab.label;
+    btn.onclick = () => {
+      document.querySelectorAll('.admin-lag-seksjon').forEach(s => s.style.display = 'none');
+      document.querySelectorAll('[id^="admin-tab-"]').forEach(b => b.classList.remove('active'));
+      document.getElementById('admin-seksjon-' + tab.key).style.display = 'block';
+      btn.classList.add('active');
+    };
+    tabWrap.appendChild(btn);
+  });
+  body.appendChild(tabWrap);
+
+  // Bygg seksjoner per lag
+  tabs.forEach((tab, ti) => {
+    const seksjon = document.createElement('div');
+    seksjon.className = 'admin-lag-seksjon';
+    seksjon.id = 'admin-seksjon-' + tab.key;
+    seksjon.style.display = ti === 0 ? 'block' : 'none';
+
+    const lagIds = LAG_CONFIG[tab.key].ids;
+    const lagKamper = ALLE_KAMPER.filter(k => lagIds.includes(k.id));
+
+    // Tips
+    const tip = document.createElement('div');
+    tip.className = 'tip-box';
+    tip.style.cssText = 'margin-bottom:12px;border-left-color:' + tab.farge;
+    tip.textContent = 'Fyll inn resultater etter kampene. ✅ = klar for resultat.';
+    seksjon.appendChild(tip);
+
+    // Kampene sortert kronologisk
+    [...lagKamper].sort((a,b) => kampTidstempel(a.dato,a.tid) - kampTidstempel(b.dato,b.tid)).forEach(k => {
+      const res    = resultater[k.id] || {};
+      const status = kampStatus(k.dato, k.tid);
+      const dagNavn = k.dato === '2026-05-23' ? 'Lørdag 23. mai' : 'Søndag 24. mai';
+
+      const card = document.createElement('div');
+      card.className = 'admin-kamp';
+
+      const hdr = document.createElement('div');
+      hdr.className = 'admin-kamp-header';
+      hdr.innerHTML = '<span class="admin-kamp-id">#' + k.id + ' · ' + dagNavn + ' ' + k.tid + '<br><span style="font-weight:400;letter-spacing:0">' + k.bane + '</span></span>';
+      const st = document.createElement('span');
+      st.className = 'admin-kamp-status ' + status;
+      st.textContent = kampStatusTekst(status);
+      hdr.appendChild(st);
+
+      const bd = document.createElement('div');
+      bd.className = 'admin-kamp-body';
+
+      const teams = document.createElement('div');
+      teams.className = 'admin-teams';
+      teams.textContent = k.hjemme + ' vs. ' + k.borte;
+
+      const scoreWrap = document.createElement('div');
+      scoreWrap.className = 'admin-score-wrap';
+
+      const inp1 = document.createElement('input');
+      inp1.type = 'number'; inp1.min = '0'; inp1.max = '99';
+      inp1.className = 'admin-score-inp'; inp1.placeholder = '–';
+      inp1.value = res.hjemme !== undefined ? res.hjemme : '';
+
+      const dash = document.createElement('span');
+      dash.className = 'admin-score-dash'; dash.textContent = '–';
+
+      const inp2 = document.createElement('input');
+      inp2.type = 'number'; inp2.min = '0'; inp2.max = '99';
+      inp2.className = 'admin-score-inp'; inp2.placeholder = '–';
+      inp2.value = res.borte !== undefined ? res.borte : '';
+
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'admin-save-btn';
+      saveBtn.textContent = res.hjemme !== undefined ? '✓ Lagret' : 'Lagre';
+      if (res.hjemme !== undefined) saveBtn.classList.add('saved');
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'admin-save-btn';
+      resetBtn.style.cssText = 'background:var(--grey);margin-left:0;display:' + (res.hjemme !== undefined ? 'inline-flex' : 'none') + ';align-items:center;justify-content:center;';
+      resetBtn.textContent = '✕';
+      resetBtn.title = 'Nullstill resultat';
+
+      saveBtn.onclick = async () => {
+        const h = inp1.value.trim(), b = inp2.value.trim();
+        if (h === '' || b === '') { showToast('Fyll inn begge scorene!', '#f59e0b'); return; }
+        saveBtn.textContent = 'Lagrer…';
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        nyeRes[k.id] = { hjemme: h, borte: b, oppdatert: new Date().toISOString() };
+        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        saveBtn.textContent = '✓ Lagret'; saveBtn.classList.add('saved');
+        resetBtn.style.display = 'inline-flex';
+        showToast('Resultat lagret! 🎉');
+      };
+
+      resetBtn.onclick = async () => {
+        if (!confirm('Nullstille resultatet?')) return;
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        delete nyeRes[k.id];
+        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        resultater = nyeRes;
+        inp1.value = ''; inp2.value = '';
+        saveBtn.textContent = 'Lagre'; saveBtn.classList.remove('saved');
+        resetBtn.style.display = 'none';
+        oppdaterKampkort();
+        showToast('Resultat nullstilt', '#888');
+      };
+
+      scoreWrap.appendChild(inp1); scoreWrap.appendChild(dash);
+      scoreWrap.appendChild(inp2); scoreWrap.appendChild(saveBtn);
+      scoreWrap.appendChild(resetBtn);
+      bd.appendChild(teams); bd.appendChild(scoreWrap);
+      card.appendChild(hdr); card.appendChild(bd);
+      seksjon.appendChild(card);
+    });
+
+    // Andre gruppekamper
+    const GRUPPE_KAMPER_MAP = {
+      rod: [
+        { id:'g_rod_1', hjemme:'Lervik',    borte:'Skedsmo 1'  },
+        { id:'g_rod_2', hjemme:'Lervik',    borte:'Hødd'       },
+        { id:'g_rod_3', hjemme:'Skedsmo 1', borte:'Tindlund 2' },
+        { id:'g_rod_4', hjemme:'Hødd',      borte:'Tindlund 2' },
+        { id:'g_rod_5', hjemme:'Lervik',    borte:'Tindlund 2' },
+        { id:'g_rod_6', hjemme:'Skedsmo 1', borte:'Hødd'       },
+      ],
+      sort: [
+        { id:'g_sort_1', hjemme:'Gimletroll 1', borte:'Ull/Kisa'    },
+        { id:'g_sort_2', hjemme:'Steinkjer',    borte:'Gimletroll 1'},
+        { id:'g_sort_3', hjemme:'Ull/Kisa',     borte:'Rygge'       },
+        { id:'g_sort_4', hjemme:'Steinkjer',    borte:'Rygge'       },
+        { id:'g_sort_5', hjemme:'Gimletroll 1', borte:'Rygge'       },
+        { id:'g_sort_6', hjemme:'Steinkjer',    borte:'Ull/Kisa'    },
+      ],
+      g14: [
+        { id:'g_g14_1', hjemme:'Oppsal 2',    borte:'Linje 5'     },
+        { id:'g_g14_2', hjemme:'Vålerenga 1', borte:'Reistad'     },
+        { id:'g_g14_3', hjemme:'Linje 5',     borte:'Vålerenga 1' },
+        { id:'g_g14_4', hjemme:'Oppsal 2',    borte:'Reistad'     },
+        { id:'g_g14_5', hjemme:'Linje 5',     borte:'Reistad'     },
+        { id:'g_g14_6', hjemme:'Oppsal 2',    borte:'Vålerenga 1' },
+      ],
+    };
+
+    const gruppeSt = document.createElement('div');
+    gruppeSt.className = 'st';
+    gruppeSt.style.marginTop = '16px';
+    gruppeSt.textContent = '📊 Andre gruppekamper (for tabell)';
+    seksjon.appendChild(gruppeSt);
+
+    const gruppeTip = document.createElement('div');
+    gruppeTip.className = 'tip-box';
+    gruppeTip.style.marginBottom = '10px';
+    gruppeTip.textContent = 'Disse vises kun for deg – brukes til å beregne korrekt tabell.';
+    seksjon.appendChild(gruppeTip);
+
+    GRUPPE_KAMPER_MAP[tab.key].forEach(k => {
+      const res = resultater[k.id] || {};
+      const gCard = document.createElement('div');
+      gCard.className = 'admin-kamp';
+
+      const gHdr = document.createElement('div');
+      gHdr.className = 'admin-kamp-header';
+      gHdr.innerHTML = '<span class="admin-kamp-id">' + k.hjemme + ' vs. ' + k.borte + '</span>';
+      const gSt = document.createElement('span');
+      gSt.className = 'admin-kamp-status ' + (res.hjemme !== undefined ? 'ferdig' : 'snart');
+      gSt.textContent = res.hjemme !== undefined ? '✓' : '–';
+      gHdr.appendChild(gSt);
+
+      const gBd = document.createElement('div');
+      gBd.className = 'admin-kamp-body';
+      const gWrap = document.createElement('div');
+      gWrap.className = 'admin-score-wrap';
+
+      const gi1 = document.createElement('input');
+      gi1.type='number'; gi1.min='0'; gi1.max='99';
+      gi1.className='admin-score-inp'; gi1.placeholder='–';
+      gi1.value = res.hjemme !== undefined ? res.hjemme : '';
+
+      const gDash = document.createElement('span');
+      gDash.className='admin-score-dash'; gDash.textContent='–';
+
+      const gi2 = document.createElement('input');
+      gi2.type='number'; gi2.min='0'; gi2.max='99';
+      gi2.className='admin-score-inp'; gi2.placeholder='–';
+      gi2.value = res.borte !== undefined ? res.borte : '';
+
+      const gSave = document.createElement('button');
+      gSave.className = 'admin-save-btn';
+      gSave.textContent = res.hjemme !== undefined ? '✓' : 'Lagre';
+      if (res.hjemme !== undefined) gSave.classList.add('saved');
+
+      const gReset = document.createElement('button');
+      gReset.className = 'admin-save-btn';
+      gReset.style.cssText = 'background:var(--grey);margin-left:0;display:' + (res.hjemme !== undefined ? 'inline-flex' : 'none') + ';align-items:center;justify-content:center;';
+      gReset.textContent = '✕';
+
+      gSave.onclick = async () => {
+        const h = gi1.value.trim(), b = gi2.value.trim();
+        if (h===''||b==='') { showToast('Fyll inn begge!','#f59e0b'); return; }
+        gSave.textContent='…';
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        nyeRes[k.id] = { hjemme:h, borte:b };
+        await setDoc(doc(db,'resultater','kamper'), nyeRes);
+        gSave.textContent='✓'; gSave.classList.add('saved');
+        gReset.style.display='inline-flex';
+        showToast('Grupperesultat lagret!');
+      };
+
+      gReset.onclick = async () => {
+        if (!confirm('Nullstille?')) return;
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        delete nyeRes[k.id];
+        await setDoc(doc(db,'resultater','kamper'), nyeRes);
+        resultater = nyeRes;
+        gi1.value=''; gi2.value='';
+        gSave.textContent='Lagre'; gSave.classList.remove('saved');
+        gReset.style.display='none';
+        oppdaterKampkort();
+        showToast('Nullstilt','#888');
+      };
+
+      gWrap.appendChild(gi1); gWrap.appendChild(gDash);
+      gWrap.appendChild(gi2); gWrap.appendChild(gSave);
+      gWrap.appendChild(gReset);
+      gBd.appendChild(gWrap);
+      gCard.appendChild(gHdr); gCard.appendChild(gBd);
+      seksjon.appendChild(gCard);
+    });
+
+    body.appendChild(seksjon);
+  });
+}
     const dagNavn = dato === '2026-05-23' ? 'Lørdag 23. mai' : 'Søndag 24. mai';
     const dagSt = document.createElement('div');
     dagSt.className = 'st';
@@ -1875,130 +2118,6 @@ function byggAdminPanel() {
       card.appendChild(hdr);
       card.appendChild(bd);
       body.appendChild(card);
-    });
-  });
-
-  // Andre kamper i gruppen (for tabellberegning)
-  const gruppeSt = document.createElement('div');
-  gruppeSt.className = 'st';
-  gruppeSt.style.marginTop = '16px';
-  gruppeSt.textContent = '📊 Andre kamper i gruppen (kun for tabell)';
-  body.appendChild(gruppeSt);
-
-  const gruppeTip = document.createElement('div');
-  gruppeTip.className = 'tip-box';
-  gruppeTip.style.marginBottom = '12px';
-  gruppeTip.textContent = 'Fyll inn resultater fra andre kamper i gruppen for å få korrekt tabell. Vises kun i admin.';
-  body.appendChild(gruppeTip);
-
-  // Grupper: alle lag per lag-nøkkel
-  const GRUPPE_KAMPER = {
-    'J14 Rød gruppe': [
-      { id:'g_rod_1', hjemme:'Lervik',    borte:'Skedsmo 1',  dato:'2026-05-23', tid:'09:00' },
-      { id:'g_rod_2', hjemme:'Lervik',    borte:'Hødd',       dato:'2026-05-23', tid:'12:00' },
-      { id:'g_rod_3', hjemme:'Skedsmo 1', borte:'Tindlund 2', dato:'2026-05-23', tid:'14:00' },
-      { id:'g_rod_4', hjemme:'Hødd',      borte:'Tindlund 2', dato:'2026-05-23', tid:'16:00' },
-      { id:'g_rod_5', hjemme:'Lervik',    borte:'Tindlund 2', dato:'2026-05-24', tid:'10:00' },
-      { id:'g_rod_6', hjemme:'Skedsmo 1', borte:'Hødd',       dato:'2026-05-24', tid:'11:00' },
-    ],
-    'J14 Sort gruppe': [
-      { id:'g_sort_1', hjemme:'Gimletroll 1', borte:'Ull/Kisa',   dato:'2026-05-23', tid:'12:00' },
-      { id:'g_sort_2', hjemme:'Steinkjer',    borte:'Gimletroll 1',dato:'2026-05-23', tid:'15:00' },
-      { id:'g_sort_3', hjemme:'Ull/Kisa',     borte:'Rygge',      dato:'2026-05-23', tid:'16:00' },
-      { id:'g_sort_4', hjemme:'Steinkjer',    borte:'Rygge',      dato:'2026-05-24', tid:'10:00' },
-      { id:'g_sort_5', hjemme:'Gimletroll 1', borte:'Rygge',      dato:'2026-05-24', tid:'13:00' },
-      { id:'g_sort_6', hjemme:'Steinkjer',    borte:'Ull/Kisa',   dato:'2026-05-24', tid:'14:00' },
-    ],
-    'G14 Biri/LFH gruppe': [
-      { id:'g_g14_1', hjemme:'Oppsal 2',    borte:'Linje 5',      dato:'2026-05-23', tid:'11:00' },
-      { id:'g_g14_2', hjemme:'Vålerenga 1', borte:'Reistad',      dato:'2026-05-23', tid:'13:00' },
-      { id:'g_g14_3', hjemme:'Linje 5',     borte:'Vålerenga 1',  dato:'2026-05-23', tid:'17:00' },
-      { id:'g_g14_4', hjemme:'Oppsal 2',    borte:'Reistad',      dato:'2026-05-24', tid:'10:00' },
-      { id:'g_g14_5', hjemme:'Linje 5',     borte:'Reistad',      dato:'2026-05-24', tid:'14:00' },
-      { id:'g_g14_6', hjemme:'Oppsal 2',    borte:'Vålerenga 1',  dato:'2026-05-24', tid:'16:00' },
-    ],
-  };
-
-  Object.entries(GRUPPE_KAMPER).forEach(([gruppeNavn, kamper]) => {
-    const gSt = document.createElement('div');
-    gSt.style.cssText = 'font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:12px;color:var(--grey);letter-spacing:1px;text-transform:uppercase;margin:12px 0 8px';
-    gSt.textContent = gruppeNavn;
-    body.appendChild(gSt);
-
-    kamper.forEach(k => {
-      const res = resultater[k.id] || {};
-      const gCard = document.createElement('div');
-      gCard.className = 'admin-kamp';
-
-      const gHdr = document.createElement('div');
-      gHdr.className = 'admin-kamp-header';
-      gHdr.innerHTML = '<span class="admin-kamp-id">' + k.hjemme + ' vs ' + k.borte + '</span>';
-      const gSt2 = document.createElement('span');
-      gSt2.className = 'admin-kamp-status ' + (res.hjemme !== undefined ? 'ferdig' : 'snart');
-      gSt2.textContent = res.hjemme !== undefined ? '✓ Lagret' : 'Ikke lagt inn';
-      gHdr.appendChild(gSt2);
-
-      const gBd = document.createElement('div');
-      gBd.className = 'admin-kamp-body';
-
-      const gWrap = document.createElement('div');
-      gWrap.className = 'admin-score-wrap';
-
-      const gi1 = document.createElement('input');
-      gi1.type = 'number'; gi1.min = '0'; gi1.max = '99';
-      gi1.className = 'admin-score-inp'; gi1.placeholder = '–';
-      gi1.value = res.hjemme !== undefined ? res.hjemme : '';
-
-      const gDash = document.createElement('span');
-      gDash.className = 'admin-score-dash'; gDash.textContent = '–';
-
-      const gi2 = document.createElement('input');
-      gi2.type = 'number'; gi2.min = '0'; gi2.max = '99';
-      gi2.className = 'admin-score-inp'; gi2.placeholder = '–';
-      gi2.value = res.borte !== undefined ? res.borte : '';
-
-      const gSave = document.createElement('button');
-      gSave.className = 'admin-save-btn';
-      gSave.textContent = res.hjemme !== undefined ? '✓' : 'Lagre';
-      if (res.hjemme !== undefined) gSave.classList.add('saved');
-
-      gSave.onclick = async () => {
-        const h = gi1.value.trim(), b = gi2.value.trim();
-        if (h === '' || b === '') { showToast('Fyll inn begge!', '#f59e0b'); return; }
-        gSave.textContent = '…';
-        const nyeRes = JSON.parse(JSON.stringify(resultater));
-        nyeRes[k.id] = { hjemme: h, borte: b };
-        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
-        gSave.textContent = '✓'; gSave.classList.add('saved');
-        gReset.style.display = 'inline-flex';
-        showToast('Grupperesultat lagret!');
-      };
-
-      const gReset = document.createElement('button');
-      gReset.className = 'admin-save-btn';
-      gReset.style.cssText = 'background:var(--grey);margin-left:0;display:' + (res.hjemme !== undefined ? 'inline-flex' : 'none') + ';align-items:center;justify-content:center;';
-      gReset.textContent = '✕';
-      gReset.onclick = async () => {
-        if (!confirm('Nullstille?')) return;
-        const nyeRes = JSON.parse(JSON.stringify(resultater));
-        delete nyeRes[k.id];
-        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
-        resultater = nyeRes;
-        gi1.value = ''; gi2.value = '';
-        gSave.textContent = 'Lagre'; gSave.classList.remove('saved');
-        gReset.style.display = 'none';
-        oppdaterKampkort();
-        showToast('Nullstilt', '#888');
-      };
-
-      gWrap.appendChild(gi1); gWrap.appendChild(gDash); gWrap.appendChild(gi2);
-      gWrap.appendChild(gSave); gWrap.appendChild(gReset);
-      gBd.appendChild(gWrap);
-      gCard.appendChild(gHdr); gCard.appendChild(gBd);
-      body.appendChild(gCard);
-    });
-  });
-}
 
 globalThis.apneAdmin = () => {
   document.getElementById('admin-panel').classList.add('show');
