@@ -2133,6 +2133,17 @@ oppdaterOversikt();
 lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
 initQA();
 initResultater();
+
+// Safari-kompatibilitet: eksponér globalThis-funksjoner til window
+window.sjekkKode        = globalThis.sjekkKode;
+window.showView         = globalThis.showView;
+window.toggleCheck      = globalThis.toggleCheck;
+window.nullstillPakkliste = globalThis.nullstillPakkliste;
+window.visLag           = globalThis.visLag;
+window.openMaps         = globalThis.openMaps;
+window.toggleDark       = globalThis.toggleDark;
+window.apneAdmin        = globalThis.apneAdmin;
+window.lukkAdmin        = globalThis.lukkAdmin;
 </script>
 </body>
 </html>
