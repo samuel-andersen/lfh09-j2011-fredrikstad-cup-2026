@@ -1356,9 +1356,49 @@ function lagTabell(ids, farge) {
   const card = document.createElement('div');
   card.className = 'info-card';
 
-  // Samle alle lag fra disse kampene
+  // Hent alle kamp-IDer for denne gruppen inkl. andre gruppekamper
+  const gruppeIdMap = {
+    rod:  ['0214','1114','3132','2342','g_rod_1','g_rod_2','g_rod_3','g_rod_4','g_rod_5','g_rod_6'],
+    sort: ['1116','1121','3125','3130','g_sort_1','g_sort_2','g_sort_3','g_sort_4','g_sort_5','g_sort_6'],
+    g14:  ['0913','0919','3540','3146','g_g14_1','g_g14_2','g_g14_3','g_g14_4','g_g14_5','g_g14_6'],
+  };
+  // Finn riktig gruppe fra ids
+  const gruppeKey = ids === LAG_CONFIG.rod.ids ? 'rod' : ids === LAG_CONFIG.sort.ids ? 'sort' : 'g14';
+  const alleIds = gruppeIdMap[gruppeKey];
+
+  // Alle kamper inkl. gruppe-kamper
+  const GRUPPE_ALLE = [
+    // Rod gruppe
+    { id:'g_rod_1', hjemme:'Lervik',    borte:'Skedsmo 1' },
+    { id:'g_rod_2', hjemme:'Lervik',    borte:'Hødd' },
+    { id:'g_rod_3', hjemme:'Skedsmo 1', borte:'Tindlund 2' },
+    { id:'g_rod_4', hjemme:'Hødd',      borte:'Tindlund 2' },
+    { id:'g_rod_5', hjemme:'Lervik',    borte:'Tindlund 2' },
+    { id:'g_rod_6', hjemme:'Skedsmo 1', borte:'Hødd' },
+    // Sort gruppe
+    { id:'g_sort_1', hjemme:'Gimletroll 1', borte:'Ull/Kisa' },
+    { id:'g_sort_2', hjemme:'Steinkjer',    borte:'Gimletroll 1' },
+    { id:'g_sort_3', hjemme:'Ull/Kisa',     borte:'Rygge' },
+    { id:'g_sort_4', hjemme:'Steinkjer',    borte:'Rygge' },
+    { id:'g_sort_5', hjemme:'Gimletroll 1', borte:'Rygge' },
+    { id:'g_sort_6', hjemme:'Steinkjer',    borte:'Ull/Kisa' },
+    // G14 gruppe
+    { id:'g_g14_1', hjemme:'Oppsal 2',    borte:'Linje 5' },
+    { id:'g_g14_2', hjemme:'Vålerenga 1', borte:'Reistad' },
+    { id:'g_g14_3', hjemme:'Linje 5',     borte:'Vålerenga 1' },
+    { id:'g_g14_4', hjemme:'Oppsal 2',    borte:'Reistad' },
+    { id:'g_g14_5', hjemme:'Linje 5',     borte:'Reistad' },
+    { id:'g_g14_6', hjemme:'Oppsal 2',    borte:'Vålerenga 1' },
+  ];
+
+  const kampListe = [
+    ...ALLE_KAMPER.filter(k => alleIds.includes(k.id)),
+    ...GRUPPE_ALLE.filter(k => alleIds.includes(k.id)),
+  ];
+
+  // Samle alle lag
   const lagMap = {};
-  ALLE_KAMPER.filter(k => ids.includes(k.id)).forEach(k => {
+  kampListe.forEach(k => {
     [k.hjemme, k.borte].forEach(l => {
       if (!lagMap[l]) lagMap[l] = { navn:l, k:0, v:0, u:0, t:0, mf:0, mm:0, p:0 };
     });
@@ -1391,13 +1431,7 @@ function lagTabell(ids, farge) {
     const isLfh = l.navn.includes('LFH09') || l.navn.includes('Biri');
     const row = tb.insertRow();
     row.style.cssText = 'border-bottom:1px solid var(--light);' + (isLfh ? 'background:' + farge + '11;' : '');
-    const cells = [
-      i+1,
-      l.navn,
-      l.k, l.v, l.u, l.t,
-      l.mf + '-' + l.mm,
-      l.p
-    ];
+    const cells = [i+1, l.navn, l.k, l.v, l.u, l.t, l.mf + '-' + l.mm, l.p];
     cells.forEach((val, ci) => {
       const td = row.insertCell();
       td.textContent = val;
@@ -1801,6 +1835,7 @@ function byggAdminPanel() {
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         nyeRes[k.id] = { hjemme: h, borte: b, oppdatert: new Date().toISOString() };
         await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        // Ikke rebuild panel – bare oppdater knapp-state
         saveBtn.textContent = '✓ Lagret';
         saveBtn.classList.add('saved');
         resetBtn.style.display = 'inline-flex';
@@ -1809,7 +1844,7 @@ function byggAdminPanel() {
 
       const resetBtn = document.createElement('button');
       resetBtn.className = 'admin-save-btn';
-      resetBtn.style.cssText = 'background:var(--grey);margin-left:0;display:' + (res.hjemme !== undefined ? 'inline-flex' : 'none');
+      resetBtn.style.cssText = 'background:var(--grey);margin-left:0;display:' + (res.hjemme !== undefined ? 'inline-flex' : 'none') + ';align-items:center;justify-content:center;';
       resetBtn.textContent = '✕';
       resetBtn.title = 'Nullstill resultat';
       resetBtn.onclick = async () => {
@@ -1817,11 +1852,14 @@ function byggAdminPanel() {
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         delete nyeRes[k.id];
         await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        // Oppdater lokalt uten rebuild
+        resultater = nyeRes;
         inp1.value = '';
         inp2.value = '';
         saveBtn.textContent = 'Lagre';
         saveBtn.classList.remove('saved');
         resetBtn.style.display = 'none';
+        oppdaterKampkort();
         showToast('Resultat nullstilt', '#888');
       };
 
@@ -1837,6 +1875,127 @@ function byggAdminPanel() {
       card.appendChild(hdr);
       card.appendChild(bd);
       body.appendChild(card);
+    });
+  });
+
+  // Andre kamper i gruppen (for tabellberegning)
+  const gruppeSt = document.createElement('div');
+  gruppeSt.className = 'st';
+  gruppeSt.style.marginTop = '16px';
+  gruppeSt.textContent = '📊 Andre kamper i gruppen (kun for tabell)';
+  body.appendChild(gruppeSt);
+
+  const gruppeTip = document.createElement('div');
+  gruppeTip.className = 'tip-box';
+  gruppeTip.style.marginBottom = '12px';
+  gruppeTip.textContent = 'Fyll inn resultater fra andre kamper i gruppen for å få korrekt tabell. Vises kun i admin.';
+  body.appendChild(gruppeTip);
+
+  // Grupper: alle lag per lag-nøkkel
+  const GRUPPE_KAMPER = {
+    'J14 Rød gruppe': [
+      { id:'g_rod_1', hjemme:'Lervik',    borte:'Skedsmo 1',  dato:'2026-05-23', tid:'09:00' },
+      { id:'g_rod_2', hjemme:'Lervik',    borte:'Hødd',       dato:'2026-05-23', tid:'12:00' },
+      { id:'g_rod_3', hjemme:'Skedsmo 1', borte:'Tindlund 2', dato:'2026-05-23', tid:'14:00' },
+      { id:'g_rod_4', hjemme:'Hødd',      borte:'Tindlund 2', dato:'2026-05-23', tid:'16:00' },
+      { id:'g_rod_5', hjemme:'Lervik',    borte:'Tindlund 2', dato:'2026-05-24', tid:'10:00' },
+      { id:'g_rod_6', hjemme:'Skedsmo 1', borte:'Hødd',       dato:'2026-05-24', tid:'11:00' },
+    ],
+    'J14 Sort gruppe': [
+      { id:'g_sort_1', hjemme:'Gimletroll 1', borte:'Ull/Kisa',   dato:'2026-05-23', tid:'12:00' },
+      { id:'g_sort_2', hjemme:'Steinkjer',    borte:'Gimletroll 1',dato:'2026-05-23', tid:'15:00' },
+      { id:'g_sort_3', hjemme:'Ull/Kisa',     borte:'Rygge',      dato:'2026-05-23', tid:'16:00' },
+      { id:'g_sort_4', hjemme:'Steinkjer',    borte:'Rygge',      dato:'2026-05-24', tid:'10:00' },
+      { id:'g_sort_5', hjemme:'Gimletroll 1', borte:'Rygge',      dato:'2026-05-24', tid:'13:00' },
+      { id:'g_sort_6', hjemme:'Steinkjer',    borte:'Ull/Kisa',   dato:'2026-05-24', tid:'14:00' },
+    ],
+    'G14 Biri/LFH gruppe': [
+      { id:'g_g14_1', hjemme:'Oppsal 2',    borte:'Linje 5',      dato:'2026-05-23', tid:'11:00' },
+      { id:'g_g14_2', hjemme:'Vålerenga 1', borte:'Reistad',      dato:'2026-05-23', tid:'13:00' },
+      { id:'g_g14_3', hjemme:'Linje 5',     borte:'Vålerenga 1',  dato:'2026-05-23', tid:'17:00' },
+      { id:'g_g14_4', hjemme:'Oppsal 2',    borte:'Reistad',      dato:'2026-05-24', tid:'10:00' },
+      { id:'g_g14_5', hjemme:'Linje 5',     borte:'Reistad',      dato:'2026-05-24', tid:'14:00' },
+      { id:'g_g14_6', hjemme:'Oppsal 2',    borte:'Vålerenga 1',  dato:'2026-05-24', tid:'16:00' },
+    ],
+  };
+
+  Object.entries(GRUPPE_KAMPER).forEach(([gruppeNavn, kamper]) => {
+    const gSt = document.createElement('div');
+    gSt.style.cssText = 'font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:12px;color:var(--grey);letter-spacing:1px;text-transform:uppercase;margin:12px 0 8px';
+    gSt.textContent = gruppeNavn;
+    body.appendChild(gSt);
+
+    kamper.forEach(k => {
+      const res = resultater[k.id] || {};
+      const gCard = document.createElement('div');
+      gCard.className = 'admin-kamp';
+
+      const gHdr = document.createElement('div');
+      gHdr.className = 'admin-kamp-header';
+      gHdr.innerHTML = '<span class="admin-kamp-id">' + k.hjemme + ' vs ' + k.borte + '</span>';
+      const gSt2 = document.createElement('span');
+      gSt2.className = 'admin-kamp-status ' + (res.hjemme !== undefined ? 'ferdig' : 'snart');
+      gSt2.textContent = res.hjemme !== undefined ? '✓ Lagret' : 'Ikke lagt inn';
+      gHdr.appendChild(gSt2);
+
+      const gBd = document.createElement('div');
+      gBd.className = 'admin-kamp-body';
+
+      const gWrap = document.createElement('div');
+      gWrap.className = 'admin-score-wrap';
+
+      const gi1 = document.createElement('input');
+      gi1.type = 'number'; gi1.min = '0'; gi1.max = '99';
+      gi1.className = 'admin-score-inp'; gi1.placeholder = '–';
+      gi1.value = res.hjemme !== undefined ? res.hjemme : '';
+
+      const gDash = document.createElement('span');
+      gDash.className = 'admin-score-dash'; gDash.textContent = '–';
+
+      const gi2 = document.createElement('input');
+      gi2.type = 'number'; gi2.min = '0'; gi2.max = '99';
+      gi2.className = 'admin-score-inp'; gi2.placeholder = '–';
+      gi2.value = res.borte !== undefined ? res.borte : '';
+
+      const gSave = document.createElement('button');
+      gSave.className = 'admin-save-btn';
+      gSave.textContent = res.hjemme !== undefined ? '✓' : 'Lagre';
+      if (res.hjemme !== undefined) gSave.classList.add('saved');
+
+      gSave.onclick = async () => {
+        const h = gi1.value.trim(), b = gi2.value.trim();
+        if (h === '' || b === '') { showToast('Fyll inn begge!', '#f59e0b'); return; }
+        gSave.textContent = '…';
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        nyeRes[k.id] = { hjemme: h, borte: b };
+        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        gSave.textContent = '✓'; gSave.classList.add('saved');
+        gReset.style.display = 'inline-flex';
+        showToast('Grupperesultat lagret!');
+      };
+
+      const gReset = document.createElement('button');
+      gReset.className = 'admin-save-btn';
+      gReset.style.cssText = 'background:var(--grey);margin-left:0;display:' + (res.hjemme !== undefined ? 'inline-flex' : 'none') + ';align-items:center;justify-content:center;';
+      gReset.textContent = '✕';
+      gReset.onclick = async () => {
+        if (!confirm('Nullstille?')) return;
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        delete nyeRes[k.id];
+        await setDoc(doc(db, 'resultater', 'kamper'), nyeRes);
+        resultater = nyeRes;
+        gi1.value = ''; gi2.value = '';
+        gSave.textContent = 'Lagre'; gSave.classList.remove('saved');
+        gReset.style.display = 'none';
+        oppdaterKampkort();
+        showToast('Nullstilt', '#888');
+      };
+
+      gWrap.appendChild(gi1); gWrap.appendChild(gDash); gWrap.appendChild(gi2);
+      gWrap.appendChild(gSave); gWrap.appendChild(gReset);
+      gBd.appendChild(gWrap);
+      gCard.appendChild(gHdr); gCard.appendChild(gBd);
+      body.appendChild(gCard);
     });
   });
 }
