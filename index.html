@@ -428,8 +428,8 @@ body.dark .pinned-card { background:#111827; }
 <nav class="nav-row3">
   <button class="nav-btn"        onclick="showView('kontakt')"     id="nav-kontakt"><span class="ni">📞</span>Kontakt</button>
   <button class="nav-btn"        onclick="showView('regler')"      id="nav-regler"><span class="ni">📋</span>Regler</button>
+  <button class="nav-btn"        onclick="showView('buss')"        id="nav-buss"><span class="ni">🚌</span>Buss</button>
   <button class="nav-btn"        onclick="showView('sporsmal')"    id="nav-sporsmal"><span class="ni">💬</span>Spør laget</button>
-  <button class="nav-btn"        onclick="showView('oversikt')"    id="nav-dummy" style="visibility:hidden"></button>
 </nav>
 
 <div class="main">
@@ -978,6 +978,125 @@ body.dark .pinned-card { background:#111827; }
     </div>
 
     <button class="map-btn" onclick="openMaps('Fredrikstad sentrum')">🗺 Åpne Fredrikstad i Google Maps</button>
+  </div>
+
+  <!-- BUSS -->
+  <div class="view" id="view-buss">
+
+    <!-- REISEPLANLEGGER -->
+    <div class="hero-card" style="margin-bottom:12px">
+      <div class="hero-label">RUTE 9 – KRÅKERØY</div>
+      <div class="hero-title">Buss under cup</div>
+      <div class="hero-sub">Gratis med cupbånd · Avganger ca. hvert 20. min</div>
+    </div>
+
+    <div class="st" style="margin-top:0">🗺 Finn din buss</div>
+    <div class="info-card" style="margin-bottom:10px">
+      <div class="info-card-header">
+        <div class="info-card-icon">🧭</div>
+        <div><div class="info-card-title">Reiseplanlegger</div><div class="info-card-sub">Fra/til – vi viser deg ruten</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+        <select id="buss-fra" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--mid);border-radius:9px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);background:var(--off);outline:none" onchange="oppdaterBussRute()">
+          <option value="">Fra...</option>
+          <option value="rod_skole">🏫 Rød Skole Kråkerøy (bosted)</option>
+          <option value="kongsten">🏟 Kongsten Arena</option>
+          <option value="merkur">🏟 Merkur Arena</option>
+          <option value="lisleby">🤾 Lisleby</option>
+          <option value="kvernhuset">🤾 Kvernhuset</option>
+          <option value="sentrum">🔄 Sentrum (knutepunkt)</option>
+        </select>
+        <select id="buss-til" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--mid);border-radius:9px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);background:var(--off);outline:none" onchange="oppdaterBussRute()">
+          <option value="">Til...</option>
+          <option value="rod_skole">🏫 Rød Skole Kråkerøy (bosted)</option>
+          <option value="kongsten">🏟 Kongsten Arena</option>
+          <option value="merkur">🏟 Merkur Arena</option>
+          <option value="lisleby">🤾 Lisleby</option>
+          <option value="kvernhuset">🤾 Kvernhuset</option>
+          <option value="sentrum">🔄 Sentrum (knutepunkt)</option>
+        </select>
+      </div>
+      <div id="buss-resultat"></div>
+    </div>
+
+    <!-- KONSERTPLAN -->
+    <div class="st">🎵 Konsertplan lørdag</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🎵</div>
+        <div><div class="info-card-title">Hjem og dusj før konsert</div><div class="info-card-sub">Viktig plan for lørdag kveld!</div></div>
+      </div>
+      <div class="info-row" style="background:rgba(200,16,46,0.05)"><span class="info-label" style="color:var(--red)">⚠️ Viktig</span><span class="info-val" style="color:var(--red);font-size:12px">Ta siste kamp-buss hjem senest 17:45!</span></div>
+      <div class="info-row"><span class="info-label">17:45</span><span class="info-val">Buss fra Kongsten → hjem</span></div>
+      <div class="info-row"><span class="info-label">18:15</span><span class="info-val">Ankomst Rød Skole</span></div>
+      <div class="info-row"><span class="info-label">18:15–18:40</span><span class="info-val">🚿 Dusj og skifte</span></div>
+      <div class="info-row"><span class="info-label">18:45</span><span class="info-val">Buss fra Rød Skole → Kongsten</span></div>
+      <div class="info-row"><span class="info-label">18:40</span><span class="info-val">🎵 Dørene åpner Kongsten</span></div>
+      <div class="info-row"><span class="info-label">19:15</span><span class="info-val">Ankomst Kongsten</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.05)"><span class="info-label">19:40</span><span class="info-val">🎵 Konserten starter!</span></div>
+      <div class="tip-box" style="margin-top:10px">💡 LFH09 Rød sin siste kamp er kl. 14:45 – god tid til dusj og konsert. Trenere gir signal når det er klart for konsertbuss.</div>
+    </div>
+
+    <!-- ETTER KONSERT -->
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🌙</div>
+        <div><div class="info-card-title">Buss etter konserten</div><div class="info-card-sub">Ca. 21:00 fra Kongsten Arena</div></div>
+      </div>
+      <div class="info-row"><span class="info-label">Oppstart</span><span class="info-val">Ca. 21:00 fra Kongsten</span></div>
+      <div class="info-row"><span class="info-label">Ventetid</span><span class="info-val">Opptil 1 time</span></div>
+      <div class="info-row"><span class="info-label">Kapasitet</span><span class="info-val">Ca. 34 busser</span></div>
+      <div class="tip-box" style="border-left-color:#f59e0b;background:#fffbeb;color:#92400e">⚠️ Ikke alle kommer med første avgang. Alle blir fraktet hjem, men det tar tid. Hold laget samlet og vent på trener.</div>
+    </div>
+
+    <!-- RUTE 9 OVERSIKT -->
+    <div class="st">🚌 Rute 9 – Stoppesteder</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚏</div>
+        <div><div class="info-card-title">Vår rute – Kråkerøy</div><div class="info-card-sub">Rekkefølge på stoppestedene</div></div>
+      </div>
+      <div style="padding:8px 0">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Kongsten Arena</div><div style="font-size:11px;color:var(--grey)">Knutepunkt for alle ruter</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--blue-mid);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Sentrum (knutepunkt)</div><div style="font-size:11px;color:var(--grey)">Bytt her for Merkur Arena (rute 4/5/8) · ca. 10 min fra Kongsten</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Akademiet / Wang / HiOF</div><div style="font-size:11px;color:var(--grey)">Ca. 2 min fra Sentrum</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">4</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Rødsmyra skole</div><div style="font-size:11px;color:var(--grey)">Ca. 5 min fra Sentrum</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">5</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Kråkerøy ungdomsskole / Blomsterøyhallen</div><div style="font-size:11px;color:var(--grey)">Ca. 7 min fra Sentrum</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">★</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--red)">Rød Skole Kråkerøy ← VÅRT BOSTED</div><div style="font-size:11px;color:var(--grey)">Ca. 10 min fra Sentrum · Endestasjon</div></div>
+        </div>
+      </div>
+      <div class="tip-box">🔄 For Merkur Arena: ta Rute 9 til <strong>Sentrum</strong>, bytt til <strong>Rute 4, 5 eller 8</strong> mot Merkur Arena.</div>
+    </div>
+
+    <!-- PRAKTISK -->
+    <div class="st">ℹ️ Praktisk</div>
+    <div class="info-card">
+      <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
+      <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">Ca. hvert 20. min</span></div>
+      <div class="info-row"><span class="info-label">Prioritet</span><span class="info-val">Lag til kamp prioriteres</span></div>
+      <div class="info-row"><span class="info-label">Fredag</span><span class="info-val">Ingen faste avganger – ring</span></div>
+      <div class="info-row"><span class="info-label">Servicetelefon</span><span class="info-val"><a href="tel:40001722" style="color:var(--blue-mid);text-decoration:none">4000 17 22</a></span></div>
+      <div class="tip-box">📱 Ring <strong>4000 17 22</strong> ved spørsmål. Infoskranke på Kongsten og Merkur Arena.</div>
+    </div>
+
+    <button class="map-btn" onclick="window.open('https://www.fredrikstadcup.no/busstider','_blank')">🔗 Åpne offisiell rutetabell (fredrikstadcup.no)</button>
   </div>
 
   <!-- SPØRSMÅL & SVAR -->
@@ -2063,6 +2182,48 @@ window.apneAdmin = () => {
 
 window.lukkAdmin = () => {
   document.getElementById('admin-panel').classList.remove('show');
+};
+
+// ── Buss reiseplanlegger ──────────────────────────────────────
+const BUSS_RUTER = {
+  'rod_skole→kongsten':  { linje:'Rute 9', stopp:['Rød Skole Kråkerøy','Kråkerøy ungd./Blomsterøyhallen','Rødsmyra skole','Akademiet/Wang/HiOF','Sentrum (knutepunkt)','Kongsten Arena'], tid:'~30 min', bytte:false },
+  'kongsten→rod_skole':  { linje:'Rute 9', stopp:['Kongsten Arena','Sentrum (knutepunkt)','Akademiet/Wang/HiOF','Rødsmyra skole','Kråkerøy ungd./Blomsterøyhallen','Rød Skole Kråkerøy'], tid:'~30 min', bytte:false },
+  'rod_skole→merkur':    { linje:'Rute 9 + Rute 4/5/8', stopp:['Rød Skole Kråkerøy','→ Sentrum (knutepunkt)','🔄 Bytt til Rute 4, 5 eller 8','→ Merkur Arena'], tid:'~40 min', bytte:true, byttested:'Sentrum' },
+  'merkur→rod_skole':    { linje:'Rute 4/5/8 + Rute 9', stopp:['Merkur Arena','→ Sentrum (knutepunkt)','🔄 Bytt til Rute 9','→ Rød Skole Kråkerøy'], tid:'~40 min', bytte:true, byttested:'Sentrum' },
+  'rod_skole→lisleby':   { linje:'Rute 9 + Rute 6', stopp:['Rød Skole Kråkerøy','→ Kongsten Arena (knutepunkt)','🔄 Bytt til Rute 6','→ Lislebyhallen'], tid:'~50 min', bytte:true, byttested:'Kongsten Arena' },
+  'lisleby→rod_skole':   { linje:'Rute 6 + Rute 9', stopp:['Lislebyhallen','→ Kongsten Arena (knutepunkt)','🔄 Bytt til Rute 9','→ Rød Skole Kråkerøy'], tid:'~50 min', bytte:true, byttested:'Kongsten Arena' },
+  'rod_skole→kvernhuset':{ linje:'Rute 9 + Rute 8', stopp:['Rød Skole Kråkerøy','→ Sentrum (knutepunkt)','🔄 Bytt til Rute 8','→ Kvernhuset'], tid:'~45 min', bytte:true, byttested:'Sentrum' },
+  'kvernhuset→rod_skole':{ linje:'Rute 8 + Rute 9', stopp:['Kvernhuset','→ Sentrum (knutepunkt)','🔄 Bytt til Rute 9','→ Rød Skole Kråkerøy'], tid:'~45 min', bytte:true, byttested:'Sentrum' },
+  'kongsten→merkur':     { linje:'Rute 4/5/8', stopp:['Kongsten Arena','Sentrum (knutepunkt)','Merkur Arena'], tid:'~20 min', bytte:false },
+  'merkur→kongsten':     { linje:'Rute 4/5/8', stopp:['Merkur Arena','Sentrum (knutepunkt)','Kongsten Arena'], tid:'~20 min', bytte:false },
+};
+
+window.oppdaterBussRute = function() {
+  const fra = document.getElementById('buss-fra').value;
+  const til = document.getElementById('buss-til').value;
+  const res = document.getElementById('buss-resultat');
+  if (!fra || !til) { res.innerHTML = ''; return; }
+  if (fra === til) { res.innerHTML = '<div class="tip-box" style="color:var(--grey)">Du er allerede der! 😄</div>'; return; }
+  const key = fra + '→' + til;
+  const rute = BUSS_RUTER[key];
+  if (!rute) {
+    res.innerHTML = '<div class="tip-box" style="border-left-color:var(--grey);color:var(--grey)">Direkte rute ikke tilgjengelig. Sjekk <a href="https://www.fredrikstadcup.no/busstider" target="_blank" style="color:var(--blue)">fredrikstadcup.no/busstider</a></div>';
+    return;
+  }
+  const bytteFarge = rute.bytte ? '#f59e0b' : 'var(--green)';
+  const bytteIkon  = rute.bytte ? '🔄' : '✅';
+  let html = '<div style="background:' + (rute.bytte ? '#fffbeb' : '#f0fdf4') + ';border-radius:9px;padding:12px 14px;border-left:3px solid ' + bytteFarge + '">';
+  html += '<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:900;font-size:16px;color:var(--text);margin-bottom:4px">' + bytteIkon + ' ' + rute.linje + '</div>';
+  html += '<div style="font-size:11px;color:var(--grey);margin-bottom:10px">⏱ ' + rute.tid + (rute.bytte ? ' · Bytt ved ' + rute.byttested : ' · Direkte') + '</div>';
+  rute.stopp.forEach((s, i) => {
+    const erBytte = s.includes('Bytt');
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0' + (i < rute.stopp.length-1 ? ';border-bottom:1px solid rgba(0,0,0,0.06)' : '') + '">';
+    html += '<div style="width:6px;height:6px;border-radius:50%;background:' + (erBytte ? '#f59e0b' : 'var(--blue)') + ';flex-shrink:0"></div>';
+    html += '<div style="font-size:13px;color:' + (erBytte ? '#92400e' : 'var(--text)') + ';font-weight:' + (erBytte ? '700' : '400') + '">' + s + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  res.innerHTML = html;
 };
 
 // ── Inline redigering ────────────────────────────────────────
