@@ -95,8 +95,10 @@ body.dark .map-btn    { background:#1a3a7a; }
 }
 .dark-toggle:active { transform: rotate(20deg) scale(0.9); }
 
-* { transition: background-color .25s ease, color .2s ease, border-color .2s ease; }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.info-card, .match-card, .contact-card, .rule-card, .poi-card, .lag-card, .hero-card, .week-card, .qa-thread, .qa-input-card, .admin-kamp {
+  transition: background-color .25s ease, color .2s ease, border-color .2s ease;
+}
 html, body { height: 100%; }
 body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--text); padding-bottom: env(safe-area-inset-bottom); }
 
@@ -172,7 +174,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 
 /* MAIN */
 .main { padding:18px 15px 90px; max-width:480px; margin:0 auto; }
-.view { display:none; } .view.active { display:block; }
+.view { display:none !important; } .view.active { display:block !important; }
 .st { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--grey); margin:22px 0 10px; }
 .st:first-child { margin-top:0; }
 
