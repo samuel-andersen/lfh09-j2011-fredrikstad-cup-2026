@@ -1222,7 +1222,7 @@ auth.onAuthStateChanged(user => {
   renderQAInput();
   if (user) {
     subscribePakkliste(user.uid);
-    if (user.email === ADMIN_EMAIL) {
+    if (ADMIN_EMAILS.includes(user.email)) {
       setTimeout(aktiverInlineEdit, 500);
     }
   } else {
@@ -1260,7 +1260,7 @@ function updateAuthUI() {
     btn.onclick = () => auth.signOut();
     bar.appendChild(info);
     // Admin-knapp for Samuel
-    if (currentUser && currentUser.email === ADMIN_EMAIL) {
+    if (isAdmin()) {
       const adminBtn = document.createElement('button');
       adminBtn.className = 'auth-btn';
       adminBtn.style.cssText = 'background:var(--red);color:white;margin-right:4px';
@@ -1410,70 +1410,267 @@ function showToast(msg, color) {
 }
 
 const LAG_CONFIG = {
-  rod:  { ids: ['0214','1114','3132','2342'], farge: '#C8102E', navn: 'J14 Rød',  profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487203' },
-  sort: { ids: ['1116','1121','3125','3130'], farge: '#1a2540', navn: 'J14 Sort', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204' },
-  g14:  { ids: ['0913','0919','3540','3146'], farge: '#059669', navn: 'G14 Biri', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1489145' },
+  rod:  { ids: ['0214','1114','3132','2342'], farge: '#C8102E', navn: 'J14 Rød',  profixioId: '1487203', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487203' },
+  sort: { ids: ['1116','1121','3125','3130'], farge: '#1a2540', navn: 'J14 Sort', profixioId: '1487204', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204' },
+  g14:  { ids: ['0913','0919','3540','3146'], farge: '#059669', navn: 'G14 Biri', profixioId: '1489145', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1489145' },
 };
 
-function renderLagKamper(lagKey) {
+// Sluttspill-data lagret i Firestore per lag
+let sluttspillData = { rod: { A: [], B: [] }, sort: { A: [], B: [] }, g14: { A: [], B: [] } };
+let unsubSluttspill = null;
+
+async function hentProfixioKamper(lagKey) {
+  const cfg = LAG_CONFIG[lagKey];
+  const url = cfg.profixio;
+  let html = null;
+
+  // Prøv direkte fetch
+  try {
+    const resp = await fetch(url, { headers: { 'Accept': 'text/html' } });
+    if (resp.ok) html = await resp.text();
+  } catch(e) {}
+
+  // Fallback: corsproxy.io
+  if (!html) {
+    try {
+      const resp = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+      if (resp.ok) html = await resp.text();
+    } catch(e) {}
+  }
+
+  // Fallback: allorigins
+  if (!html) {
+    try {
+      const resp = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url));
+      if (resp.ok) html = await resp.text();
+    } catch(e) {}
+  }
+
+  if (!html) {
+    console.log('Profixio ikke tilgjengelig for', lagKey);
+    return;
+  }
+
+  behandleProfixioHTML(lagKey, html);
+}
+
+function behandleProfixioHTML(lagKey, html) {
+  const gruppeIds = LAG_CONFIG[lagKey].ids;
+
+  // Finn alle 4-sifrede kamp-IDer i HTML
+  const allIds = [...new Set([...html.matchAll(/\b(\d{4})\b/g)].map(m => m[1]))];
+
+  // Filtrer vekk gruppe-IDer og irrelevante tall
+  const kandidater = allIds.filter(id =>
+    !gruppeIds.includes(id) &&
+    parseInt(id) >= 100 &&
+    parseInt(id) <= 9999 &&
+    html.indexOf(id) !== -1
+  );
+
+  const nyeKamper = [];
+  kandidater.forEach(id => {
+    const idx = html.indexOf(id);
+    const kontekst = html.substring(Math.max(0, idx - 100), idx + 500);
+
+    // Finn tid
+    const tidMatch = kontekst.match(/(\d{2}:\d{2})/);
+    // Finn sted/bane
+    const stedrMatch = kontekst.match(/(Kongsten|Merkur|Lisleby|Kvernhuset|Østsiden|Borgehallen|Glemmenhallen|Rolvsøy|Ambjørnrød|Gresvik)/i);
+    // Finn dato basert på dag
+    const erLordag = /Sat|May 23/i.test(kontekst);
+    const erSondag = /Sun|May 24/i.test(kontekst);
+    const erMandag = /Mon|May 25/i.test(kontekst);
+
+    // Finn lagenes navn
+    const hjemmeMatch = kontekst.match(/(?:^|\n)\s*([A-Za-zÆØÅæøå/\-0-9 ]+?)\s*(?:\n|<)/);
+
+    if (tidMatch && (stedrMatch || erMandag || erLordag || erSondag)) {
+      const dato = erMandag ? '2026-05-25' : erSondag ? '2026-05-24' : '2026-05-23';
+
+      // Hent lagnavn fra kontekst (enkelt regex for å finne "X vs Y")
+      const lagNavnMatch = kontekst.match(/([A-Za-zÆØÅæøå/\s]+(?:1|2|3)?)\s*[\n<>]+\s*([A-Za-zÆØÅæøå/\s]+(?:1|2|3)?)/);
+
+      nyeKamper.push({
+        id,
+        dato,
+        tid: tidMatch[1],
+        bane: stedrMatch ? stedrMatch[1] : 'TBD',
+        hjemme: 'TBD',
+        borte: 'TBD',
+        erSluttspill: erMandag,
+      });
+    }
+  });
+
+  if (nyeKamper.length === 0) return;
+
+  const nyData = JSON.parse(JSON.stringify(sluttspillData));
+  nyeKamper.forEach(k => {
+    // Klassifiser A vs B basert på kampnummer
+    // Mandag tidlig = A (semifinale/finale), mandag sent = B
+    const tidInt = parseInt((k.tid || '00:00').replace(':',''));
+    const gruppe = tidInt < 1200 ? 'A' : 'B';
+    if (!nyData[lagKey][gruppe].find(x => x.id === k.id)) {
+      nyData[lagKey][gruppe].push(k);
+    }
+  });
+
+  db.collection('sluttspill').doc('kamper').set(nyData);
+  showToast('Sluttspillkamper oppdatert! 🏆');
+}
+
+function initSluttspill() {
+  unsubSluttspill = db.collection('sluttspill').doc('kamper').onSnapshot(snap => {
+    if (snap.exists) {
+      const data = snap.data();
+      sluttspillData = {
+        rod:  { A: data.rod?.A  || [], B: data.rod?.B  || [] },
+        sort: { A: data.sort?.A || [], B: data.sort?.B || [] },
+        g14:  { A: data.g14?.A  || [], B: data.g14?.B  || [] },
+      };
+    }
+    // Re-render aktiv lag-tab
+    ['rod','sort','g14'].forEach(lag => {
+      const el = document.getElementById('lag-' + lag);
+      if (el && el.style.display !== 'none') renderLagKamper(lag);
+    });
+  });
+
+  // Auto-fetch fra Profixio hvert 10. min under cuphelgen
+  const now = new Date();
+  const cupStart = new Date('2026-05-22T00:00:00');
+  const cupSlutt = new Date('2026-05-25T23:59:00');
+  if (now >= cupStart && now <= cupSlutt) {
+    ['rod','sort','g14'].forEach(lag => hentProfixioKamper(lag));
+    setInterval(() => {
+      ['rod','sort','g14'].forEach(lag => hentProfixioKamper(lag));
+    }, 10 * 60 * 1000);
+  }
+}
+
+function renderLagKamper(lagKey, aktivFane) {
   const cfg = LAG_CONFIG[lagKey];
   const el = document.getElementById('lag-' + lagKey);
   if (!el) return;
+  if (!aktivFane) aktivFane = el.dataset.aktivFane || 'gruppe';
+  el.dataset.aktivFane = aktivFane;
 
   const kamper = ALLE_KAMPER.filter(k => cfg.ids.includes(k.id));
   const now = new Date();
-
-  // Sorter: kommende kamper øverst (kronologisk), spilte nederst (nyeste øverst)
-  const kommende = kamper.filter(k => kampTidstempel(k.dato, k.tid) > now)
-                         .sort((a,b) => kampTidstempel(a.dato,a.tid) - kampTidstempel(b.dato,b.tid));
-  const spilte   = kamper.filter(k => kampTidstempel(k.dato, k.tid) <= now)
-                         .sort((a,b) => kampTidstempel(b.dato,b.tid) - kampTidstempel(a.dato,a.tid));
 
   el.innerHTML = '';
 
   // Profixio-link
   const tip = document.createElement('div');
   tip.className = 'tip-box';
-  tip.style.cssText = 'margin-bottom:12px;border-left-color:' + cfg.farge;
+  tip.style.cssText = 'margin-bottom:10px;border-left-color:' + cfg.farge;
   tip.innerHTML = '📊 ' + cfg.navn + ' · <a href="' + cfg.profixio + '" target="_blank" style="color:' + cfg.farge + '">Live på Profixio</a>';
   el.appendChild(tip);
 
-  // Neste kamp-hero
-  if (kommende.length > 0) {
-    const neste = kommende[0];
-    const res = resultater[neste.id];
-    const nesteSt = document.createElement('div');
-    nesteSt.className = 'st';
-    nesteSt.style.marginTop = '0';
-    nesteSt.textContent = '⏩ Neste kamp';
-    el.appendChild(nesteSt);
-    el.appendChild(lagMatchCard(neste, res, cfg.farge, true));
-  }
+  // 3 sub-tabs
+  const sData = sluttspillData[lagKey] || { A: [], B: [] };
+  const harA = sData.A.length > 0;
+  const harB = sData.B.length > 0;
 
-  // Resterende kommende
-  if (kommende.length > 1) {
-    const restSt = document.createElement('div');
-    restSt.className = 'st';
-    restSt.textContent = 'Kommende kamper';
-    el.appendChild(restSt);
-    kommende.slice(1).forEach(k => el.appendChild(lagMatchCard(k, resultater[k.id], cfg.farge, false)));
-  }
+  const tabWrap = document.createElement('div');
+  tabWrap.style.cssText = 'display:flex;gap:5px;margin-bottom:12px;';
 
-  // Spilte kamper
-  if (spilte.length > 0) {
-    const spiltSt = document.createElement('div');
-    spiltSt.className = 'st';
-    spiltSt.textContent = '📋 Spilte kamper';
-    el.appendChild(spiltSt);
-    spilte.forEach(k => el.appendChild(lagMatchCard(k, resultater[k.id], cfg.farge, false)));
-  }
+  [
+    { key:'gruppe',      label:'Gruppe',       dot: cfg.farge },
+    { key:'sluttspillA', label:'Sluttspill A',  dot: '#f59e0b', ny: harA },
+    { key:'sluttspillB', label:'Sluttspill B',  dot: '#6b7a96', ny: harB },
+  ].forEach(tab => {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'flex:1;padding:7px 4px;border-radius:8px;border:1.5px solid ' +
+      (aktivFane === tab.key ? cfg.farge : 'var(--mid)') +
+      ';background:' + (aktivFane === tab.key ? cfg.farge + '18' : 'var(--off)') +
+      ';font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;letter-spacing:.5px;cursor:pointer;color:' +
+      (aktivFane === tab.key ? cfg.farge : 'var(--grey)') + ';position:relative;';
+    btn.textContent = tab.label;
+    if (tab.ny) {
+      const dot = document.createElement('span');
+      dot.style.cssText = 'position:absolute;top:3px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--red);display:block;';
+      btn.appendChild(dot);
+    }
+    btn.onclick = () => renderLagKamper(lagKey, tab.key);
+    tabWrap.appendChild(btn);
+  });
+  el.appendChild(tabWrap);
 
-  // Tabell
-  const tabSt = document.createElement('div');
-  tabSt.className = 'st';
-  tabSt.textContent = 'Tabell';
-  el.appendChild(tabSt);
-  el.appendChild(lagTabell(cfg.ids, cfg.farge));
+  if (aktivFane === 'gruppe') {
+    // Sorter: kommende øverst, spilte nederst
+    const kommende = kamper.filter(k => kampTidstempel(k.dato, k.tid) > now)
+                           .sort((a,b) => kampTidstempel(a.dato,a.tid) - kampTidstempel(b.dato,b.tid));
+    const spilte   = kamper.filter(k => kampTidstempel(k.dato, k.tid) <= now)
+                           .sort((a,b) => kampTidstempel(b.dato,b.tid) - kampTidstempel(a.dato,a.tid));
+
+    if (kommende.length > 0) {
+      const st = document.createElement('div');
+      st.className = 'st'; st.style.marginTop = '0';
+      st.textContent = '⏩ Neste kamp';
+      el.appendChild(st);
+      el.appendChild(lagMatchCard(kommende[0], resultater[kommende[0].id], cfg.farge, true));
+    }
+    if (kommende.length > 1) {
+      const st = document.createElement('div');
+      st.className = 'st'; st.textContent = 'Kommende kamper';
+      el.appendChild(st);
+      kommende.slice(1).forEach(k => el.appendChild(lagMatchCard(k, resultater[k.id], cfg.farge, false)));
+    }
+    if (spilte.length > 0) {
+      const st = document.createElement('div');
+      st.className = 'st'; st.textContent = '📋 Spilte kamper';
+      el.appendChild(st);
+      spilte.forEach(k => el.appendChild(lagMatchCard(k, resultater[k.id], cfg.farge, false)));
+    }
+
+    // Tabell
+    const tabSt = document.createElement('div');
+    tabSt.className = 'st'; tabSt.textContent = 'Tabell';
+    el.appendChild(tabSt);
+    el.appendChild(lagTabell(cfg.ids, cfg.farge, lagKey));
+  } else {
+    // Sluttspill A eller B
+    const ssKey = aktivFane === 'sluttspillA' ? 'A' : 'B';
+    const ssKamper = sData[ssKey] || [];
+
+    if (ssKamper.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.innerHTML = '<div style="font-size:36px;margin-bottom:8px">' +
+        (ssKey === 'A' ? '🏆' : '🥈') + '</div>' +
+        '<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">Sluttspill ' + ssKey + '</div>' +
+        '<div style="font-size:13px">Hentes automatisk fra Profixio<br>når kampene er klart – mandag 25. mai</div>';
+      const refreshBtn = document.createElement('button');
+      refreshBtn.style.cssText = 'margin-top:14px;padding:9px 18px;background:' + cfg.farge + ';color:white;border:none;border-radius:9px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:13px;cursor:pointer;';
+      refreshBtn.textContent = '🔄 Sjekk Profixio nå';
+      refreshBtn.onclick = () => { hentProfixioKamper(lagKey); showToast('Sjekker Profixio...'); };
+      empty.appendChild(refreshBtn);
+      el.appendChild(empty);
+    } else {
+      const kommende = ssKamper.filter(k => !resultater[k.id])
+                               .sort((a,b) => a.tid.localeCompare(b.tid));
+      const spilte   = ssKamper.filter(k => resultater[k.id])
+                               .sort((a,b) => b.tid.localeCompare(a.tid));
+
+      if (kommende.length > 0) {
+        const st = document.createElement('div'); st.className = 'st'; st.style.marginTop='0';
+        st.textContent = '⏩ Neste kamp';
+        el.appendChild(st);
+        el.appendChild(lagMatchCard(kommende[0], resultater[kommende[0].id], cfg.farge, true));
+        kommende.slice(1).forEach(k => {
+          el.appendChild(lagMatchCard(k, resultater[k.id], cfg.farge, false));
+        });
+      }
+      if (spilte.length > 0) {
+        const st = document.createElement('div'); st.className = 'st';
+        st.textContent = '📋 Spilte kamper';
+        el.appendChild(st);
+        spilte.forEach(k => el.appendChild(lagMatchCard(k, resultater[k.id], cfg.farge, false)));
+      }
+    }
+  }
 }
 
 function lagMatchCard(k, res, farge, erNeste) {
@@ -1528,7 +1725,7 @@ function lagMatchCard(k, res, farge, erNeste) {
   return card;
 }
 
-function lagTabell(ids, farge) {
+function lagTabell(ids, farge, lagKey) {
   const card = document.createElement('div');
   card.className = 'info-card';
 
@@ -1620,7 +1817,7 @@ function lagTabell(ids, farge) {
 }
 
 // ── Q&A Forum ─────────────────────────────────────────────────
-const ADMINS = ['samuel.andersen@gmail.com']; // trenere som kan slette alt
+const ADMINS = ['samuel.andersen@gmail.com', 'kuttutashop@gmail.com'];
 const REACTIONS = ['👍','❤️','😂'];
 
 function isAdmin() {
@@ -1880,8 +2077,6 @@ function renderQA(liste) {
   });
 }
 
-// ── Admin panel ───────────────────────────────────────────────
-const ADMIN_EMAIL = 'samuel.andersen@gmail.com';
 
 const ALLE_KAMPER = [
   // J14 Rød
@@ -2201,7 +2396,6 @@ window.apneAdmin = () => {
 window.lukkAdmin = () => {
   document.getElementById('admin-panel').classList.remove('show');
 };
-
 // ── Buss reiseplanlegger ──────────────────────────────────────
 const BUSS_RUTER = {
   'rod_skole→kongsten':  { linje:'Rute 9', stopp:['Rød Skole Kråkerøy','Kråkerøy ungd./Blomsterøyhallen','Rødsmyra skole','Akademiet/Wang/HiOF','Sentrum (knutepunkt)','Kongsten Arena'], tid:'~30 min', bytte:false },
@@ -2305,7 +2499,7 @@ function oppdaterKontaktKort() {
 }
 
 function aktiverInlineEdit() {
-  if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+  if (!isAdmin()) return;
   document.body.classList.add('admin-mode');
   document.querySelectorAll('[data-key]').forEach(el => {
     if (el._editListener) return; // unngå duplikater
@@ -2576,6 +2770,7 @@ initQA();
 initResultater();
 initRediger();
 initPinned();
+initSluttspill();
 
 
 </script>
