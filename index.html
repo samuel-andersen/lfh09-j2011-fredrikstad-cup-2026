@@ -341,6 +341,35 @@ body.dark .admin-teams { color:#e8edf5; }
 .score-badge.win  { background:#15803d; }
 .score-badge.loss { background:var(--red); }
 .score-badge.draw { background:#d97706; }
+/* INLINE EDIT */
+[data-key] { position:relative; }
+.admin-mode [data-key] { cursor:pointer; border-bottom:1.5px dashed var(--blue-mid); padding-bottom:1px; }
+.admin-mode [data-key]:hover { background:rgba(0,68,187,0.06); border-radius:4px; }
+.admin-mode [data-key]::after { content:'✏️'; font-size:10px; margin-left:4px; opacity:0.5; }
+.inline-edit-wrap { display:flex; align-items:center; gap:6px; }
+.inline-edit-inp { flex:1; padding:5px 8px; border:2px solid var(--blue); border-radius:7px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; color:var(--text); background:white; outline:none; }
+.inline-edit-ok  { background:var(--green); color:white; border:none; border-radius:6px; padding:5px 10px; font-size:13px; cursor:pointer; flex-shrink:0; }
+.inline-edit-avb { background:var(--grey); color:white; border:none; border-radius:6px; padding:5px 8px; font-size:12px; cursor:pointer; flex-shrink:0; }
+body.dark .inline-edit-inp { background:#111827; color:#e8edf5; }
+
+/* PINNED CARDS */
+.pinned-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:14px 16px; margin-bottom:8px; border-left:4px solid var(--blue); }
+.pinned-card .pinned-label { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:4px; }
+.pinned-card .pinned-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:17px; color:var(--text); line-height:1.3; }
+.pinned-card .pinned-sub   { font-size:12px; color:var(--grey); margin-top:3px; }
+body.dark .pinned-card { background:#111827; }
+
+/* ADMIN PIN */
+.pin-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--light); cursor:grab; }
+.pin-item:last-child { border-bottom:none; }
+.pin-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--mid); display:flex; align-items:center; justify-content:center; font-size:12px; color:white; flex-shrink:0; transition:all .15s; }
+.pin-check.on { background:var(--blue); border-color:var(--blue); }
+.pin-name { flex:1; font-size:13px; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-weight:700; }
+.pin-order { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:15px; color:var(--blue); width:20px; text-align:center; }
+.drag-handle { color:var(--mid); font-size:16px; cursor:grab; }
+.pin-item.dragging { opacity:0.4; }
+.pin-item.drag-over { border-top:2px solid var(--blue); }
+
 .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
@@ -432,6 +461,8 @@ body.dark .admin-teams { color:#e8edf5; }
     </div>
 
     <div class="st">Hurtiginfo</div>
+    <div id="pinned-wrap"></div>
+    <div id="oversikt-standard">
     <div class="info-card">
       <div class="info-card-header">
         <div class="info-card-icon">🚗</div>
@@ -453,7 +484,7 @@ body.dark .admin-teams { color:#e8edf5; }
         </div>
       </div>
       <div class="info-row"><span class="info-label">Adresse</span><span class="info-val">Dueveien 2, 1679 Kråkerøy</span></div>
-      <div class="info-row"><span class="info-label">Rom</span><span class="info-val">225 og 229</span></div>
+      <div class="info-row"><span class="info-label">Rom</span><span class="info-val" data-key="bo.rom">225 og 229</span></div>
       <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag fra 16:30</span></div>
     </div>
     <div class="info-card">
@@ -467,9 +498,8 @@ body.dark .admin-teams { color:#e8edf5; }
       <div class="info-row"><span class="info-label">Navn</span><span class="info-val">Samuel Andersen</span></div>
       <div class="info-row"><span class="info-label">Telefon</span><span class="info-val"><a href="tel:+4740044442" style="color:var(--blue-mid);text-decoration:none">+47 400 44 442</a></span></div>
     </div>
+    </div><!-- /oversikt-standard -->
   </div>
-
-  <!-- PROGRAM -->
   <div class="view" id="view-program">
     <div class="hero-card" style="margin-bottom:12px">
       <div class="hero-label">DAGSPROGRAM</div>
@@ -588,12 +618,12 @@ body.dark .admin-teams { color:#e8edf5; }
           <div class="info-card-sub">Fredag 22. mai 2026</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val">Ca. kl. 14:45</span></div>
-      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val">Kl. 15:00</span></div>
-      <div class="info-row"><span class="info-label">Møtested</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Transport</span><span class="info-val">Private biler</span></div>
-      <div class="info-row"><span class="info-label">Kjøretid</span><span class="info-val">Ca. 3,5 timer</span></div>
-      <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val">Ca. kl. 18:30</span></div>
+      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val" data-key="avreise.oppmote">Ca. kl. 14:45</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val" data-key="avreise.avgang">Kl. 15:00</span></div>
+      <div class="info-row"><span class="info-label">Møtested</span><span class="info-val" data-key="avreise.motested">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Transport</span><span class="info-val" data-key="avreise.transport">Private biler</span></div>
+      <div class="info-row"><span class="info-label">Kjøretid</span><span class="info-val" data-key="avreise.kjoretid">Ca. 3,5 timer</span></div>
+      <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val" data-key="avreise.ankomst">Ca. kl. 18:30</span></div>
       <div class="tip-box">⚠️ Møt <strong>alltid</strong> 15 minutter før angitt tid. Vi kjører ikke uten deg!</div>
     </div>
     <div class="info-card">
@@ -604,8 +634,8 @@ body.dark .admin-teams { color:#e8edf5; }
           <div class="info-card-sub">Deling av kjørekostnader</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Passasjer betaler</span><span class="info-val">Kr 500 til sjåfør</span></div>
-      <div class="info-row"><span class="info-label">Antall biler</span><span class="info-val">Minst 8 biler</span></div>
+      <div class="info-row"><span class="info-label">Passasjer betaler</span><span class="info-val" data-key="avreise.passasjer">Kr 500 til sjåfør</span></div>
+      <div class="info-row"><span class="info-label">Antall biler</span><span class="info-val" data-key="avreise.antallbiler">Minst 8 biler</span></div>
       <div class="tip-box">💡 Betales direkte til sjåfør – samme pris for alle passasjerer.</div>
     </div>
     <div class="info-card">
@@ -647,8 +677,8 @@ body.dark .admin-teams { color:#e8edf5; }
           <div class="info-card-sub">Mandag 25. mai 2026</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val placeholder">Etter sluttspill</span></div>
-      <div class="info-row"><span class="info-label">Fra</span><span class="info-val">Rød Skole Krakerøy</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val" data-key="avreise.hjemreise">Etter sluttspill</span></div>
+      <div class="info-row"><span class="info-label">Fra</span><span class="info-val" data-key="avreise.hjemfra">Rød Skole Krakerøy</span></div>
       <div class="tip-box">📦 Husk å rydde rommet og ta med alt. Sjekk under madrassen!</div>
     </div>
   </div>
@@ -664,12 +694,12 @@ body.dark .admin-teams { color:#e8edf5; }
           <div class="info-card-sub">Dueveien 2, 1679 Kråkerøy</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val">Dueveien 2, 1679 Kråkerøy</span></div>
+      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val" data-key="bo.adresse">Dueveien 2, 1679 Kråkerøy</span></div>
       <div class="info-row"><span class="info-label">Rom</span><span class="info-val">225 og 229</span></div>
-      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag 22. mai, fra 16:30</span></div>
-      <div class="info-row"><span class="info-label">Utsjekk</span><span class="info-val">Mandag 25. mai</span></div>
-      <div class="info-row"><span class="info-label">Fasiliteter</span><span class="info-val">Dusj + kiosk</span></div>
-      <div class="info-row"><span class="info-label">Nærmeste butikk</span><span class="info-val">KIWI – 600 m</span></div>
+      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val" data-key="bo.innsjekk">Fredag 22. mai, fra 16:30</span></div>
+      <div class="info-row"><span class="info-label">Utsjekk</span><span class="info-val" data-key="bo.utsjekk">Mandag 25. mai</span></div>
+      <div class="info-row"><span class="info-label">Fasiliteter</span><span class="info-val" data-key="bo.fasiliteter">Dusj + kiosk</span></div>
+      <div class="info-row"><span class="info-label">Nærmeste butikk</span><span class="info-val" data-key="bo.butikk">KIWI – 600 m</span></div>
       <button class="map-btn" style="margin-top:12px" onclick="openMaps('Dueveien 2, 1679 Kråkerøy')">📍 Åpne i Google Maps</button>
     </div>
     <div class="info-card">
@@ -693,9 +723,9 @@ body.dark .admin-teams { color:#e8edf5; }
           <div class="info-card-sub">Gjelder hele oppholdet</div>
         </div>
       </div>
-      <div class="info-row"><span class="info-label">Frokost</span><span class="info-val">06:15–10:00 på skolen</span></div>
-      <div class="info-row"><span class="info-label">Leggetid</span><span class="info-val placeholder">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Felles samling</span><span class="info-val placeholder">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Frokost</span><span class="info-val" data-key="bo.frokost">06:15–10:00 på skolen</span></div>
+      <div class="info-row"><span class="info-label">Leggetid</span><span class="info-val" data-key="bo.leggetid">Oppdateres</span></div>
+      <div class="info-row"><span class="info-label">Felles samling</span><span class="info-val" data-key="bo.fellessamling">Oppdateres</span></div>
       <div class="tip-box">🔇 Respekter andre gjester. Innendørs er vi rolige.</div>
     </div>
   </div>
@@ -801,41 +831,41 @@ body.dark .admin-teams { color:#e8edf5; }
     <div class="contact-card">
       <div class="contact-avatar">SA</div>
       <div style="flex:1">
-        <div class="contact-name">Samuel Andersen</div>
-        <div class="contact-role">Trener / turansvarlig</div>
-        <div class="contact-tel"><a href="tel:+4740044442" style="color:var(--blue-mid);text-decoration:none">+47 400 44 442</a></div>
+        <div class="contact-name" data-key="kontakt.1.navn">Samuel Andersen</div>
+        <div class="contact-role" data-key="kontakt.1.rolle">Trener / turansvarlig</div>
+        <div class="contact-tel" data-key="kontakt.1.tlf">+47 400 44 442</div>
       </div>
     </div>
     <div class="contact-card">
       <div class="contact-avatar">AR</div>
       <div style="flex:1">
-        <div class="contact-name">Anne-Line Rosenberg Rotevatn</div>
-        <div class="contact-role">Trener</div>
-        <div class="contact-tel"><a href="tel:+4795864622" style="color:var(--blue-mid);text-decoration:none">+47 958 64 622</a></div>
+        <div class="contact-name" data-key="kontakt.2.navn">Anne-Line Rosenberg Rotevatn</div>
+        <div class="contact-role" data-key="kontakt.2.rolle">Trener</div>
+        <div class="contact-tel" data-key="kontakt.2.tlf">+47 958 64 622</div>
       </div>
     </div>
     <div class="contact-card">
       <div class="contact-avatar">FK</div>
       <div style="flex:1">
-        <div class="contact-name">Foreldrekontakt</div>
-        <div class="contact-role">Foreldreansvarlig</div>
-        <div class="contact-tel placeholder">Telefon oppdateres</div>
+        <div class="contact-name" data-key="kontakt.3.navn">Foreldrekontakt</div>
+        <div class="contact-role" data-key="kontakt.3.rolle">Foreldreansvarlig</div>
+        <div class="contact-tel" data-key="kontakt.3.tlf">Telefon oppdateres</div>
       </div>
     </div>
     <div class="contact-card">
       <div class="contact-avatar">HH</div>
       <div style="flex:1">
-        <div class="contact-name">Hege Havn</div>
-        <div class="contact-role">Leder (stedfortreder TBD)</div>
-        <div class="contact-tel placeholder">Telefon oppdateres</div>
+        <div class="contact-name" data-key="kontakt.4.navn">Hege Havn</div>
+        <div class="contact-role" data-key="kontakt.4.rolle">Leder (stedfortreder TBD)</div>
+        <div class="contact-tel" data-key="kontakt.4.tlf">Telefon oppdateres</div>
       </div>
     </div>
     <div class="contact-card">
       <div class="contact-avatar">+1</div>
       <div style="flex:1">
-        <div class="contact-name">Leder TBD</div>
-        <div class="contact-role">Leder</div>
-        <div class="contact-tel placeholder">Telefon oppdateres</div>
+        <div class="contact-name" data-key="kontakt.5.navn">Leder TBD</div>
+        <div class="contact-role" data-key="kontakt.5.rolle">Leder</div>
+        <div class="contact-tel" data-key="kontakt.5.tlf">Telefon oppdateres</div>
       </div>
     </div>
 
@@ -1055,8 +1085,12 @@ auth.onAuthStateChanged(user => {
   renderQAInput();
   if (user) {
     subscribePakkliste(user.uid);
+    if (user.email === ADMIN_EMAIL) {
+      setTimeout(aktiverInlineEdit, 500);
+    }
   } else {
     if (unsubPakk) { unsubPakk(); unsubPakk = null; }
+    deaktiverInlineEdit();
     lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
   }
 });
@@ -1776,9 +1810,10 @@ function byggAdminPanel() {
   tabWrap.style.cssText = 'display:flex;gap:6px;margin-bottom:14px;';
 
   const tabs = [
-    { key:'rod',  farge:'#C8102E', label:'J14 Rød' },
-    { key:'sort', farge:'#1a2540', label:'J14 Sort' },
-    { key:'g14',  farge:'#059669', label:'G14 Biri' },
+    { key:'rod',      farge:'#C8102E', label:'J14 Rød' },
+    { key:'sort',     farge:'#1a2540', label:'J14 Sort' },
+    { key:'g14',      farge:'#059669', label:'G14 Biri' },
+    { key:'oversikt', farge:'#003087', label:'📌 Oversikt' },
   ];
 
   tabs.forEach((tab, i) => {
@@ -1803,6 +1838,12 @@ function byggAdminPanel() {
     seksjon.className = 'admin-lag-seksjon';
     seksjon.id = 'admin-seksjon-' + tab.key;
     seksjon.style.display = ti === 0 ? 'block' : 'none';
+
+    if (tab.key === 'oversikt') {
+      byggPinPanel(seksjon);
+      body.appendChild(seksjon);
+      return;
+    }
 
     const lagIds = LAG_CONFIG[tab.key].ids;
     const lagKamper = ALLE_KAMPER.filter(k => lagIds.includes(k.id));
@@ -2024,11 +2065,338 @@ window.lukkAdmin = () => {
   document.getElementById('admin-panel').classList.remove('show');
 };
 
+// ── Inline redigering ────────────────────────────────────────
+let redigerData = {};
+let unsubRediger = null;
+
+function initRediger() {
+  unsubRediger = db.collection('rediger').doc('data').onSnapshot(snap => {
+    redigerData = snap.exists ? (snap.data() || {}) : {};
+    oppdaterRedigerFelter();
+    oppdaterKontaktKort();
+  });
+}
+
+async function lagreRedigerFelt(key, verdi) {
+  const nyData = Object.assign({}, redigerData);
+  nyData[key] = verdi;
+  await db.collection('rediger').doc('data').set(nyData);
+}
+
+async function nullstillRedigerFelt(key) {
+  const nyData = Object.assign({}, redigerData);
+  delete nyData[key];
+  await db.collection('rediger').doc('data').set(nyData);
+}
+
+function oppdaterRedigerFelter() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (!key || key.startsWith('kontakt.')) return;
+    if (redigerData[key] !== undefined) {
+      if (!el.classList.contains('editing')) {
+        el.textContent = redigerData[key];
+        el.classList.remove('placeholder');
+      }
+    }
+  });
+}
+
+function oppdaterKontaktKort() {
+  [1,2,3,4,5].forEach(i => {
+    const navnEl  = document.querySelector('[data-key="kontakt.' + i + '.navn"]');
+    const rolleEl = document.querySelector('[data-key="kontakt.' + i + '.rolle"]');
+    const tlfEl   = document.querySelector('[data-key="kontakt.' + i + '.tlf"]');
+    if (navnEl  && redigerData['kontakt.' + i + '.navn'])  { navnEl.textContent  = redigerData['kontakt.' + i + '.navn']; }
+    if (rolleEl && redigerData['kontakt.' + i + '.rolle']) { rolleEl.textContent = redigerData['kontakt.' + i + '.rolle']; }
+    if (tlfEl   && redigerData['kontakt.' + i + '.tlf'])   {
+      tlfEl.textContent = redigerData['kontakt.' + i + '.tlf'];
+      tlfEl.classList.remove('placeholder');
+      const tlf = redigerData['kontakt.' + i + '.tlf'];
+      if (tlf && tlf.startsWith('+')) {
+        const a = document.createElement('a');
+        a.href = 'tel:' + tlf.replace(/\s/g,'');
+        a.style.cssText = 'color:var(--blue-mid);text-decoration:none';
+        a.textContent = tlf;
+        tlfEl.innerHTML = '';
+        tlfEl.appendChild(a);
+      }
+    }
+  });
+}
+
+function aktiverInlineEdit() {
+  if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+  document.body.classList.add('admin-mode');
+  document.querySelectorAll('[data-key]').forEach(el => {
+    if (el._editListener) return; // unngå duplikater
+    el._editListener = true;
+    el.addEventListener('click', function(e) {
+      if (!document.body.classList.contains('admin-mode')) return;
+      if (el.classList.contains('editing')) return;
+      e.stopPropagation();
+      startInlineEdit(el);
+    });
+  });
+}
+
+function deaktiverInlineEdit() {
+  document.body.classList.remove('admin-mode');
+}
+
+function startInlineEdit(el) {
+  const key = el.getAttribute('data-key');
+  const gammelVerdi = el.textContent.replace('✏️','').trim();
+  el.classList.add('editing');
+
+  const wrap = document.createElement('div');
+  wrap.className = 'inline-edit-wrap';
+
+  const inp = document.createElement('input');
+  inp.className = 'inline-edit-inp';
+  inp.value = gammelVerdi === 'Oppdateres' || gammelVerdi === 'Telefon oppdateres' ? '' : gammelVerdi;
+  inp.placeholder = gammelVerdi;
+
+  const ok = document.createElement('button');
+  ok.className = 'inline-edit-ok';
+  ok.textContent = '✓';
+
+  const avb = document.createElement('button');
+  avb.className = 'inline-edit-avb';
+  avb.textContent = '✕';
+
+  const nullstill = document.createElement('button');
+  nullstill.className = 'inline-edit-avb';
+  nullstill.style.background = 'var(--red)';
+  nullstill.textContent = '🗑';
+  nullstill.title = 'Nullstill til standard';
+
+  const lagre = async () => {
+    const nyVerdi = inp.value.trim();
+    if (nyVerdi) {
+      await lagreRedigerFelt(key, nyVerdi);
+      el.textContent = nyVerdi;
+      el.classList.remove('placeholder');
+    }
+    el.classList.remove('editing');
+    el.removeChild(wrap);
+    oppdaterKontaktKort();
+    showToast('Lagret! ✓');
+  };
+
+  ok.onclick = lagre;
+  inp.onkeydown = e => { if (e.key === 'Enter') lagre(); if (e.key === 'Escape') avb.click(); };
+
+  avb.onclick = () => {
+    el.classList.remove('editing');
+    el.removeChild(wrap);
+  };
+
+  nullstill.onclick = async () => {
+    if (!confirm('Nullstille til standardverdi?')) return;
+    await nullstillRedigerFelt(key);
+    el.classList.remove('editing');
+    el.removeChild(wrap);
+    showToast('Nullstilt', '#888');
+  };
+
+  wrap.appendChild(inp);
+  wrap.appendChild(ok);
+  wrap.appendChild(avb);
+  wrap.appendChild(nullstill);
+
+  el.innerHTML = '';
+  el.appendChild(wrap);
+  setTimeout(() => inp.focus(), 50);
+}
+
+// ── Pinnede kort ──────────────────────────────────────────────
+let pinnedData = [];
+let unsubPinned = null;
+
+const ALLE_PINS = [
+  { id:'neste-rod',   ikon:'🔴', label:'Neste kamp',    tittelFn: () => nestKampTittel('rod'),   subFn: () => nestKampSub('rod') },
+  { id:'neste-sort',  ikon:'⚫', label:'Neste kamp',    tittelFn: () => nestKampTittel('sort'),  subFn: () => nestKampSub('sort') },
+  { id:'neste-g14',   ikon:'🟢', label:'Neste kamp',    tittelFn: () => nestKampTittel('g14'),   subFn: () => nestKampSub('g14') },
+  { id:'avreise',     ikon:'🚗', label:'Avreise',       tittelFn: () => redigerData['avreise.avgang'] || 'Kl. 15:00 fra Lillehammer', subFn: () => redigerData['avreise.motested'] || 'Møtested oppdateres' },
+  { id:'overnatting', ikon:'🏫', label:'Overnatting',   tittelFn: () => redigerData['bo.adresse'] || 'Dueveien 2, 1679 Kråkerøy', subFn: () => 'Rom ' + (redigerData['bo.rom'] || '225 og 229') },
+  { id:'konsert',     ikon:'🎵', label:'Konsert',       tittelFn: () => 'Lørdag 23. mai kl. 19:40', subFn: () => 'Kongsten Arena · Cupbånd inkl.' },
+  { id:'middag-lor',  ikon:'🌮', label:'Middag lørdag', tittelFn: () => 'Taco med storfe', subFn: () => 'Kongsten Arena 14:00–18:30' },
+  { id:'middag-son',  ikon:'🍛', label:'Middag søndag', tittelFn: () => 'Baligryte med kylling', subFn: () => 'Merkur Arena 14:00–19:00' },
+  { id:'leggetid',    ikon:'🌙', label:'Leggetid',      tittelFn: () => redigerData['bo.leggetid'] || 'Oppdateres', subFn: () => 'Bestemt av trenere' },
+  { id:'kontakt1',    ikon:'📞', label:'Kontakt',       tittelFn: () => redigerData['kontakt.1.navn'] || 'Samuel Andersen', subFn: () => redigerData['kontakt.1.tlf'] || '+47 400 44 442' },
+];
+
+function nestKampTittel(lag) {
+  const cfg = LAG_CONFIG[lag];
+  if (!cfg) return '–';
+  const now = new Date();
+  const neste = ALLE_KAMPER.filter(k => cfg.ids.includes(k.id))
+    .sort((a,b) => kampTidstempel(a.dato,a.tid) - kampTidstempel(b.dato,b.tid))
+    .find(k => kampTidstempel(k.dato,k.tid) > now);
+  if (!neste) return cfg.navn + ' · Alle kamper spilt';
+  return neste.hjemme + ' vs. ' + neste.borte;
+}
+
+function nestKampSub(lag) {
+  const cfg = LAG_CONFIG[lag];
+  if (!cfg) return '';
+  const now = new Date();
+  const neste = ALLE_KAMPER.filter(k => cfg.ids.includes(k.id))
+    .sort((a,b) => kampTidstempel(a.dato,a.tid) - kampTidstempel(b.dato,b.tid))
+    .find(k => kampTidstempel(k.dato,k.tid) > now);
+  if (!neste) return '';
+  const dag = neste.dato === '2026-05-23' ? 'Lørdag' : 'Søndag';
+  return dag + ' ' + neste.tid + ' · ' + neste.bane;
+}
+
+function initPinned() {
+  unsubPinned = db.collection('pinned').doc('oversikt').onSnapshot(snap => {
+    pinnedData = snap.exists ? (snap.data().pins || []) : [];
+    renderPinnedOversikt();
+  });
+}
+
+function renderPinnedOversikt() {
+  const wrap = document.getElementById('pinned-wrap');
+  const std  = document.getElementById('oversikt-standard');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  if (!pinnedData.length) {
+    std.style.display = '';
+    return;
+  }
+  std.style.display = 'none';
+
+  pinnedData.forEach(pinId => {
+    const pin = ALLE_PINS.find(p => p.id === pinId);
+    if (!pin) return;
+    const card = document.createElement('div');
+    card.className = 'pinned-card';
+    card.innerHTML =
+      '<div class="pinned-label">' + pin.ikon + ' ' + pin.label + '</div>' +
+      '<div class="pinned-title">' + pin.tittelFn() + '</div>' +
+      '<div class="pinned-sub">'   + pin.subFn()    + '</div>';
+    // Klikk går til riktig seksjon
+    const navMap = { 'neste-rod':'kamper','neste-sort':'kamper','neste-g14':'kamper','avreise':'avreise','overnatting':'overnatting','konsert':'program','middag-lor':'mat','middag-son':'mat','leggetid':'overnatting','kontakt1':'kontakt' };
+    if (navMap[pinId]) card.style.cursor = 'pointer';
+    card.onclick = () => { if (navMap[pinId]) window.showView(navMap[pinId]); };
+    wrap.appendChild(card);
+  });
+}
+
+// ── Admin tab: Oversikt-kort ──────────────────────────────────
+function byggPinPanel(seksjon) {
+  seksjon.innerHTML = '';
+
+  const tip = document.createElement('div');
+  tip.className = 'tip-box';
+  tip.style.marginBottom = '12px';
+  tip.textContent = 'Velg opptil 4 kort. Dra for å endre rekkefølge. Valgte kort erstatter standard hurtiginfo.';
+  seksjon.appendChild(tip);
+
+  const list = document.createElement('div');
+  list.className = 'info-card';
+  list.id = 'pin-list';
+
+  const renderPinList = () => {
+    list.innerHTML = '';
+    ALLE_PINS.forEach(pin => {
+      const idx = pinnedData.indexOf(pin.id);
+      const erPinnet = idx !== -1;
+
+      const item = document.createElement('div');
+      item.className = 'pin-item';
+      item.draggable = erPinnet;
+      item.dataset.pinId = pin.id;
+
+      const check = document.createElement('div');
+      check.className = 'pin-check' + (erPinnet ? ' on' : '');
+      check.textContent = erPinnet ? (idx + 1) : '';
+
+      const name = document.createElement('div');
+      name.className = 'pin-name';
+      name.textContent = pin.ikon + ' ' + pin.label + ' – ' + pin.tittelFn();
+
+      const drag = document.createElement('span');
+      drag.className = 'drag-handle';
+      drag.textContent = erPinnet ? '⠿' : '';
+
+      item.appendChild(check);
+      item.appendChild(name);
+      item.appendChild(drag);
+
+      item.onclick = async (e) => {
+        if (e.target === drag) return;
+        let ny = [...pinnedData];
+        if (erPinnet) {
+          ny.splice(idx, 1);
+        } else {
+          if (ny.length >= 4) { showToast('Maks 4 kort!', '#f59e0b'); return; }
+          ny.push(pin.id);
+        }
+        await db.collection('pinned').doc('oversikt').set({ pins: ny });
+      };
+
+      // Drag-and-drop for rekkefølge
+      if (erPinnet) {
+        item.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', pin.id);
+          item.classList.add('dragging');
+        });
+        item.addEventListener('dragend', () => item.classList.remove('dragging'));
+        item.addEventListener('dragover', e => { e.preventDefault(); item.classList.add('drag-over'); });
+        item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+        item.addEventListener('drop', async e => {
+          e.preventDefault();
+          item.classList.remove('drag-over');
+          const fromId = e.dataTransfer.getData('text/plain');
+          if (fromId === pin.id) return;
+          const ny = [...pinnedData];
+          const fromIdx = ny.indexOf(fromId);
+          const toIdx   = ny.indexOf(pin.id);
+          if (fromIdx === -1 || toIdx === -1) return;
+          ny.splice(fromIdx, 1);
+          ny.splice(toIdx, 0, fromId);
+          await db.collection('pinned').doc('oversikt').set({ pins: ny });
+        });
+      }
+
+      list.appendChild(item);
+    });
+  };
+
+  renderPinList();
+
+  // Oppdater live når pinnedData endres
+  const origInit = initPinned;
+  db.collection('pinned').doc('oversikt').onSnapshot(snap => {
+    pinnedData = snap.exists ? (snap.data().pins || []) : [];
+    renderPinnedOversikt();
+    renderPinList();
+  });
+
+  const nullstillBtn = document.createElement('button');
+  nullstillBtn.className = 'admin-save-btn';
+  nullstillBtn.style.cssText = 'background:var(--grey);width:100%;margin-top:10px';
+  nullstillBtn.textContent = 'Nullstill – vis standard hurtiginfo';
+  nullstillBtn.onclick = async () => {
+    await db.collection('pinned').doc('oversikt').set({ pins: [] });
+    showToast('Nullstilt til standard', '#888');
+  };
+
+  seksjon.appendChild(list);
+  seksjon.appendChild(nullstillBtn);
+}
+
 // ── Init ──────────────────────────────────────────────────────
 oppdaterOversikt();
 lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
 initQA();
 initResultater();
+initRediger();
+initPinned();
 
 
 </script>
