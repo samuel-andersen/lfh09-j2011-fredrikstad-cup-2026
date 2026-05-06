@@ -174,7 +174,8 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 
 /* MAIN */
 .main { padding:18px 15px 90px; max-width:480px; margin:0 auto; }
-.view { display:none !important; } .view.active { display:block !important; }
+.view { display:none !important; visibility:hidden; height:0; overflow:hidden; }
+.view.active { display:block !important; visibility:visible; height:auto; overflow:visible; }
 .st { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--grey); margin:22px 0 10px; }
 .st:first-child { margin-top:0; }
 
