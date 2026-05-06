@@ -811,17 +811,11 @@ body.dark .pinned-card { background:#111827; }
     <div id="lag-sort" style="display:none"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
     <div id="lag-g14" style="display:none"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
 
-    <div class="st">Lagoppsett (Rubic)</div>
-    <div class="info-card">
-      <div class="info-card-header">
-        <div class="info-card-icon">👥</div>
-        <div><div class="info-card-title">Spillere</div><div class="info-card-sub">Importert fra Rubic</div></div>
-      </div>
-      <div class="empty" style="padding:20px 0 8px">
-        <div class="empty-icon" style="font-size:32px">👕</div>
-        <div class="empty-text" style="font-size:12px">Lagoppsett legges inn<br>når det er klart fra Rubic.</div>
-      </div>
-    </div>
+    <div class="st">Lagoppsett</div>
+    <div id="lagoppsett-rod"></div>
+    <div id="lagoppsett-sort" style="display:none"></div>
+    <div id="lagoppsett-g14" style="display:none"></div>
+    <div class="tip-box" id="lagoppsett-hint">Hentes automatisk fra Profixio når tilgjengelig. Trykk 🔄 Hent på laget.</div>
   </div>
 
   <!-- KONTAKTER -->
@@ -1383,6 +1377,11 @@ window.visLag = lag => {
   document.getElementById('tab-rod').classList.toggle('active',  lag === 'rod');
   document.getElementById('tab-sort').classList.toggle('active', lag === 'sort');
   document.getElementById('tab-g14').classList.toggle('active',  lag === 'g14');
+  // Vis riktig lagoppsett
+  ['rod','sort','g14'].forEach(l => {
+    const el = document.getElementById('lagoppsett-' + l);
+    if (el) el.style.display = l === lag ? 'block' : 'none';
+  });
   renderLagKamper(lag);
 };
 
@@ -1421,7 +1420,7 @@ let unsubSluttspill = null;
 
 async function hentProfixioKamper(lagKey) {
   const cfg = LAG_CONFIG[lagKey];
-  const url = cfg.profixio;
+  const url = cfg.profixio + '?tab=players';
   let html = null;
 
   // Prøv direkte fetch
@@ -1454,9 +1453,147 @@ async function hentProfixioKamper(lagKey) {
   // Parse resultater fra gruppekamper
   hentResultaterFraHTML(lagKey, html);
 
+  // Parse spillere
+  hentSpillereFraHTML(lagKey, html);
+
   // Parse sluttspillkamper
   behandleProfixioHTML(lagKey, html);
   return true;
+}
+
+function hentSpillereFraHTML(lagKey, html) {
+  // Spillere vises som: nummer + navn, trenere som: navn + "Coach"
+  const spillere = [];
+  const trenere  = [];
+
+  // Finn spillere: tall (ryggnummer) fulgt av navn
+  // Mønster fra Profixio: \n9\nMailin Skoglund\n
+  const spillerRegex = /\b(\d{1,2})\b\s*\n\s*([A-Za-zÆØÅæøå\s\-]+)\n/g;
+  let m;
+  while ((m = spillerRegex.exec(html)) !== null) {
+    const nr   = m[1].trim();
+    const navn = m[2].trim();
+    if (navn.length > 2 && navn.length < 60 && parseInt(nr) <= 99) {
+      spillere.push({ nr, navn });
+    }
+  }
+
+  // Finn trenere: navn fulgt av "Coach"
+  const trenerRegex = /([A-Za-zÆØÅæøå\s\-]{5,50})\s*\n\s*Coach/g;
+  while ((m = trenerRegex.exec(html)) !== null) {
+    const navn = m[1].trim();
+    if (navn.length > 2) trenere.push({ navn, rolle: 'Coach' });
+  }
+
+  if (spillere.length === 0 && trenere.length === 0) return;
+
+  // Lagre i Firestore
+  const lagsNavn = { rod: 'J14 Rød', sort: 'J14 Sort', g14: 'G14 Biri' };
+  db.collection('spillere').doc(lagKey).set({
+    lag: lagsNavn[lagKey],
+    spillere,
+    trenere,
+    oppdatert: new Date().toISOString()
+  });
+
+  console.log('Spillere hentet for', lagKey, ':', spillere.length, 'spillere,', trenere.length, 'trenere');
+  renderSpillere(lagKey);
+}
+
+let spillerData = { rod: null, sort: null, g14: null };
+
+function initSpillere() {
+  ['rod','sort','g14'].forEach(lag => {
+    db.collection('spillere').doc(lag).onSnapshot(snap => {
+      if (snap.exists) {
+        spillerData[lag] = snap.data();
+        renderSpillere(lag);
+      }
+    });
+  });
+}
+
+function renderSpillere(lagKey) {
+  const data = spillerData[lagKey];
+  if (!data) return;
+
+  // Finn lagoppsett-container i kamper-seksjonen
+  const el = document.getElementById('lagoppsett-' + lagKey);
+  if (!el) return;
+
+  el.innerHTML = '';
+
+  if (data.spillere && data.spillere.length > 0) {
+    const st = document.createElement('div');
+    st.className = 'st';
+    st.style.marginTop = '0';
+    st.textContent = '👕 Spillere';
+    el.appendChild(st);
+
+    const card = document.createElement('div');
+    card.className = 'info-card';
+
+    data.spillere.sort((a,b) => parseInt(a.nr) - parseInt(b.nr)).forEach((s, i) => {
+      const row = document.createElement('div');
+      row.className = 'spiller-row';
+      if (i < data.spillere.length - 1) row.style.borderBottom = '1px solid var(--light)';
+
+      const nr = document.createElement('div');
+      nr.className = 'nr-badge';
+      nr.textContent = s.nr;
+
+      const navn = document.createElement('div');
+      navn.className = 'spiller-navn';
+      navn.textContent = s.navn;
+
+      row.appendChild(nr);
+      row.appendChild(navn);
+      card.appendChild(row);
+    });
+
+    el.appendChild(card);
+  }
+
+  if (data.trenere && data.trenere.length > 0) {
+    const st2 = document.createElement('div');
+    st2.className = 'st';
+    st2.textContent = '🧑‍🏫 Trenere';
+    el.appendChild(st2);
+
+    const card2 = document.createElement('div');
+    card2.className = 'info-card';
+
+    data.trenere.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'spiller-row';
+      if (i < data.trenere.length - 1) row.style.borderBottom = '1px solid var(--light)';
+
+      const ikon = document.createElement('div');
+      ikon.className = 'nr-badge';
+      ikon.style.background = 'var(--grey)';
+      ikon.textContent = t.navn.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+
+      const navn = document.createElement('div');
+      navn.className = 'spiller-navn';
+      navn.textContent = t.navn;
+
+      const rolle = document.createElement('span');
+      rolle.className = 'spiller-pos';
+      rolle.textContent = t.rolle;
+
+      row.appendChild(ikon);
+      row.appendChild(navn);
+      row.appendChild(rolle);
+      card2.appendChild(row);
+    });
+
+    el.appendChild(card2);
+
+    const oppdSt = document.createElement('div');
+    oppdSt.style.cssText = 'font-size:11px;color:var(--grey);text-align:right;margin-top:4px';
+    oppdSt.textContent = '📅 Hentet ' + new Date(data.oppdatert).toLocaleDateString('no');
+    el.appendChild(oppdSt);
+  }
 }
 
 function hentResultaterFraHTML(lagKey, html) {
@@ -2840,6 +2977,7 @@ initResultater();
 initRediger();
 initPinned();
 initSluttspill();
+initSpillere();
 
 
 </script>
