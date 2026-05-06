@@ -1448,10 +1448,55 @@ async function hentProfixioKamper(lagKey) {
 
   if (!html) {
     console.log('Profixio ikke tilgjengelig for', lagKey);
-    return;
+    return false;
   }
 
+  // Parse resultater fra gruppekamper
+  hentResultaterFraHTML(lagKey, html);
+
+  // Parse sluttspillkamper
   behandleProfixioHTML(lagKey, html);
+  return true;
+}
+
+function hentResultaterFraHTML(lagKey, html) {
+  const gruppeIds = LAG_CONFIG[lagKey].ids;
+  let funnetResultater = false;
+
+  // Profixio viser resultater som "12 - 8" eller "12-8" nær kampID
+  gruppeIds.forEach(kampId => {
+    const idx = html.indexOf(kampId);
+    if (idx === -1) return;
+
+    // Se i kontekst rundt kampID (500 tegn fremover)
+    const kontekst = html.substring(idx, idx + 600);
+
+    // Match score-mønster: to tall med bindestrek/mellomrom mellom
+    // F.eks: "12 - 8", "12-8", "12  8"
+    const scoreMatch = kontekst.match(/\b(\d{1,2})\s*[-–]\s*(\d{1,2})\b/);
+
+    if (scoreMatch) {
+      const hjemme = scoreMatch[1];
+      const borte  = scoreMatch[2];
+
+      // Lagre kun hvis vi ikke allerede har dette resultatet
+      const eksisterende = resultater[kampId];
+      if (!eksisterende || eksisterende.hjemme !== hjemme || eksisterende.borte !== borte) {
+        const nyeRes = JSON.parse(JSON.stringify(resultater));
+        nyeRes[kampId] = {
+          hjemme,
+          borte,
+          kilde: 'profixio',
+          oppdatert: new Date().toISOString()
+        };
+        db.collection('resultater').doc('kamper').set(nyeRes);
+        funnetResultater = true;
+        console.log('Resultat hentet fra Profixio:', kampId, hjemme, '-', borte);
+      }
+    }
+  });
+
+  if (funnetResultater) showToast('Resultater oppdatert fra Profixio! 🏆');
 }
 
 function behandleProfixioHTML(lagKey, html) {
@@ -1561,11 +1606,25 @@ function renderLagKamper(lagKey, aktivFane) {
 
   el.innerHTML = '';
 
-  // Profixio-link
+  // Profixio-link + hent-knapp
   const tip = document.createElement('div');
   tip.className = 'tip-box';
-  tip.style.cssText = 'margin-bottom:10px;border-left-color:' + cfg.farge;
-  tip.innerHTML = '📊 ' + cfg.navn + ' · <a href="' + cfg.profixio + '" target="_blank" style="color:' + cfg.farge + '">Live på Profixio</a>';
+  tip.style.cssText = 'margin-bottom:10px;border-left-color:' + cfg.farge + ';display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap';
+  const profixioLink = document.createElement('span');
+  profixioLink.innerHTML = '📊 ' + cfg.navn + ' · <a href="' + cfg.profixio + '" target="_blank" style="color:' + cfg.farge + '">Profixio</a>';
+  const hentBtn = document.createElement('button');
+  hentBtn.style.cssText = 'background:' + cfg.farge + ';color:white;border:none;border-radius:7px;padding:5px 10px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;cursor:pointer;white-space:nowrap';
+  hentBtn.textContent = '🔄 Hent';
+  hentBtn.onclick = async () => {
+    hentBtn.textContent = '⏳';
+    hentBtn.disabled = true;
+    const ok = await hentProfixioKamper(lagKey);
+    hentBtn.textContent = ok ? '✓' : '✗';
+    setTimeout(() => { hentBtn.textContent = '🔄 Hent'; hentBtn.disabled = false; }, 3000);
+    renderLagKamper(lagKey, el.dataset.aktivFane || 'gruppe');
+  };
+  tip.appendChild(profixioLink);
+  tip.appendChild(hentBtn);
   el.appendChild(tip);
 
   // 3 sub-tabs
@@ -1645,7 +1704,17 @@ function renderLagKamper(lagKey, aktivFane) {
       const refreshBtn = document.createElement('button');
       refreshBtn.style.cssText = 'margin-top:14px;padding:9px 18px;background:' + cfg.farge + ';color:white;border:none;border-radius:9px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:13px;cursor:pointer;';
       refreshBtn.textContent = '🔄 Sjekk Profixio nå';
-      refreshBtn.onclick = () => { hentProfixioKamper(lagKey); showToast('Sjekker Profixio...'); };
+      refreshBtn.onclick = async () => {
+        refreshBtn.textContent = '⏳ Henter…';
+        refreshBtn.disabled = true;
+        const ok = await hentProfixioKamper(lagKey);
+        refreshBtn.textContent = ok ? '✓ Hentet!' : '❌ Ikke tilgjengelig ennå';
+        setTimeout(() => {
+          refreshBtn.textContent = '🔄 Sjekk Profixio nå';
+          refreshBtn.disabled = false;
+        }, 3000);
+        renderLagKamper(lagKey, 'sluttspillA');
+      };
       empty.appendChild(refreshBtn);
       el.appendChild(empty);
     } else {
