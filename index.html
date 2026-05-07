@@ -261,7 +261,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--t
 .spiller-pos.mv { background:var(--red); }
 .spiller-pos.back { background:var(--blue-mid); }
 .spiller-pos.kant { background:#7c3aed; }
-.spiller-pos.str  { background:#059669; }
+.spiller-pos.str  { background:#d4a017; }
 
 /* LAG-TABS */
 .lag-tab { flex:1; padding:10px 8px; background:white; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--grey); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
@@ -525,9 +525,9 @@ body.dark .pinned-card { background:#111827; }
       <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
       <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">11:18 🔴</span><span class="info-val">LFH09 Rød – Kongsten</span></div>
       <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">13:59 🔴</span><span class="info-val">LFH09 Rød – Lisleby</span></div>
-      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">14:45 ⚫</span><span class="info-val">LFH09 Sort – Lisleby</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">14:45 🔵</span><span class="info-val">LFH09 Blå – Lisleby</span></div>
       <div class="info-row"><span class="info-label">14:00–18:30</span><span class="info-val">🍽 Middag Kongsten Arena</span></div>
-      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">16:40 ⚫</span><span class="info-val">LFH09 Sort – Lisleby</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">16:40 🔵</span><span class="info-val">LFH09 Blå – Lisleby</span></div>
       <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">18:30</span><span class="info-val" style="color:var(--red)">🎵 Konsert – dørene åpner</span></div>
       <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">19:40–21:20</span><span class="info-val" style="color:var(--red)">🎵 Konsert-show</span></div>
     </div>
@@ -544,8 +544,8 @@ body.dark .pinned-card { background:#111827; }
       <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 2</div></div></div>
       <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
       <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
-      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">09:46 ⚫</span><span class="info-val">LFH09 Sort – Merkur Arena</span></div>
-      <div class="info-row" style="background:rgba(30,30,30,0.05)"><span class="info-label">11:41 ⚫</span><span class="info-val">LFH09 Sort – Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">09:46 🔵</span><span class="info-val">LFH09 Blå – Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">11:41 🔵</span><span class="info-val">LFH09 Blå – Merkur Arena</span></div>
       <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">12:27 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
       <div class="info-row"><span class="info-label">14:00–19:00</span><span class="info-val">🍽 Middag Merkur Arena</span></div>
       <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">14:45 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
@@ -834,10 +834,10 @@ body.dark .pinned-card { background:#111827; }
         <span style="width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-right:5px;"></span>J14 Rød
       </button>
       <button class="lag-tab" id="tab-sort" onclick="visLag('sort')" style="flex:1">
-        <span style="width:9px;height:9px;border-radius:50%;background:#1a2540;display:inline-block;margin-right:5px;"></span>J14 Sort
+        <span style="width:9px;height:9px;border-radius:50%;background:#0044bb;display:inline-block;margin-right:5px;"></span>J14 Blå
       </button>
       <button class="lag-tab" id="tab-g14" onclick="visLag('g14')" style="flex:1">
-        <span style="width:9px;height:9px;border-radius:50%;background:#059669;display:inline-block;margin-right:5px;"></span>G14 Biri
+        <span style="width:9px;height:9px;border-radius:50%;background:#d4a017;display:inline-block;margin-right:5px;"></span>G14 Biri/LFH
       </button>
     </div>
 
@@ -972,7 +972,7 @@ body.dark .pinned-card { background:#111827; }
       <div>
         <div class="poi-name">Lislebyhallen</div>
         <div class="poi-addr">Leiegata 17 · Bane 11</div>
-        <span class="poi-tag" style="background:#1a2540;color:white">Rød + Sort</span>
+        <span class="poi-tag" style="background:#0044bb;color:white">Rød + Blå</span>
       </div>
     </div>
     <div class="poi-card" onclick="openMaps('Merkurveien 2, Fredrikstad')">
@@ -980,8 +980,8 @@ body.dark .pinned-card { background:#111827; }
       <div>
         <div class="poi-name">Merkur Arena</div>
         <div class="poi-addr">Merkurveien 2 · Bane 21–37</div>
-        <span class="poi-tag" style="background:var(--blue);color:white">Rød + Sort</span>
-        <span class="poi-tag" style="background:#059669;color:white">G14</span>
+        <span class="poi-tag" style="background:var(--blue);color:white">Rød + Blå</span>
+        <span class="poi-tag" style="background:#d4a017;color:white">G14</span>
         <span class="poi-tag" style="background:var(--blue);color:white">Middag søn</span>
       </div>
     </div>
@@ -990,7 +990,7 @@ body.dark .pinned-card { background:#111827; }
       <div>
         <div class="poi-name">Kvernhushallen</div>
         <div class="poi-addr">Kvernhusveien 1 · Bane 09</div>
-        <span class="poi-tag" style="background:#059669;color:white">G14</span>
+        <span class="poi-tag" style="background:#d4a017;color:white">G14</span>
       </div>
     </div>
     <div class="poi-card" onclick="openMaps('Dueveien 2, 1679 Kråkerøy')">
@@ -1448,8 +1448,8 @@ function showToast(msg, color) {
 
 const LAG_CONFIG = {
   rod:  { ids: ['0214','1114','3132','2342'], farge: '#C8102E', navn: 'J14 Rød',  profixioId: '1487203', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487203' },
-  sort: { ids: ['1116','1121','3125','3130'], farge: '#1a2540', navn: 'J14 Sort', profixioId: '1487204', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204' },
-  g14:  { ids: ['0913','0919','3540','3146'], farge: '#059669', navn: 'G14 Biri', profixioId: '1489145', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1489145' },
+  sort: { ids: ['1116','1121','3125','3130'], farge: '#0044bb', navn: 'J14 Blå', profixioId: '1487204', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1487204' },
+  g14:  { ids: ['0913','0919','3540','3146'], farge: '#d4a017', navn: 'G14 Biri/LFH', profixioId: '1489145', profixio: 'https://www.profixio.com/app/fredrikstad-cup-2026/teams/1489145' },
 };
 
 // Sluttspill-data lagret i Firestore per lag
@@ -1526,7 +1526,7 @@ function hentSpillereFraHTML(lagKey, html) {
   if (spillere.length === 0 && trenere.length === 0) return;
 
   // Lagre i Firestore
-  const lagsNavn = { rod: 'J14 Rød', sort: 'J14 Sort', g14: 'G14 Biri' };
+  const lagsNavn = { rod: 'J14 Rød', sort: 'J14 Blå', g14: 'G14 Biri/LFH' };
   db.collection('spillere').doc(lagKey).set({
     lag: lagsNavn[lagKey],
     spillere,
@@ -2328,16 +2328,16 @@ const ALLE_KAMPER = [
   { id:'1114', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'LFH09 Rød',   borte:'Skedsmo 1',  dato:'2026-05-23', tid:'13:59', bane:'Lisleby · Bane 11' },
   { id:'3132', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'Tindlund 2',  borte:'LFH09 Rød',  dato:'2026-05-24', tid:'12:27', bane:'Merkur · Bane 31' },
   { id:'2342', lag:'J14 Rød',  lagFarge:'#C8102E', hjemme:'Hødd',        borte:'LFH09 Rød',  dato:'2026-05-24', tid:'14:45', bane:'Merkur · Bane 23' },
-  // J14 Sort
-  { id:'1116', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'Steinkjer',   borte:'LFH09 Sort', dato:'2026-05-23', tid:'14:45', bane:'Lisleby · Bane 11' },
-  { id:'1121', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'LFH09 Sort',  borte:'Gimletroll 1', dato:'2026-05-23', tid:'16:40', bane:'Lisleby · Bane 11' },
-  { id:'3125', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'LFH09 Sort',  borte:'Ull/Kisa',   dato:'2026-05-24', tid:'09:46', bane:'Merkur · Bane 31' },
-  { id:'3130', lag:'J14 Sort', lagFarge:'#1a2540', hjemme:'Rygge',       borte:'LFH09 Sort', dato:'2026-05-24', tid:'11:41', bane:'Merkur · Bane 31' },
-  // G14 Biri/LFH
-  { id:'0913', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Oppsal 2',    borte:'Biri/LFH',   dato:'2026-05-23', tid:'13:36', bane:'Kvernhuset · Bane 09' },
-  { id:'0919', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Biri/LFH',    borte:'Linje 5',    dato:'2026-05-23', tid:'15:54', bane:'Kvernhuset · Bane 09' },
-  { id:'3540', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Biri/LFH',    borte:'Vålerenga 1',dato:'2026-05-24', tid:'15:31', bane:'Merkur · Bane 35' },
-  { id:'3146', lag:'G14 Biri', lagFarge:'#059669', hjemme:'Reistad',     borte:'Biri/LFH',   dato:'2026-05-24', tid:'17:49', bane:'Merkur · Bane 31' },
+  // J14 Blå
+  { id:'1116', lag:'J14 Blå', lagFarge:'#0044bb', hjemme:'Steinkjer',   borte:'LFH09 Blå', dato:'2026-05-23', tid:'14:45', bane:'Lisleby · Bane 11' },
+  { id:'1121', lag:'J14 Blå', lagFarge:'#0044bb', hjemme:'LFH09 Blå',  borte:'Gimletroll 1', dato:'2026-05-23', tid:'16:40', bane:'Lisleby · Bane 11' },
+  { id:'3125', lag:'J14 Blå', lagFarge:'#0044bb', hjemme:'LFH09 Blå',  borte:'Ull/Kisa',   dato:'2026-05-24', tid:'09:46', bane:'Merkur · Bane 31' },
+  { id:'3130', lag:'J14 Blå', lagFarge:'#0044bb', hjemme:'Rygge',       borte:'LFH09 Blå', dato:'2026-05-24', tid:'11:41', bane:'Merkur · Bane 31' },
+  // G14 Biri/LFH/LFH
+  { id:'0913', lag:'G14 Biri/LFH', lagFarge:'#d4a017', hjemme:'Oppsal 2',    borte:'Biri/LFH',   dato:'2026-05-23', tid:'13:36', bane:'Kvernhuset · Bane 09' },
+  { id:'0919', lag:'G14 Biri/LFH', lagFarge:'#d4a017', hjemme:'Biri/LFH',    borte:'Linje 5',    dato:'2026-05-23', tid:'15:54', bane:'Kvernhuset · Bane 09' },
+  { id:'3540', lag:'G14 Biri/LFH', lagFarge:'#d4a017', hjemme:'Biri/LFH',    borte:'Vålerenga 1',dato:'2026-05-24', tid:'15:31', bane:'Merkur · Bane 35' },
+  { id:'3146', lag:'G14 Biri/LFH', lagFarge:'#d4a017', hjemme:'Reistad',     borte:'Biri/LFH',   dato:'2026-05-24', tid:'17:49', bane:'Merkur · Bane 31' },
 ];
 
 let resultater = {};
@@ -2387,8 +2387,8 @@ function byggAdminPanel() {
 
   const tabs = [
     { key:'rod',      farge:'#C8102E', label:'J14 Rød' },
-    { key:'sort',     farge:'#1a2540', label:'J14 Sort' },
-    { key:'g14',      farge:'#059669', label:'G14 Biri' },
+    { key:'sort',     farge:'#0044bb', label:'J14 Blå' },
+    { key:'g14',      farge:'#059669', label:'G14 Biri/LFH' },
     { key:'oversikt', farge:'#003087', label:'📌 Oversikt' },
   ];
 
