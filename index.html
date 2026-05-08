@@ -1245,9 +1245,9 @@ const fbApp    = firebase.initializeApp(firebaseConfig);
 const auth     = firebase.auth(fbApp);
 const db       = firebase.firestore(fbApp);
 
-// Aktiver long-polling for Safari/iOS for å unngå access control-feil
+// Auto-detect long-polling for Safari/iOS for å unngå access control-feil
 db.settings({
-  experimentalForceLongPolling: true,
+  experimentalAutoDetectLongPolling: true,
   merge: true
 });
 
