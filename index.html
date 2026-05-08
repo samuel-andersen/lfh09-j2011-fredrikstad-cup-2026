@@ -1389,7 +1389,7 @@ function subscribePakkliste(uid) {
 
 async function lagrePakketCloud(data) {
   if (currentUser) {
-    await setDoc(doc(db, "pakkliste", currentUser.uid), { items: data, oppdatert: new Date().toISOString() });
+    await db.collection("pakkliste").doc(currentUser.uid).set({ items: data, oppdatert: new Date().toISOString() });
   } else {
     localStorage.setItem('lfh-cup-pakket', JSON.stringify(data));
   }
@@ -2630,7 +2630,7 @@ function byggAdminPanel() {
         saveBtn.textContent = 'Lagrer…';
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         nyeRes[k.id] = { hjemme: h, borte: b, oppdatert: new Date().toISOString() };
-        await setDoc(db.collection('resultater').doc('kamper'), nyeRes);
+        await db.collection('resultater').doc('kamper').set(nyeRes);
         saveBtn.textContent = '✓ Lagret'; saveBtn.classList.add('saved');
         resetBtn.style.display = 'inline-flex';
         showToast('Resultat lagret! 🎉');
@@ -2640,7 +2640,7 @@ function byggAdminPanel() {
         if (!confirm('Nullstille resultatet?')) return;
         const nyeRes = JSON.parse(JSON.stringify(resultater));
         delete nyeRes[k.id];
-        await setDoc(db.collection('resultater').doc('kamper'), nyeRes);
+        await db.collection('resultater').doc('kamper').set(nyeRes);
         resultater = nyeRes;
         inp1.value = ''; inp2.value = '';
         saveBtn.textContent = 'Lagre'; saveBtn.classList.remove('saved');
