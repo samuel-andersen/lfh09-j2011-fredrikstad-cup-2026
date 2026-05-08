@@ -1291,6 +1291,18 @@ window.toggleDark = () => {
 initDark();
 
 // ── Auth ─────────────────────────────────────────────────────
+// Håndter redirect-resultat når brukeren kommer tilbake fra Google
+auth.getRedirectResult().then(result => {
+  if (result.user) {
+    console.log('Innlogget via redirect:', result.user.email);
+  }
+}).catch(err => {
+  console.error('Redirect-feil:', err.code, err.message);
+  if (err.code !== 'auth/no-auth-event') {
+    showToast('Innlogging feilet: ' + err.message, '#dc2626');
+  }
+});
+
 auth.onAuthStateChanged(user => {
   currentUser = user;
   updateAuthUI();
@@ -1364,7 +1376,30 @@ function updateAuthUI() {
     const btn = document.createElement('button');
     btn.className = 'auth-btn sign-in';
     btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24"><path fill="white" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="white" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="white" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="white" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Google';
-    btn.onclick = () => auth.signInWithPopup(provider).catch(console.error);
+    btn.onclick = async () => {
+      try {
+        // Sjekk om vi er på mobil/Safari - bruk redirect
+        const erMobil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const erSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        if (erMobil || erSafari) {
+          await auth.signInWithRedirect(provider);
+        } else {
+          await auth.signInWithPopup(provider);
+        }
+      } catch(e) {
+        console.error('Innloggingsfeil:', e.code, e.message);
+        if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+          // Fallback til redirect
+          try {
+            await auth.signInWithRedirect(provider);
+          } catch(e2) {
+            showToast('Innlogging feilet: ' + e2.message, '#dc2626');
+          }
+        } else {
+          showToast('Innlogging feilet: ' + e.message, '#dc2626');
+        }
+      }
+    };
     bar.appendChild(info);
     bar.appendChild(btn);
   }
@@ -3227,7 +3262,6 @@ function renderSignerBoks() {
   const boks = document.getElementById('signer-boks');
   if (!boks) return;
 
-  // Bruk auth.currentUser direkte hvis vår variabel ikke er satt
   const user = currentUser || auth.currentUser;
 
   if (!user) {
@@ -3281,23 +3315,34 @@ function renderSignerBoks() {
 }
 
 async function signerRegler() {
-  if (!currentUser) return;
+  const user = currentUser || auth.currentUser;
+  if (!user) return;
   const btn = document.getElementById('signer-knapp');
   btn.disabled = true;
-  btn.textContent = 'Signerer…';
+  btn.textContent = '⏳ Signerer…';
 
   try {
-    await db.collection('signaturer').doc(currentUser.uid).set({
-      uid: currentUser.uid,
-      navn: currentUser.displayName,
-      epost: currentUser.email,
+    await db.collection('signaturer').doc(user.uid).set({
+      uid: user.uid,
+      navn: user.displayName,
+      epost: user.email,
       tid: firebase.firestore.FieldValue.serverTimestamp(),
       tidString: new Date().toISOString(),
       reglerVersjon: '2026-05-08',
       reglerTekst: REGLENE_TEKST
     });
+    // Sett minSignatur lokalt slik at UI oppdateres umiddelbart
+    minSignatur = {
+      uid: user.uid,
+      navn: user.displayName,
+      epost: user.email,
+      tidString: new Date().toISOString(),
+      reglerVersjon: '2026-05-08'
+    };
     showToast('Signert! ✍️ Takk for forpliktelsen.');
+    renderSignerBoks();
   } catch(e) {
+    console.error('Signer-feil:', e);
     btn.disabled = false;
     btn.textContent = '✍️ Signer';
     showToast('Kunne ikke lagre signatur. Prøv igjen.', '#dc2626');
@@ -3306,9 +3351,13 @@ async function signerRegler() {
 
 window.avSignerRegler = async () => {
   if (!confirm('Er du sikker på at du vil trekke tilbake signaturen?')) return;
+  const user = currentUser || auth.currentUser;
+  if (!user) return;
   try {
-    await db.collection('signaturer').doc(currentUser.uid).delete();
+    await db.collection('signaturer').doc(user.uid).delete();
+    minSignatur = null;
     showToast('Signatur trukket tilbake', '#888');
+    renderSignerBoks();
   } catch(e) {
     showToast('Kunne ikke trekke tilbake signatur', '#dc2626');
   }
