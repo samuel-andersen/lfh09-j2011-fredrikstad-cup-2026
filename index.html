@@ -1661,24 +1661,28 @@ function initSpillere() {
     }
   };
 
+  // Vis forhåndsimport umiddelbart - ikke vent på Firestore
+  ['rod','sort','g14'].forEach(lag => {
+    spillerData[lag] = forhåndsimport[lag];
+    renderSpillere(lag);
+  });
+
+  // Lyt på Firestore-oppdateringer (Profixio-sync overskriver)
   ['rod','sort','g14'].forEach(lag => {
     db.collection('spillere').doc(lag).onSnapshot(snap => {
       if (snap.exists) {
         const data = snap.data();
-        // Bruk Profixio-data hvis den er nyere enn forhåndsimport
-        if (data.kilde !== 'Baldus Cup 2026 (forhåndsimport)' || data.spillere.length > 0) {
-          spillerData[lag] = data;
-        } else {
-          spillerData[lag] = forhåndsimport[lag];
+        if (data.spillere && data.spillere.length > 0) {
+          // Bruk Firestore-data kun hvis den har Profixio som kilde (nyere enn forhåndsimport)
+          if (data.kilde !== 'Baldus Cup 2026 (forhåndsimport)') {
+            spillerData[lag] = data;
+            renderSpillere(lag);
+          }
         }
-      } else {
-        // Ingen Firestore-data – bruk forhåndsimport og lagre
-        spillerData[lag] = forhåndsimport[lag];
-        if (forhåndsimport[lag].spillere.length > 0) {
-          db.collection('spillere').doc(lag).set(forhåndsimport[lag]);
-        }
+      } else if (currentUser) {
+        // Kun lagre til Firestore hvis innlogget
+        db.collection('spillere').doc(lag).set(forhåndsimport[lag]);
       }
-      renderSpillere(lag);
     });
   });
 }
