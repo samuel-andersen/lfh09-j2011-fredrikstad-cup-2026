@@ -1434,11 +1434,53 @@ function updateAuthUI() {
       btn.textContent = '⏳';
 
       try {
+        if (erIOS) {
+          // iOS-spesifikk opprydding i RIKTIG rekkefølge før redirect
+          console.log('[Auth] iOS: rydder gammel state...');
+
+          // 1. Vent på at getRedirectResult har fullført (kan henge fra forrige forsøk)
+          try { await Promise.race([auth.getRedirectResult(), new Promise(r => setTimeout(r, 800))]); } catch(e) {}
+
+          // 2. Logg ut og VENT på at det er fullført
+          if (auth.currentUser) {
+            try { await auth.signOut(); } catch(e) {}
+          }
+
+          // 3. Slett alle Firebase-IndexedDB-databaser og VENT
+          try {
+            if (window.indexedDB && indexedDB.databases) {
+              const dbs = await indexedDB.databases();
+              const slettinger = dbs
+                .filter(d => d.name && (d.name.includes('firebase') || d.name.includes('firestore')))
+                .map(d => new Promise(resolve => {
+                  const req = indexedDB.deleteDatabase(d.name);
+                  req.onsuccess = () => resolve();
+                  req.onerror = () => resolve();
+                  req.onblocked = () => resolve();
+                  setTimeout(resolve, 2000); // hard timeout
+                }));
+              await Promise.all(slettinger);
+            }
+          } catch(e) { console.log('[Auth] IndexedDB-rensing feilet:', e.message); }
+
+          // 4. Tøm storage
+          try {
+            Object.keys(localStorage).filter(k => k.startsWith('firebase:') || k.includes('firebaseui')).forEach(k => localStorage.removeItem(k));
+            Object.keys(sessionStorage).filter(k => k.startsWith('firebase:') || k.includes('firebaseui')).forEach(k => sessionStorage.removeItem(k));
+          } catch(e) {}
+
+          // 5. Sett persistens på nytt etter rensing (Firebase trenger dette)
+          try { await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch(e) {}
+
+          // 6. Liten pause så Firebase får ferdigstilt internt
+          await new Promise(r => setTimeout(r, 200));
+
+          console.log('[Auth] iOS: rensing ferdig, starter redirect');
+        }
+
         if (erMobil) {
-          // Mobile: ren redirect, ingen rydding
           await auth.signInWithRedirect(provider);
         } else {
-          // Desktop: popup
           const result = await auth.signInWithPopup(provider);
           console.log('[Auth] ✓ Innlogget:', result.user?.email);
         }
