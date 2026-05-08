@@ -1251,12 +1251,34 @@ db.settings({
   merge: true
 });
 
-// Persistens – LOCAL for desktop, SESSION for iOS (Safari ITP-kompatibelt)
 const erIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-const persistens = erIOS
-  ? firebase.auth.Auth.Persistence.SESSION
-  : firebase.auth.Auth.Persistence.LOCAL;
-auth.setPersistence(persistens).catch(e => {
+
+// ── Debug-konsoll synlig på siden (kun for å feilsøke iOS) ───
+const DEBUG_KONSOLL = true; // sett false for å skjule
+if (DEBUG_KONSOLL) {
+  const debugBox = document.createElement('div');
+  debugBox.id = 'debug-box';
+  debugBox.style.cssText = 'position:fixed;bottom:0;left:0;right:0;max-height:30vh;overflow-y:auto;background:#000;color:#0f0;font-family:monospace;font-size:10px;padding:6px;z-index:9999;line-height:1.3;border-top:2px solid #0f0;';
+  debugBox.innerHTML = '<div style="display:flex;justify-content:space-between;color:#ff0;font-weight:bold;border-bottom:1px solid #333;padding-bottom:3px;margin-bottom:3px"><span>📋 Debug</span><span onclick="document.getElementById(\'debug-box\').style.display=\'none\'" style="cursor:pointer;color:#f00">✕ skjul</span></div><div id="debug-log"></div>';
+  document.body.appendChild(debugBox);
+  const log = document.getElementById('debug-log');
+  const oldErr = console.error;
+  const oldLog = console.log;
+  console.error = function(...args) {
+    oldErr.apply(console, args);
+    log.innerHTML += '<div style="color:#f44">❌ ' + args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') + '</div>';
+  };
+  console.log = function(...args) {
+    oldLog.apply(console, args);
+    if (args[0] && String(args[0]).startsWith('[Auth]')) {
+      log.innerHTML += '<div>' + args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') + '</div>';
+    }
+  };
+  console.log('[Auth] App lastet · iOS:', erIOS, '· Mobile:', /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+}
+
+// Persistens – LOCAL holder brukeren innlogget på tvers av sesjoner
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e => {
   console.warn('Kunne ikke sette persistens:', e.code);
 });
 
@@ -1407,73 +1429,32 @@ function updateAuthUI() {
       const erAndroid = /Android/i.test(navigator.userAgent);
       const erMobil = erIOS || erAndroid;
 
-      // Hjelpefunksjon: rydder gammel Firebase-state (skjult fra bruker)
-      const ryddOpp = async () => {
-        try { await auth.signOut(); } catch(e) {}
-        try {
-          if (window.indexedDB && indexedDB.databases) {
-            const dbs = await indexedDB.databases();
-            await Promise.all(dbs.map(dbInfo => {
-              if (dbInfo.name && (dbInfo.name.includes('firebase') || dbInfo.name.includes('firestore'))) {
-                return new Promise(resolve => {
-                  const req = indexedDB.deleteDatabase(dbInfo.name);
-                  req.onsuccess = req.onerror = req.onblocked = resolve;
-                  setTimeout(resolve, 1500);
-                });
-              }
-            }));
-          }
-        } catch(e) {}
-        try {
-          Object.keys(localStorage).forEach(k => {
-            if (k.startsWith('firebase:') || k.includes('firebaseui')) localStorage.removeItem(k);
-          });
-          Object.keys(sessionStorage).forEach(k => {
-            if (k.startsWith('firebase:') || k.includes('firebaseui')) sessionStorage.removeItem(k);
-          });
-        } catch(e) {}
-      };
-
       btn.disabled = true;
       const originalHTML = btn.innerHTML;
       btn.textContent = '⏳';
 
       try {
-        // På iOS rydder vi alltid opp FØR innlogging (forebyggende)
-        // Webview-baserte nettlesere på iOS (Edge, Chrome) bruker Safari og har samme problemer
-        if (erIOS) {
-          await ryddOpp();
-        }
-
         if (erMobil) {
-          // Redirect på alle mobile enheter
+          // Mobile: ren redirect, ingen rydding
           await auth.signInWithRedirect(provider);
         } else {
-          // Popup på desktop
+          // Desktop: popup
           const result = await auth.signInWithPopup(provider);
           console.log('[Auth] ✓ Innlogget:', result.user?.email);
         }
       } catch(e) {
-        console.log('[Auth] Feil:', e.code);
-
-        // Brukerens valg – la dem være
-        if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
-          btn.disabled = false;
-          btn.innerHTML = originalHTML;
-          return;
-        }
-
-        // Pop-blokkert på desktop – fallback til redirect
-        if (e.code === 'auth/popup-blocked') {
-          try { await auth.signInWithRedirect(provider); return; } catch(e2) {}
-        }
-
-        // Alt annet – rydd opp og last på nytt
-        await ryddOpp();
-        setTimeout(() => location.reload(), 500);
-      } finally {
+        console.error('[Auth] Feil:', e.code, e.message);
         btn.disabled = false;
         btn.innerHTML = originalHTML;
+
+        if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
+          return;
+        }
+        if (e.code === 'auth/popup-blocked') {
+          try { await auth.signInWithRedirect(provider); } catch(e2) {}
+          return;
+        }
+        showToast('Innlogging feilet: ' + (e.code || e.message), '#dc2626');
       }
     };
     bar.appendChild(info);
