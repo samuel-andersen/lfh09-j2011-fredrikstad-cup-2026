@@ -3185,17 +3185,27 @@ Konflikter tar vi med trener eller hverandre direkte – aldri på sosiale medie
 Vi spiser godt, drikker mye vann og hviler mellom kampene.`;
 
 function initSignering() {
-  // Lytt på alle signaturer (for admin)
-  unsubAlleSig = db.collection('signaturer').onSnapshot(snap => {
-    alleSignaturer = {};
-    snap.forEach(doc => {
-      alleSignaturer[doc.id] = doc.data();
-    });
-    if (document.getElementById('admin-panel').classList.contains('show')) {
-      const sigSeksjon = document.getElementById('admin-seksjon-signaturer');
-      if (sigSeksjon) byggSignaturPanel(sigSeksjon);
-    }
-  });
+  // Lytt på alle signaturer (for admin) - kan feile for ikke-admin pga regler
+  try {
+    unsubAlleSig = db.collection('signaturer').onSnapshot(
+      snap => {
+        alleSignaturer = {};
+        snap.forEach(doc => {
+          alleSignaturer[doc.id] = doc.data();
+        });
+        if (document.getElementById('admin-panel').classList.contains('show')) {
+          const sigSeksjon = document.getElementById('admin-seksjon-signaturer');
+          if (sigSeksjon) byggSignaturPanel(sigSeksjon);
+        }
+      },
+      err => {
+        // Ikke-admin kan ikke lese hele collection - det er OK
+        console.log('Kan ikke liste signaturer (kun admin):', err.code);
+      }
+    );
+  } catch(e) {
+    console.log('Signatur-listening feilet:', e);
+  }
 
   renderSignerBoks();
 }
