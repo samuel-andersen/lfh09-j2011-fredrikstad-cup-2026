@@ -1244,6 +1244,13 @@ const firebaseConfig = {
 const fbApp    = firebase.initializeApp(firebaseConfig);
 const auth     = firebase.auth(fbApp);
 const db       = firebase.firestore(fbApp);
+
+// Aktiver long-polling for Safari/iOS for å unngå access control-feil
+db.settings({
+  experimentalForceLongPolling: true,
+  merge: true
+});
+
 const provider = new firebase.auth.GoogleAuthProvider();
 
 let currentUser = null;
@@ -1309,7 +1316,7 @@ auth.onAuthStateChanged(user => {
   renderQAInput();
   if (user) {
     subscribePakkliste(user.uid);
-    if (ADMIN_EMAILS.includes(user.email)) {
+    if (typeof ADMINS !== 'undefined' && ADMINS.includes(user.email)) {
       setTimeout(aktiverInlineEdit, 500);
     }
     if (typeof lyttPaaMinSignatur === 'function') lyttPaaMinSignatur();
