@@ -370,7 +370,37 @@ body.dark .pinned-card { background:#111827; }
 .pin-item.dragging { opacity:0.4; }
 .pin-item.drag-over { border-top:2px solid var(--blue); }
 
-.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
+/* SIGNERING */
+.sign-checkbox-row { display:flex; align-items:flex-start; gap:10px; padding:12px; background:var(--off); border-radius:9px; cursor:pointer; margin:8px 0; border:2px solid transparent; transition:all .15s; }
+.sign-checkbox-row:hover { border-color:var(--blue-mid); }
+.sign-checkbox { width:24px; height:24px; border:2.5px solid var(--mid); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .15s; background:white; }
+.sign-checkbox.checked { background:var(--green); border-color:var(--green); color:white; font-size:14px; font-weight:900; }
+.sign-text { font-size:13px; color:var(--text); line-height:1.45; flex:1; }
+.sign-btn { width:100%; background:var(--blue); color:white; border:none; border-radius:10px; padding:14px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; letter-spacing:1px; cursor:pointer; margin-top:10px; transition:all .15s; }
+.sign-btn:disabled { background:var(--mid); cursor:not-allowed; opacity:0.6; }
+.sign-btn.signed { background:var(--green); }
+.signed-badge { display:flex; align-items:center; gap:10px; padding:14px; background:var(--green-bg); border-radius:9px; border-left:4px solid var(--green); }
+.signed-badge .ikon { font-size:24px; }
+.signed-badge .info-tekst { flex:1; }
+.signed-badge .navn { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px; color:#15803d; }
+.signed-badge .tid { font-size:11px; color:var(--grey); }
+body.dark .sign-checkbox-row { background:#0a0c14; }
+body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
+
+/* SIGNATUR ADMIN */
+.sig-row { display:flex; align-items:center; gap:10px; padding:9px 4px; border-bottom:1px solid var(--light); }
+.sig-row:last-child { border-bottom:none; }
+.sig-status { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; font-weight:900; }
+.sig-status.ja { background:var(--green); color:white; }
+.sig-status.nei { background:var(--red); color:white; }
+.sig-navn { flex:1; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; }
+.sig-tid { font-size:10px; color:var(--grey); }
+.sig-stats { display:flex; gap:8px; padding:10px 14px; background:var(--off); border-radius:8px; margin-bottom:10px; align-items:center; }
+.sig-stats-tall { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; color:var(--blue); }
+.sig-stats-tekst { font-size:12px; color:var(--grey); }
+
+/* TOAST */
+.toast { position:fixed; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* EMPTY */
@@ -933,16 +963,29 @@ body.dark .pinned-card { background:#111827; }
 
   <!-- REGLER -->
   <div class="view" id="view-regler">
-    <div class="st" style="margin-top:0">Lagregler på tur</div>
-    <div class="rule-card"><div class="rule-num">1</div><div><div class="rule-title">Møt alltid presis</div><div class="rule-text">Presis til avreise, kamper og felles samling. Respekter lagets tid – og lagets tillit til deg.</div></div></div>
-    <div class="rule-card"><div class="rule-num">2</div><div><div class="rule-title">Vi er LFH09-ambassadører</div><div class="rule-text">Oppfør deg pent mot motstandere, dommere, arrangør og vertskap. Vi representerer klubben med stolthet.</div></div></div>
-    <div class="rule-card"><div class="rule-num">3</div><div><div class="rule-title">Jentene er inne om natten</div><div class="rule-text">Jentene skal ikke være ute om natten. Når vi er ute i løpet av dagen eller kvelden, går ingen alene – vi holder oss alltid i grupper og gir trenere beskjed.</div></div></div>
-    <div class="rule-card" style="border-left:4px solid var(--red);"><div class="rule-num" style="background:var(--red)">4</div><div><div class="rule-title">Ingen alkohol, energidrikk, vape eller tobakk</div><div class="rule-text">Dette gjelder absolutt for alle på turen – spillere og ledere inkludert. Brudd på denne regelen tas alvorlig.</div></div></div>
-    <div class="rule-card"><div class="rule-num">5</div><div><div class="rule-title">Mobilfri leggetid</div><div class="rule-text">Leggetid bestemmes av trenere/ledere. Mobil legges bort til avtalt tid – alle trenger søvn for å prestere.</div></div></div>
-    <div class="rule-card"><div class="rule-num">6</div><div><div class="rule-title">Rydd etter deg</div><div class="rule-text">Vi rydder etter oss – på overnatting, i buss og på banen. Vi tar vare på andres eiendeler og oss selv.</div></div></div>
+    <div class="hero-card" style="margin-bottom:14px;background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%)">
+      <div class="hero-label">LAGETS REGLER</div>
+      <div class="hero-title">Vi-formen</div>
+      <div class="hero-sub">9 regler vi forplikter oss til på turen</div>
+    </div>
+
+    <div class="tip-box" style="margin-bottom:14px">📜 <strong>Disse reglene er en forpliktelse</strong> – ikke bare en avtale på papir. Når du signerer, lover du å gjøre ditt beste for å følge dem. Det er for laget, for deg selv og for tryggheten på turen.</div>
+
+    <div class="rule-card"><div class="rule-num">1</div><div><div class="rule-title">Vi møter presis – alltid</div><div class="rule-text">Vi er der i god tid før avreise, kamper og fellessamlinger. Når én er sen, må alle andre vente. Tid er respekt for laget.</div></div></div>
+    <div class="rule-card"><div class="rule-num">2</div><div><div class="rule-title">Vi er LFH09 – uansett hvor vi er</div><div class="rule-text">Når vi har på drakta, representerer vi klubben. Vi hilser på motstandere, takker dommere etter kamp og er hyggelige mot alle vi møter – på arenaen, på buss og overnatting. Folk husker laget vårt etter hvordan vi oppfører oss, ikke bare resultatet.</div></div></div>
+    <div class="rule-card"><div class="rule-num">3</div><div><div class="rule-title">Vi er trygge sammen</div><div class="rule-text">Vi er inne om natten – det er ikke turnering for oss da. Når vi er ute på dagen eller kvelden, går vi aldri alene – vi holder oss alltid i grupper og gir trenerne beskjed.</div></div></div>
+    <div class="rule-card" style="border-left:4px solid var(--red);"><div class="rule-num" style="background:var(--red)">4</div><div><div class="rule-title">Vi er rene utøvere</div><div class="rule-text">Vi bruker ikke alkohol, energidrikk, vape eller tobakk – vi har ingenting med det å gjøre på en håndballtur. Bryter vi denne regelen, får vi ikke spille videre i turneringen, og foreldrene blir kontaktet.</div></div></div>
+    <div class="rule-card"><div class="rule-num">5</div><div><div class="rule-title">Mobil tar plass – vi velger laget</div><div class="rule-text">Ved måltider, samlinger og etter leggetid er mobilen lagt vekk. <strong>En time før kamp er vi mobilfrie</strong> – da fokuserer vi på laget, kampen og holder hodet skjerpet. Vi er på tur sammen – og det merkes om vi er til stede.</div></div></div>
+    <div class="rule-card"><div class="rule-num">6</div><div><div class="rule-title">Vi rydder etter oss</div><div class="rule-text">På overnattingen, på arenaene og på buss – vi forlater alltid stedet i god stand. Vi tar vare på hverandres ting, og rommet vårt er vårt felles ansvar.</div></div></div>
     <div class="rule-card"><div class="rule-num">7</div><div><div class="rule-title">God lagånd alltid</div><div class="rule-text">Vi heier på hverandre uansett resultat. Lagånd bygges ikke bare med seier – men med hvordan vi behandler hverandre.</div></div></div>
-    <div class="rule-card"><div class="rule-num">8</div><div><div class="rule-title">Ta det med trener, ikke nett</div><div class="rule-text">Problemer og konflikter løses med laget – ikke på sosiale medier. Vær løsningsorientert, ikke bakoverkritisk.</div></div></div>
-    <div class="rule-card"><div class="rule-num">9</div><div><div class="rule-title">Mat og hvile gir kampkraft</div><div class="rule-text">Spis godt, drikk vann og hvil mellom kampene. Kroppen din er verktøyet – ta godt vare på det.</div></div></div>
+    <div class="rule-card"><div class="rule-num">8</div><div><div class="rule-title">Vi snakker sammen, ikke om hverandre</div><div class="rule-text">Hvis noe er vanskelig – en konflikt, en dårlig kamp eller en uenighet – tar vi det med trener eller hverandre direkte. Vi legger det aldri ut på sosiale medier eller diskuterer det i grupper på nett. Det vi tar opp, ønsker vi å løse.</div></div></div>
+    <div class="rule-card"><div class="rule-num">9</div><div><div class="rule-title">Vi tar vare på kroppen vår</div><div class="rule-text">Vi spiser godt, drikker mye vann og hviler mellom kampene. Kroppen er verktøyet vårt – uten god mat og søvn klarer vi ikke å prestere når det gjelder.</div></div></div>
+
+    <!-- SIGNERINGSBOKS -->
+    <div class="st">✍️ Min forpliktelse</div>
+    <div class="info-card" id="signer-boks">
+      <div class="empty"><div class="empty-text">Logg inn med Google for å signere reglene</div></div>
+    </div>
   </div>
 
   <!-- KART -->
@@ -1257,11 +1300,15 @@ auth.onAuthStateChanged(user => {
     if (ADMIN_EMAILS.includes(user.email)) {
       setTimeout(aktiverInlineEdit, 500);
     }
+    if (typeof lyttPaaMinSignatur === 'function') lyttPaaMinSignatur();
   } else {
     if (unsubPakk) { unsubPakk(); unsubPakk = null; }
+    if (typeof unsubMinSig !== 'undefined' && unsubMinSig) { unsubMinSig(); unsubMinSig = null; }
+    if (typeof minSignatur !== 'undefined') minSignatur = null;
     deaktiverInlineEdit();
     lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
   }
+  if (typeof renderSignerBoks === 'function') renderSignerBoks();
 });
 
 function updateAuthUI() {
@@ -2474,10 +2521,11 @@ function byggAdminPanel() {
   tabWrap.style.cssText = 'display:flex;gap:6px;margin-bottom:14px;';
 
   const tabs = [
-    { key:'rod',      farge:'#C8102E', label:'J14 Rød' },
-    { key:'sort',     farge:'#0044bb', label:'J14 Blå' },
-    { key:'g14',      farge:'#059669', label:'G14 Biri/LFH' },
-    { key:'oversikt', farge:'#003087', label:'📌 Oversikt' },
+    { key:'rod',         farge:'#C8102E', label:'J14 Rød' },
+    { key:'sort',        farge:'#0044bb', label:'J14 Blå' },
+    { key:'g14',         farge:'#d4a017', label:'G14 Biri' },
+    { key:'oversikt',    farge:'#003087', label:'📌 Pin' },
+    { key:'signaturer',  farge:'#15803d', label:'✍️ Sig' },
   ];
 
   tabs.forEach((tab, i) => {
@@ -2505,6 +2553,12 @@ function byggAdminPanel() {
 
     if (tab.key === 'oversikt') {
       byggPinPanel(seksjon);
+      body.appendChild(seksjon);
+      return;
+    }
+
+    if (tab.key === 'signaturer') {
+      byggSignaturPanel(seksjon);
       body.appendChild(seksjon);
       return;
     }
@@ -3095,6 +3149,270 @@ function byggPinPanel(seksjon) {
   seksjon.appendChild(nullstillBtn);
 }
 
+// ── Signering av regler ───────────────────────────────────────
+let minSignatur = null;
+let alleSignaturer = {};
+let unsubMinSig = null;
+let unsubAlleSig = null;
+
+const REGLENE_TEKST = `LFH09 J2011 - Lagets regler for Fredrikstad Cup 2026
+
+1. Vi møter presis – alltid
+Vi er der i god tid før avreise, kamper og fellessamlinger. Når én er sen, må alle andre vente. Tid er respekt for laget.
+
+2. Vi er LFH09 – uansett hvor vi er
+Når vi har på drakta, representerer vi klubben. Vi hilser på motstandere, takker dommere etter kamp og er hyggelige mot alle vi møter.
+
+3. Vi er trygge sammen
+Vi er inne om natten. Når vi er ute på dagen eller kvelden, går vi aldri alene – vi holder oss alltid i grupper og gir trenerne beskjed.
+
+4. Vi er rene utøvere
+Vi bruker ikke alkohol, energidrikk, vape eller tobakk. Bryter vi denne regelen, får vi ikke spille videre i turneringen, og foreldrene blir kontaktet.
+
+5. Mobil tar plass – vi velger laget
+Ved måltider, samlinger og etter leggetid er mobilen lagt vekk. En time før kamp er vi mobilfrie – da fokuserer vi på laget.
+
+6. Vi rydder etter oss
+På overnatting, arenaene og buss – vi forlater alltid stedet i god stand.
+
+7. God lagånd alltid
+Vi heier på hverandre uansett resultat. Lagånd bygges av hvordan vi behandler hverandre.
+
+8. Vi snakker sammen, ikke om hverandre
+Konflikter tar vi med trener eller hverandre direkte – aldri på sosiale medier.
+
+9. Vi tar vare på kroppen vår
+Vi spiser godt, drikker mye vann og hviler mellom kampene.`;
+
+function initSignering() {
+  // Lytt på alle signaturer (for admin)
+  unsubAlleSig = db.collection('signaturer').onSnapshot(snap => {
+    alleSignaturer = {};
+    snap.forEach(doc => {
+      alleSignaturer[doc.id] = doc.data();
+    });
+    if (document.getElementById('admin-panel').classList.contains('show')) {
+      const sigSeksjon = document.getElementById('admin-seksjon-signaturer');
+      if (sigSeksjon) byggSignaturPanel(sigSeksjon);
+    }
+  });
+
+  renderSignerBoks();
+}
+
+function lyttPaaMinSignatur() {
+  if (unsubMinSig) unsubMinSig();
+  if (!currentUser) return;
+  unsubMinSig = db.collection('signaturer').doc(currentUser.uid).onSnapshot(snap => {
+    minSignatur = snap.exists ? snap.data() : null;
+    renderSignerBoks();
+  });
+}
+
+function renderSignerBoks() {
+  const boks = document.getElementById('signer-boks');
+  if (!boks) return;
+
+  if (!currentUser) {
+    boks.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:32px">🔒</div><div class="empty-text">Logg inn med Google øverst på siden for å signere reglene</div></div>';
+    return;
+  }
+
+  if (minSignatur) {
+    const tid = minSignatur.tid?.toDate?.() || new Date(minSignatur.tidString || Date.now());
+    const tidTxt = tid.toLocaleDateString('no', { day:'numeric', month:'long', year:'numeric' }) + ' kl. ' + tid.toLocaleTimeString('no', { hour:'2-digit', minute:'2-digit' });
+    boks.innerHTML =
+      '<div class="signed-badge">' +
+        '<div class="ikon">✅</div>' +
+        '<div class="info-tekst">' +
+          '<div class="navn">Du har signert: ' + (minSignatur.navn || currentUser.displayName) + '</div>' +
+          '<div class="tid">' + tidTxt + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="sign-btn" style="background:var(--mid);margin-top:8px" onclick="avSignerRegler()">Trekk tilbake signatur</button>';
+    return;
+  }
+
+  // Ikke signert – vis sjekkboks + signer-knapp
+  boks.innerHTML = '';
+
+  const tip = document.createElement('div');
+  tip.style.cssText = 'font-size:12px;color:var(--grey);margin-bottom:10px;line-height:1.5';
+  tip.innerHTML = 'Hei <strong>' + currentUser.displayName + '</strong>! Når du krysser av og signerer, registrerer vi at du har lest og forstått reglene over. Trenere kan se hvem som har signert.';
+  boks.appendChild(tip);
+
+  const checkRow = document.createElement('div');
+  checkRow.className = 'sign-checkbox-row';
+  checkRow.innerHTML =
+    '<div class="sign-checkbox" id="sign-check"></div>' +
+    '<div class="sign-text">Jeg har lest og forstått alle 9 reglene, og jeg forplikter meg til å følge dem på Fredrikstad Cup 2026.</div>';
+  checkRow.onclick = () => {
+    const cb = document.getElementById('sign-check');
+    cb.classList.toggle('checked');
+    cb.textContent = cb.classList.contains('checked') ? '✓' : '';
+    document.getElementById('signer-knapp').disabled = !cb.classList.contains('checked');
+  };
+  boks.appendChild(checkRow);
+
+  const btn = document.createElement('button');
+  btn.className = 'sign-btn';
+  btn.id = 'signer-knapp';
+  btn.disabled = true;
+  btn.textContent = '✍️ Signer';
+  btn.onclick = signerRegler;
+  boks.appendChild(btn);
+}
+
+async function signerRegler() {
+  if (!currentUser) return;
+  const btn = document.getElementById('signer-knapp');
+  btn.disabled = true;
+  btn.textContent = 'Signerer…';
+
+  try {
+    await db.collection('signaturer').doc(currentUser.uid).set({
+      uid: currentUser.uid,
+      navn: currentUser.displayName,
+      epost: currentUser.email,
+      tid: firebase.firestore.FieldValue.serverTimestamp(),
+      tidString: new Date().toISOString(),
+      reglerVersjon: '2026-05-08',
+      reglerTekst: REGLENE_TEKST
+    });
+    showToast('Signert! ✍️ Takk for forpliktelsen.');
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '✍️ Signer';
+    showToast('Kunne ikke lagre signatur. Prøv igjen.', '#dc2626');
+  }
+}
+
+window.avSignerRegler = async () => {
+  if (!confirm('Er du sikker på at du vil trekke tilbake signaturen?')) return;
+  try {
+    await db.collection('signaturer').doc(currentUser.uid).delete();
+    showToast('Signatur trukket tilbake', '#888');
+  } catch(e) {
+    showToast('Kunne ikke trekke tilbake signatur', '#dc2626');
+  }
+};
+
+function byggSignaturPanel(seksjon) {
+  seksjon.innerHTML = '';
+
+  const tip = document.createElement('div');
+  tip.className = 'tip-box';
+  tip.style.marginBottom = '12px';
+  tip.textContent = 'Oversikt over hvilke spillere som har signert reglene. Klikk navn for å se detaljer.';
+  seksjon.appendChild(tip);
+
+  // Tell totalt antall signaturer
+  const totalSig = Object.keys(alleSignaturer).length;
+  const stats = document.createElement('div');
+  stats.className = 'sig-stats';
+  stats.innerHTML =
+    '<div class="sig-stats-tall">' + totalSig + '</div>' +
+    '<div class="sig-stats-tekst">spillere/trenere har signert reglene</div>';
+  seksjon.appendChild(stats);
+
+  // Per lag
+  ['rod','sort','g14'].forEach(lagKey => {
+    const data = spillerData[lagKey];
+    if (!data || !data.spillere || data.spillere.length === 0) return;
+
+    const lagFarge = LAG_CONFIG[lagKey].farge;
+    const lagNavn  = data.lag;
+
+    // Match signaturer mot spillerlisten ved navn
+    const signerteNavn = Object.values(alleSignaturer).map(s => (s.navn || '').toLowerCase().trim());
+
+    const sortertSpillere = [...data.spillere].sort((a,b) => parseInt(a.nr) - parseInt(b.nr));
+    const antallSignert = sortertSpillere.filter(sp => {
+      const sn = sp.navn.toLowerCase().trim();
+      return signerteNavn.some(s => s === sn || sn.includes(s) || s.includes(sn));
+    }).length;
+
+    const lagSt = document.createElement('div');
+    lagSt.className = 'st';
+    lagSt.style.cssText = 'margin-top:14px;color:' + lagFarge;
+    lagSt.textContent = lagNavn + ' – ' + antallSignert + ' av ' + sortertSpillere.length;
+    seksjon.appendChild(lagSt);
+
+    const card = document.createElement('div');
+    card.className = 'info-card';
+
+    sortertSpillere.forEach(sp => {
+      const spNavn = sp.navn.toLowerCase().trim();
+      const sigMatch = Object.values(alleSignaturer).find(s => {
+        const sn = (s.navn || '').toLowerCase().trim();
+        return sn === spNavn || sn.includes(spNavn) || spNavn.includes(sn);
+      });
+
+      const row = document.createElement('div');
+      row.className = 'sig-row';
+
+      const status = document.createElement('div');
+      status.className = 'sig-status ' + (sigMatch ? 'ja' : 'nei');
+      status.textContent = sigMatch ? '✓' : '✕';
+      row.appendChild(status);
+
+      const navnEl = document.createElement('div');
+      navnEl.className = 'sig-navn';
+      navnEl.innerHTML = '<span style="color:var(--blue);font-weight:900">#' + sp.nr + '</span> ' + sp.navn;
+      row.appendChild(navnEl);
+
+      if (sigMatch) {
+        const tid = sigMatch.tid?.toDate?.() || new Date(sigMatch.tidString || Date.now());
+        const tidEl = document.createElement('div');
+        tidEl.className = 'sig-tid';
+        tidEl.textContent = tid.toLocaleDateString('no', { day:'numeric', month:'short' });
+        row.appendChild(tidEl);
+      }
+
+      card.appendChild(row);
+    });
+
+    seksjon.appendChild(card);
+  });
+
+  // Andre signaturer som ikke matcher noen spillere
+  const ikkeMatchet = Object.values(alleSignaturer).filter(sig => {
+    const sn = (sig.navn || '').toLowerCase().trim();
+    let funnet = false;
+    ['rod','sort','g14'].forEach(lk => {
+      const d = spillerData[lk];
+      if (!d || !d.spillere) return;
+      d.spillere.forEach(sp => {
+        const spn = sp.navn.toLowerCase().trim();
+        if (sn === spn || sn.includes(spn) || spn.includes(sn)) funnet = true;
+      });
+    });
+    return !funnet;
+  });
+
+  if (ikkeMatchet.length > 0) {
+    const annetSt = document.createElement('div');
+    annetSt.className = 'st';
+    annetSt.style.cssText = 'margin-top:14px';
+    annetSt.textContent = 'Andre signaturer (' + ikkeMatchet.length + ')';
+    seksjon.appendChild(annetSt);
+
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    ikkeMatchet.forEach(sig => {
+      const row = document.createElement('div');
+      row.className = 'sig-row';
+      const tid = sig.tid?.toDate?.() || new Date(sig.tidString || Date.now());
+      row.innerHTML =
+        '<div class="sig-status ja">✓</div>' +
+        '<div class="sig-navn">' + (sig.navn || '–') + '<div style="font-size:10px;color:var(--grey);font-weight:400;letter-spacing:0">' + (sig.epost || '') + '</div></div>' +
+        '<div class="sig-tid">' + tid.toLocaleDateString('no', { day:'numeric', month:'short' }) + '</div>';
+      card.appendChild(row);
+    });
+    seksjon.appendChild(card);
+  }
+}
+
 // ── Init ──────────────────────────────────────────────────────
 oppdaterOversikt();
 lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
@@ -3104,6 +3422,7 @@ initRediger();
 initPinned();
 initSluttspill();
 initSpillere();
+initSignering();
 
 
 </script>
