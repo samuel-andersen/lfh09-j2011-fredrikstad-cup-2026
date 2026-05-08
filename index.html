@@ -3323,36 +3323,33 @@ function renderSignerBoks() {
 
 async function signerRegler() {
   const user = currentUser || auth.currentUser;
-  if (!user) return;
+  if (!user) {
+    showToast('Du må være innlogget for å signere', '#dc2626');
+    return;
+  }
   const btn = document.getElementById('signer-knapp');
   btn.disabled = true;
   btn.textContent = '⏳ Signerer…';
 
   try {
+    console.log('[Signer] Lagrer for uid:', user.uid, 'epost:', user.email);
     await db.collection('signaturer').doc(user.uid).set({
       uid: user.uid,
-      navn: user.displayName,
+      navn: user.displayName || user.email,
       epost: user.email,
       tid: firebase.firestore.FieldValue.serverTimestamp(),
       tidString: new Date().toISOString(),
       reglerVersjon: '2026-05-08',
       reglerTekst: REGLENE_TEKST
     });
-    // Sett minSignatur lokalt slik at UI oppdateres umiddelbart
-    minSignatur = {
-      uid: user.uid,
-      navn: user.displayName,
-      epost: user.email,
-      tidString: new Date().toISOString(),
-      reglerVersjon: '2026-05-08'
-    };
+    console.log('[Signer] ✓ Lagret til Firestore');
     showToast('Signert! ✍️ Takk for forpliktelsen.');
-    renderSignerBoks();
+    // onSnapshot-listener vil oppdatere minSignatur og kalle renderSignerBoks
   } catch(e) {
-    console.error('Signer-feil:', e);
+    console.error('[Signer] FEIL:', e.code, e.message);
     btn.disabled = false;
     btn.textContent = '✍️ Signer';
-    showToast('Kunne ikke lagre signatur. Prøv igjen.', '#dc2626');
+    showToast('Kunne ikke lagre: ' + (e.code || e.message), '#dc2626');
   }
 }
 
