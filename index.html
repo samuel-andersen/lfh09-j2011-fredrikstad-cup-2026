@@ -1251,7 +1251,15 @@ db.settings({
   merge: true
 });
 
+// Persistens – LOCAL holder brukeren innlogget også i Safari
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e => {
+  console.warn('Kunne ikke sette LOCAL persistens:', e.code);
+});
+
 const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 let currentUser = null;
 let unsubPakk   = null;
