@@ -1348,7 +1348,7 @@ function updateAuthUI() {
     nm.textContent = currentUser.displayName || currentUser.email;
     const sb = document.createElement('span');
     sb.className = 'auth-sub';
-    sb.textContent = 'Pakkliste synces automatisk';
+    sb.textContent = 'Pakkliste, signering og spør laget';
     wrap.appendChild(nm);
     wrap.appendChild(sb);
     info.appendChild(wrap);
@@ -1376,7 +1376,7 @@ function updateAuthUI() {
     nm.textContent = 'Ikke innlogget';
     const sb = document.createElement('span');
     sb.className = 'auth-sub';
-    sb.textContent = 'Logg inn for a synce pakklisten';
+    sb.textContent = 'Logg inn for full tilgang';
     wrap.appendChild(nm);
     wrap.appendChild(sb);
     info.appendChild(wrap);
