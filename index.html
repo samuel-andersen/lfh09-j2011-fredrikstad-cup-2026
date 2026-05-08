@@ -1251,9 +1251,13 @@ db.settings({
   merge: true
 });
 
-// Persistens – LOCAL holder brukeren innlogget også i Safari
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e => {
-  console.warn('Kunne ikke sette LOCAL persistens:', e.code);
+// Persistens – LOCAL for desktop, SESSION for iOS (Safari ITP-kompatibelt)
+const erIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const persistens = erIOS
+  ? firebase.auth.Auth.Persistence.SESSION
+  : firebase.auth.Auth.Persistence.LOCAL;
+auth.setPersistence(persistens).catch(e => {
+  console.warn('Kunne ikke sette persistens:', e.code);
 });
 
 const provider = new firebase.auth.GoogleAuthProvider();
@@ -1400,7 +1404,8 @@ function updateAuthUI() {
     btn.className = 'auth-btn sign-in';
     btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24"><path fill="white" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="white" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="white" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="white" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Google';
     btn.onclick = async () => {
-      const erMobil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const erAndroid = /Android/i.test(navigator.userAgent);
+      const erMobil = erIOS || erAndroid;
 
       // Hjelpefunksjon: rydder gammel Firebase-state (skjult fra bruker)
       const ryddOpp = async () => {
@@ -1408,28 +1413,25 @@ function updateAuthUI() {
         try {
           if (window.indexedDB && indexedDB.databases) {
             const dbs = await indexedDB.databases();
-            for (const dbInfo of dbs) {
+            await Promise.all(dbs.map(dbInfo => {
               if (dbInfo.name && (dbInfo.name.includes('firebase') || dbInfo.name.includes('firestore'))) {
-                indexedDB.deleteDatabase(dbInfo.name);
+                return new Promise(resolve => {
+                  const req = indexedDB.deleteDatabase(dbInfo.name);
+                  req.onsuccess = req.onerror = req.onblocked = resolve;
+                  setTimeout(resolve, 1500);
+                });
               }
-            }
+            }));
           }
         } catch(e) {}
         try {
           Object.keys(localStorage).forEach(k => {
             if (k.startsWith('firebase:') || k.includes('firebaseui')) localStorage.removeItem(k);
           });
+          Object.keys(sessionStorage).forEach(k => {
+            if (k.startsWith('firebase:') || k.includes('firebaseui')) sessionStorage.removeItem(k);
+          });
         } catch(e) {}
-      };
-
-      // Hjelpefunksjon: utfør innlogging
-      const loggInn = async () => {
-        if (erMobil) {
-          await auth.signInWithRedirect(provider);
-        } else {
-          const result = await auth.signInWithPopup(provider);
-          console.log('[Auth] ✓ Innlogget:', result.user?.email);
-        }
       };
 
       btn.disabled = true;
@@ -1437,9 +1439,22 @@ function updateAuthUI() {
       btn.textContent = '⏳';
 
       try {
-        await loggInn();
+        // På iOS rydder vi alltid opp FØR innlogging (forebyggende)
+        // Webview-baserte nettlesere på iOS (Edge, Chrome) bruker Safari og har samme problemer
+        if (erIOS) {
+          await ryddOpp();
+        }
+
+        if (erMobil) {
+          // Redirect på alle mobile enheter
+          await auth.signInWithRedirect(provider);
+        } else {
+          // Popup på desktop
+          const result = await auth.signInWithPopup(provider);
+          console.log('[Auth] ✓ Innlogget:', result.user?.email);
+        }
       } catch(e) {
-        console.log('[Auth] Første forsøk feilet:', e.code);
+        console.log('[Auth] Feil:', e.code);
 
         // Brukerens valg – la dem være
         if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
@@ -1448,27 +1463,14 @@ function updateAuthUI() {
           return;
         }
 
-        // Henging eller utløpt session – rydd opp og prøv på nytt automatisk
-        if (e.code === 'auth/internal-error' || e.code === 'auth/web-storage-unsupported' ||
-            e.code === 'auth/credential-already-in-use' || e.code === 'auth/network-request-failed') {
-          console.log('[Auth] Rydder opp og prøver igjen…');
-          await ryddOpp();
-          try {
-            await loggInn();
-          } catch(e2) {
-            console.error('[Auth] Andre forsøk feilet også:', e2);
-            // Last hele siden på nytt – Safari trenger frisk start
-            location.reload();
-            return;
-          }
-        } else if (e.code === 'auth/popup-blocked') {
-          // Fallback til redirect
-          try { await auth.signInWithRedirect(provider); } catch(e2) {}
-        } else {
-          showToast('Innlogging feilet – prøver på nytt…', '#f59e0b');
-          await ryddOpp();
-          setTimeout(() => location.reload(), 800);
+        // Pop-blokkert på desktop – fallback til redirect
+        if (e.code === 'auth/popup-blocked') {
+          try { await auth.signInWithRedirect(provider); return; } catch(e2) {}
         }
+
+        // Alt annet – rydd opp og last på nytt
+        await ryddOpp();
+        setTimeout(() => location.reload(), 500);
       } finally {
         btn.disabled = false;
         btn.innerHTML = originalHTML;
