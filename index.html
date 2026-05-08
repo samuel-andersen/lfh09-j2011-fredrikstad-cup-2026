@@ -1452,6 +1452,10 @@ window.showView = name => {
   document.getElementById('view-' + name).classList.add('active');
   document.getElementById('nav-'  + name).classList.add('active');
   window.scrollTo(0, 0);
+  // Re-render signering når man besøker regler-siden
+  if (name === 'regler' && typeof renderSignerBoks === 'function') {
+    renderSignerBoks();
+  }
 };
 
 // ── Lag-tabs ──────────────────────────────────────────────────
@@ -3223,7 +3227,10 @@ function renderSignerBoks() {
   const boks = document.getElementById('signer-boks');
   if (!boks) return;
 
-  if (!currentUser) {
+  // Bruk auth.currentUser direkte hvis vår variabel ikke er satt
+  const user = currentUser || auth.currentUser;
+
+  if (!user) {
     boks.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:32px">🔒</div><div class="empty-text">Logg inn med Google øverst på siden for å signere reglene</div></div>';
     return;
   }
@@ -3235,7 +3242,7 @@ function renderSignerBoks() {
       '<div class="signed-badge">' +
         '<div class="ikon">✅</div>' +
         '<div class="info-tekst">' +
-          '<div class="navn">Du har signert: ' + (minSignatur.navn || currentUser.displayName) + '</div>' +
+          '<div class="navn">Du har signert: ' + (minSignatur.navn || user.displayName) + '</div>' +
           '<div class="tid">' + tidTxt + '</div>' +
         '</div>' +
       '</div>' +
@@ -3248,7 +3255,7 @@ function renderSignerBoks() {
 
   const tip = document.createElement('div');
   tip.style.cssText = 'font-size:12px;color:var(--grey);margin-bottom:10px;line-height:1.5';
-  tip.innerHTML = 'Hei <strong>' + currentUser.displayName + '</strong>! Når du krysser av og signerer, registrerer vi at du har lest og forstått reglene over. Trenere kan se hvem som har signert.';
+  tip.innerHTML = 'Hei <strong>' + (user.displayName || user.email) + '</strong>! Når du krysser av og signerer, registrerer vi at du har lest og forstått reglene over. Trenere kan se hvem som har signert.';
   boks.appendChild(tip);
 
   const checkRow = document.createElement('div');
