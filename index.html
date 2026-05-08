@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="no">
 <head>
 <meta charset="UTF-8">
@@ -33,19 +32,19 @@
 
 /* DARK MODE */
 body.dark {
-–off:       #0a0c14;
-–text:      #e8edf5;
-–light:     #151b2e;
-–mid:       #3a4a6b;
-–grey:      #6b7a96;
-–shadow:    0 2px 20px rgba(0,0,0,0.4);
-–card-bg:   #111827;
-–card-border: rgba(255,255,255,0.07);
-–blue:      #0a1628;
-–blue-dark: #060d1a;
-–blue-mid:  #1a3a7a;
-background: #0a0c14;
-color: #e8edf5;
+  --off:       #0a0c14;
+  --text:      #e8edf5;
+  --light:     #151b2e;
+  --mid:       #3a4a6b;
+  --grey:      #6b7a96;
+  --shadow:    0 2px 20px rgba(0,0,0,0.4);
+  --card-bg:   #111827;
+  --card-border: rgba(255,255,255,0.07);
+  --blue:      #0a1628;
+  --blue-dark: #060d1a;
+  --blue-mid:  #1a3a7a;
+  background: #0a0c14;
+  color: #e8edf5;
 }
 body.dark .info-card,
 body.dark .match-card,
@@ -57,9 +56,9 @@ body.dark .feel-summary,
 body.dark .log-form-card,
 body.dark .week-card,
 body.dark .access-box {
-background: #111827 !important;
-box-shadow: 0 2px 20px rgba(0,0,0,0.4) !important;
-border-color: rgba(255,255,255,0.07) !important;
+  background: #111827 !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4) !important;
+  border-color: rgba(255,255,255,0.07) !important;
 }
 body.dark .info-card-title { color: #7eb3f5; }
 body.dark .info-label { color: #6b7a96; }
@@ -89,302 +88,300 @@ body.dark .map-btn    { background:#1a3a7a; }
 
 /* DARK TOGGLE */
 .dark-toggle {
-background: none; border: none; cursor: pointer;
-font-size: 18px; padding: 4px 6px; border-radius: 8px;
-transition: transform .3s ease; line-height:1;
-flex-shrink:0;
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; padding: 4px 6px; border-radius: 8px;
+  transition: transform .3s ease; line-height:1;
+  flex-shrink:0;
 }
 .dark-toggle:active { transform: rotate(20deg) scale(0.9); }
 
-- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  .info-card, .match-card, .contact-card, .rule-card, .poi-card, .lag-card, .hero-card, .week-card, .qa-thread, .qa-input-card, .admin-kamp {
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.info-card, .match-card, .contact-card, .rule-card, .poi-card, .lag-card, .hero-card, .week-card, .qa-thread, .qa-input-card, .admin-kamp {
   transition: background-color .25s ease, color .2s ease, border-color .2s ease;
-  }
-  html, body { height: 100%; }
-  body { font-family: ‘Barlow’, sans-serif; background: var(–off); color: var(–text); padding-bottom: env(safe-area-inset-bottom); }
+}
+html, body { height: 100%; }
+body { font-family: 'Barlow', sans-serif; background: var(--off); color: var(--text); padding-bottom: env(safe-area-inset-bottom); }
 
 /* TILGANGSKODE */
 .access-screen {
-position: fixed; inset: 0; z-index: 2000;
-background: var(–blue);
-display: flex; align-items: center; justify-content: center;
-padding: 24px;
+  position: fixed; inset: 0; z-index: 2000;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
 }
 .access-box {
-background: white; border-radius: 20px; padding: 32px 24px;
-max-width: 320px; width: 100%; text-align: center;
+  background: white; border-radius: 20px; padding: 32px 24px;
+  max-width: 320px; width: 100%; text-align: center;
 }
 .access-logo { height: 56px; width: auto; margin-bottom: 16px; }
-.access-title { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:22px; color:var(–blue); margin-bottom:4px; }
-.access-cup   { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:15px; color:var(–red); margin-bottom:16px; letter-spacing:1px; }
-.access-sub   { font-size:13px; color:var(–grey); margin-bottom:20px; line-height:1.5; }
+.access-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; color:var(--blue); margin-bottom:4px; }
+.access-cup   { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; color:var(--red); margin-bottom:16px; letter-spacing:1px; }
+.access-sub   { font-size:13px; color:var(--grey); margin-bottom:20px; line-height:1.5; }
 .access-input {
-width:100%; padding:13px 16px; border:2px solid var(–mid);
-border-radius:10px; font-family:‘Barlow Condensed’,sans-serif;
-font-weight:700; font-size:18px; letter-spacing:3px;
-text-align:center; text-transform:uppercase; outline:none;
-margin-bottom:12px; transition:border-color .2s;
+  width:100%; padding:13px 16px; border:2px solid var(--mid);
+  border-radius:10px; font-family:'Barlow Condensed',sans-serif;
+  font-weight:700; font-size:18px; letter-spacing:3px;
+  text-align:center; text-transform:uppercase; outline:none;
+  margin-bottom:12px; transition:border-color .2s;
 }
-.access-input:focus { border-color:var(–blue); }
-.access-input.feil  { border-color:var(–red); animation:rist .3s ease; }
+.access-input:focus { border-color:var(--blue); }
+.access-input.feil  { border-color:var(--red); animation:rist .3s ease; }
 @keyframes rist { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 .access-btn {
-width:100%; padding:14px; background:var(–blue); color:white;
-border:none; border-radius:10px;
-font-family:‘Barlow Condensed’,sans-serif; font-weight:800;
-font-size:16px; letter-spacing:1px; cursor:pointer; transition:background .15s;
+  width:100%; padding:14px; background:var(--blue); color:white;
+  border:none; border-radius:10px;
+  font-family:'Barlow Condensed',sans-serif; font-weight:800;
+  font-size:16px; letter-spacing:1px; cursor:pointer; transition:background .15s;
 }
-.access-btn:hover { background:var(–blue-mid); }
-.access-feilmelding { font-size:12px; color:var(–red); margin-top:8px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; min-height:18px; }
+.access-btn:hover { background:var(--blue-mid); }
+.access-feilmelding { font-size:12px; color:var(--red); margin-top:8px; font-family:'Barlow Condensed',sans-serif; font-weight:700; min-height:18px; }
 
 /* HEADER */
-.header { background: var(–blue); padding-top: max(env(safe-area-inset-top),0px); }
+.header { background: var(--blue); padding-top: max(env(safe-area-inset-top),0px); }
 .header-inner { display:flex; align-items:center; justify-content:space-between; padding:14px 18px 10px; }
 .header-left  { display:flex; align-items:center; gap:12px; }
 .club-logo    { height:44px; width:auto; }
-.logo-club    { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:20px; color:white; letter-spacing:1px; }
-.logo-sub     { font-family:‘Barlow Condensed’,sans-serif; font-size:11px; color:var(–mid); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
-.cup-badge    { background:var(–red); color:white; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:4px 9px; border-radius:4px; text-align:center; line-height:1.3; }
+.logo-club    { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; color:white; letter-spacing:1px; }
+.logo-sub     { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--mid); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
+.cup-badge    { background:var(--red); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:4px 9px; border-radius:4px; text-align:center; line-height:1.3; }
 .auth-bar  { display:flex; align-items:center; justify-content:space-between; padding:8px 18px 12px; }
 .auth-info { display:flex; align-items:center; gap:9px; }
 .auth-avatar { width:26px; height:26px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); }
-.auth-name { display:block; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:13px; color:white; }
-.auth-sub  { display:block; font-size:10px; color:var(–mid); }
-.auth-btn  { border:none; border-radius:7px; cursor:pointer; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; padding:6px 11px; display:flex; align-items:center; gap:5px; transition:opacity .15s; }
+.auth-name { display:block; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:white; }
+.auth-sub  { display:block; font-size:10px; color:var(--mid); }
+.auth-btn  { border:none; border-radius:7px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; padding:6px 11px; display:flex; align-items:center; gap:5px; transition:opacity .15s; }
 .auth-btn:hover { opacity:.85; }
-.sign-in   { background:var(–blue-mid); color:white; }
-.sign-out  { background:rgba(255,255,255,0.12); color:var(–mid); }
+.sign-in   { background:var(--blue-mid); color:white; }
+.sign-out  { background:rgba(255,255,255,0.12); color:var(--mid); }
 
 /* NAV */
-.nav { display:grid; grid-template-columns:repeat(4,1fr); background:var(–blue-dark); }
-.nav-row2 { display:grid; grid-template-columns:repeat(4,1fr); background:var(–blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
+.nav { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); }
+.nav-row2 { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
 .nav-btn {
-padding:10px 4px 8px; background:none; border:none;
-color:rgba(255,255,255,0.45);
-font-family:‘Barlow Condensed’,sans-serif; font-weight:700;
-font-size:10px; letter-spacing:1.2px; text-transform:uppercase;
-cursor:pointer; transition:all .18s;
-display:flex; flex-direction:column; align-items:center; gap:3px;
-position:relative; border-top:3px solid transparent;
+  padding:10px 4px 8px; background:none; border:none;
+  color:rgba(255,255,255,0.45);
+  font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  font-size:10px; letter-spacing:1.2px; text-transform:uppercase;
+  cursor:pointer; transition:all .18s;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  position:relative; border-top:3px solid transparent;
 }
 .nav-btn .ni { font-size:20px; line-height:1; transition:transform .18s; }
 .nav .nav-btn { border-bottom:1px solid rgba(255,255,255,0.06); }
 .nav-btn:active .ni { transform:scale(0.88); }
-.nav-btn.active { color:white; border-top-color:var(–red); background:rgba(255,255,255,0.06); }
+.nav-btn.active { color:white; border-top-color:var(--red); background:rgba(255,255,255,0.06); }
 .nav-btn.active .ni { transform:scale(1.1); }
 
 /* MAIN */
 .main { padding:18px 15px 90px; max-width:480px; margin:0 auto; }
 .view { display:none !important; visibility:hidden; height:0; overflow:hidden; }
 .view.active { display:block !important; visibility:visible; height:auto; overflow:visible; }
-.st { font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(–grey); margin:22px 0 10px; }
+.st { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--grey); margin:22px 0 10px; }
 .st:first-child { margin-top:0; }
 
 /* HERO CARD */
-.hero-card { background:var(–blue); border-radius:var(–r); padding:18px; color:white; position:relative; overflow:hidden; margin-bottom:12px; }
-.hero-card::before { content:‘🤾’; position:absolute; top:-10px; right:10px; font-size:90px; opacity:0.07; line-height:1; }
-.hero-label { font-family:‘Barlow Condensed’,sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(–mid); margin-bottom:4px; }
-.hero-title { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:28px; line-height:1.1; }
-.hero-sub   { font-size:13px; color:var(–mid); margin-top:5px; line-height:1.5; }
+.hero-card { background:var(--blue); border-radius:var(--r); padding:18px; color:white; position:relative; overflow:hidden; margin-bottom:12px; }
+.hero-card::before { content:'🤾'; position:absolute; top:-10px; right:10px; font-size:90px; opacity:0.07; line-height:1; }
+.hero-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--mid); margin-bottom:4px; }
+.hero-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:28px; line-height:1.1; }
+.hero-sub   { font-size:13px; color:var(--mid); margin-top:5px; line-height:1.5; }
 .hero-grid  { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
 .hero-stat  { background:rgba(255,255,255,0.1); border-radius:9px; padding:10px 12px; }
-.hero-stat-num   { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:22px; line-height:1; }
-.hero-stat-label { font-size:11px; color:var(–mid); margin-top:2px; }
+.hero-stat-num   { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; line-height:1; }
+.hero-stat-label { font-size:11px; color:var(--mid); margin-top:2px; }
 
 /* INFO CARD */
-.info-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); padding:15px 18px; margin-bottom:10px; }
-.info-card-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding-bottom:9px; border-bottom:2px solid var(–light); }
-.info-card-icon { width:34px; height:34px; border-radius:9px; background:var(–blue); color:white; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-.info-card-title { font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:15px; color:var(–blue); }
-.info-card-sub   { font-size:11px; color:var(–grey); margin-top:1px; }
-.info-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:6px 0; border-bottom:1px solid var(–light); font-size:13px; }
+.info-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:15px 18px; margin-bottom:10px; }
+.info-card-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding-bottom:9px; border-bottom:2px solid var(--light); }
+.info-card-icon { width:34px; height:34px; border-radius:9px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.info-card-title { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; color:var(--blue); }
+.info-card-sub   { font-size:11px; color:var(--grey); margin-top:1px; }
+.info-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:6px 0; border-bottom:1px solid var(--light); font-size:13px; }
 .info-row:last-child { border-bottom:none; padding-bottom:0; }
-.info-label { color:var(–grey); flex-shrink:0; min-width:110px; font-size:12px; }
-.info-val   { color:var(–text); font-weight:600; text-align:right; font-family:‘Barlow Condensed’,sans-serif; font-size:14px; line-height:1.3; }
-.info-val.placeholder { color:var(–mid); font-weight:400; font-family:‘Barlow’,sans-serif; font-style:italic; font-size:12px; }
-.tip-box { background:var(–light); border-radius:9px; padding:10px 13px; font-size:12px; color:var(–blue); line-height:1.6; margin-top:10px; border-left:3px solid var(–blue); }
+.info-label { color:var(--grey); flex-shrink:0; min-width:110px; font-size:12px; }
+.info-val   { color:var(--text); font-weight:600; text-align:right; font-family:'Barlow Condensed',sans-serif; font-size:14px; line-height:1.3; }
+.info-val.placeholder { color:var(--mid); font-weight:400; font-family:'Barlow',sans-serif; font-style:italic; font-size:12px; }
+.tip-box { background:var(--light); border-radius:9px; padding:10px 13px; font-size:12px; color:var(--blue); line-height:1.6; margin-top:10px; border-left:3px solid var(--blue); }
 
 /* PAKKLISTE */
 .checklist { list-style:none; }
-.check-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(–light); cursor:pointer; }
+.check-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--light); cursor:pointer; }
 .check-item:last-child { border-bottom:none; }
-.check-box { width:24px; height:24px; border-radius:6px; border:2px solid var(–mid); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; background:white; color:white; transition:all .2s; }
-.check-box.checked { background:var(–green); border-color:var(–green); }
-.check-item.checked-item .check-label { color:var(–grey); text-decoration:line-through; }
-.check-label { font-size:13px; color:var(–text); line-height:1.3; }
-.check-category { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(–grey); margin:4px 0; }
-.prog-wrap { background:var(–light); border-radius:6px; height:8px; margin:8px 0 4px; overflow:hidden; }
-.prog-fill { height:100%; background:var(–blue); border-radius:6px; transition:width .5s ease; }
-.prog-label { font-family:‘Barlow Condensed’,sans-serif; font-size:12px; color:var(–grey); text-align:right; margin-bottom:6px; }
+.check-box { width:24px; height:24px; border-radius:6px; border:2px solid var(--mid); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; background:white; color:white; transition:all .2s; }
+.check-box.checked { background:var(--green); border-color:var(--green); }
+.check-item.checked-item .check-label { color:var(--grey); text-decoration:line-through; }
+.check-label { font-size:13px; color:var(--text); line-height:1.3; }
+.check-category { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--grey); margin:4px 0; }
+.prog-wrap { background:var(--light); border-radius:6px; height:8px; margin:8px 0 4px; overflow:hidden; }
+.prog-fill { height:100%; background:var(--blue); border-radius:6px; transition:width .5s ease; }
+.prog-label { font-family:'Barlow Condensed',sans-serif; font-size:12px; color:var(--grey); text-align:right; margin-bottom:6px; }
 
 /* KAMPER */
-.match-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); overflow:hidden; margin-bottom:10px; }
-.match-header { background:var(–light); padding:9px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(–mid); }
-.match-day   { font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:13px; color:var(–blue); }
-.match-badge { background:var(–blue); color:white; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:11px; padding:3px 9px; border-radius:20px; }
-.match-badge.done { background:var(–green); }
+.match-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; margin-bottom:10px; }
+.match-header { background:var(--light); padding:9px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--mid); }
+.match-day   { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; color:var(--blue); }
+.match-badge { background:var(--blue); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; padding:3px 9px; border-radius:20px; }
+.match-badge.done { background:var(--green); }
 .match-body  { padding:12px 14px; }
-.match-teams { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:17px; color:var(–text); margin-bottom:4px; }
+.match-teams { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:17px; color:var(--text); margin-bottom:4px; }
 .match-meta  { display:flex; gap:14px; flex-wrap:wrap; }
-.match-meta span { font-size:12px; color:var(–grey); display:flex; align-items:center; gap:4px; }
+.match-meta span { font-size:12px; color:var(--grey); display:flex; align-items:center; gap:4px; }
 
 /* KONTAKTER */
-.contact-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); padding:13px 15px; display:flex; align-items:center; gap:13px; margin-bottom:9px; }
-.contact-avatar { width:42px; height:42px; border-radius:50%; background:var(–blue); display:flex; align-items:center; justify-content:center; font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:15px; color:white; flex-shrink:0; }
-.contact-name { font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:15px; color:var(–text); }
-.contact-role { font-size:11px; color:var(–grey); margin-top:1px; }
-.contact-tel  { font-size:12px; color:var(–blue-mid); margin-top:3px; font-weight:600; }
-.contact-tel.placeholder { color:var(–mid); font-style:italic; font-weight:400; }
+.contact-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:13px 15px; display:flex; align-items:center; gap:13px; margin-bottom:9px; }
+.contact-avatar { width:42px; height:42px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:15px; color:white; flex-shrink:0; }
+.contact-name { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; color:var(--text); }
+.contact-role { font-size:11px; color:var(--grey); margin-top:1px; }
+.contact-tel  { font-size:12px; color:var(--blue-mid); margin-top:3px; font-weight:600; }
+.contact-tel.placeholder { color:var(--mid); font-style:italic; font-weight:400; }
 
 /* REGLER */
-.rule-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); padding:13px 15px; display:flex; align-items:flex-start; gap:13px; margin-bottom:9px; }
-.rule-num  { width:32px; height:32px; border-radius:8px; background:var(–blue); color:white; font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.rule-title { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:14px; color:var(–text); margin-bottom:2px; }
-.rule-text  { font-size:12px; color:var(–grey); line-height:1.5; }
+.rule-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:13px 15px; display:flex; align-items:flex-start; gap:13px; margin-bottom:9px; }
+.rule-num  { width:32px; height:32px; border-radius:8px; background:var(--blue); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.rule-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; color:var(--text); margin-bottom:2px; }
+.rule-text  { font-size:12px; color:var(--grey); line-height:1.5; }
 
 /* KART */
-.poi-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); padding:13px 15px; display:flex; align-items:flex-start; gap:12px; margin-bottom:9px; cursor:pointer; transition:box-shadow .2s; }
+.poi-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:13px 15px; display:flex; align-items:flex-start; gap:12px; margin-bottom:9px; cursor:pointer; transition:box-shadow .2s; }
 .poi-card:hover { box-shadow:0 4px 20px rgba(0,48,135,0.16); }
 .poi-dot-wrap { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-.poi-name  { font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:14px; color:var(–text); }
-.poi-addr  { font-size:12px; color:var(–grey); margin-top:2px; }
-.poi-tag   { display:inline-block; font-size:10px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; border-radius:4px; margin-top:4px; }
+.poi-name  { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px; color:var(--text); }
+.poi-addr  { font-size:12px; color:var(--grey); margin-top:2px; }
+.poi-tag   { display:inline-block; font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; border-radius:4px; margin-top:4px; }
 
-.map-btn { width:100%; padding:14px; background:var(–blue); color:white; border:none; border-radius:10px; font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:15px; letter-spacing:1px; cursor:pointer; transition:background .15s; margin-top:4px; }
-.map-btn:hover { background:var(–blue-mid); }
+.map-btn { width:100%; padding:14px; background:var(--blue); color:white; border:none; border-radius:10px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; letter-spacing:1px; cursor:pointer; transition:background .15s; margin-top:4px; }
+.map-btn:hover { background:var(--blue-mid); }
 
 /* LAGOPPSETT */
-.spiller-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(–light); font-size:13px; }
+.spiller-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--light); font-size:13px; }
 .spiller-row:last-child { border-bottom:none; }
-.nr-badge { width:28px; height:28px; border-radius:6px; background:var(–blue); color:white; font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.spiller-navn { flex:1; font-weight:600; color:var(–text); font-family:‘Barlow Condensed’,sans-serif; font-size:14px; }
-.spiller-pos  { font-size:11px; color:white; background:var(–grey); padding:2px 7px; border-radius:4px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; }
-.spiller-pos.mv { background:var(–red); }
-.spiller-pos.back { background:var(–blue-mid); }
+.nr-badge { width:28px; height:28px; border-radius:6px; background:var(--blue); color:white; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.spiller-navn { flex:1; font-weight:600; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:14px; }
+.spiller-pos  { font-size:11px; color:white; background:var(--grey); padding:2px 7px; border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:700; }
+.spiller-pos.mv { background:var(--red); }
+.spiller-pos.back { background:var(--blue-mid); }
 .spiller-pos.kant { background:#7c3aed; }
 .spiller-pos.str  { background:#d4a017; }
 
 /* LAG-TABS */
-.lag-tab { flex:1; padding:10px 8px; background:white; border:1.5px solid var(–mid); border-radius:9px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:13px; color:var(–grey); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
-.lag-tab.active { background:var(–blue); color:white; border-color:var(–blue); }
+.lag-tab { flex:1; padding:10px 8px; background:white; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--grey); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.lag-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
 
-.nav-row3 { display:grid; grid-template-columns:repeat(4,1fr); background:var(–blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
+.nav-row3 { display:grid; grid-template-columns:repeat(4,1fr); background:var(--blue-dark); border-bottom:2px solid rgba(255,255,255,0.08); }
 
 /* Q&A FORUM */
-.qa-input-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); padding:14px 16px; margin-bottom:12px; }
-.qa-textarea { width:100%; padding:10px 13px; border:1.5px solid var(–mid); border-radius:9px; font-family:‘Barlow’,sans-serif; font-size:14px; color:var(–text); background:var(–off); resize:none; outline:none; transition:border-color .2s; min-height:70px; }
-.qa-textarea:focus { border-color:var(–blue); }
-.qa-submit-btn { width:100%; margin-top:10px; padding:12px; background:var(–blue); color:white; border:none; border-radius:9px; font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:14px; letter-spacing:1px; cursor:pointer; transition:background .15s; }
-.qa-submit-btn:hover { background:var(–blue-mid); }
+.qa-input-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:14px 16px; margin-bottom:12px; }
+.qa-textarea { width:100%; padding:10px 13px; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow',sans-serif; font-size:14px; color:var(--text); background:var(--off); resize:none; outline:none; transition:border-color .2s; min-height:70px; }
+.qa-textarea:focus { border-color:var(--blue); }
+.qa-submit-btn { width:100%; margin-top:10px; padding:12px; background:var(--blue); color:white; border:none; border-radius:9px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px; letter-spacing:1px; cursor:pointer; transition:background .15s; }
+.qa-submit-btn:hover { background:var(--blue-mid); }
 .qa-submit-btn:disabled { opacity:.5; cursor:default; }
-.qa-login-hint { text-align:center; padding:12px; font-size:13px; color:var(–grey); }
-.qa-thread { background:white; border-radius:var(–r); box-shadow:var(–shadow); margin-bottom:10px; overflow:hidden; }
+.qa-login-hint { text-align:center; padding:12px; font-size:13px; color:var(--grey); }
+.qa-thread { background:white; border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:10px; overflow:hidden; }
 .qa-question { padding:13px 15px; }
 .qa-q-header { display:flex; align-items:center; gap:9px; margin-bottom:8px; }
-.qa-avatar { width:30px; height:30px; border-radius:50%; background:var(–blue); display:flex; align-items:center; justify-content:center; font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:12px; color:white; flex-shrink:0; overflow:hidden; }
+.qa-avatar { width:30px; height:30px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:12px; color:white; flex-shrink:0; overflow:hidden; }
 .qa-avatar img { width:100%; height:100%; object-fit:cover; }
-.qa-name { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:13px; color:var(–text); }
-.qa-time { font-size:11px; color:var(–grey); margin-left:auto; }
-.qa-delete { background:none; border:none; color:var(–mid); font-size:13px; cursor:pointer; padding:2px 5px; border-radius:4px; transition:color .15s; margin-left:4px; }
-.qa-delete:hover { color:var(–red); }
-.qa-body { font-size:13px; color:var(–text); line-height:1.55; margin-bottom:10px; }
+.qa-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; color:var(--text); }
+.qa-time { font-size:11px; color:var(--grey); margin-left:auto; }
+.qa-delete { background:none; border:none; color:var(--mid); font-size:13px; cursor:pointer; padding:2px 5px; border-radius:4px; transition:color .15s; margin-left:4px; }
+.qa-delete:hover { color:var(--red); }
+.qa-body { font-size:13px; color:var(--text); line-height:1.55; margin-bottom:10px; }
 .qa-reactions { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
-.qa-react-btn { background:var(–light); border:1.5px solid var(–mid); border-radius:20px; padding:4px 10px; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; color:var(–grey); transition:all .15s; }
-.qa-react-btn.reacted { background:var(–blue); border-color:var(–blue); color:white; }
-.qa-react-btn:hover { border-color:var(–blue); }
-.qa-reply-toggle { background:none; border:none; color:var(–blue-mid); font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; cursor:pointer; padding:0; }
-.qa-replies { background:var(–light); border-top:1px solid var(–mid); padding:10px 15px; display:flex; flex-direction:column; gap:8px; }
+.qa-react-btn { background:var(--light); border:1.5px solid var(--mid); border-radius:20px; padding:4px 10px; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--grey); transition:all .15s; }
+.qa-react-btn.reacted { background:var(--blue); border-color:var(--blue); color:white; }
+.qa-react-btn:hover { border-color:var(--blue); }
+.qa-reply-toggle { background:none; border:none; color:var(--blue-mid); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:.5px; cursor:pointer; padding:0; }
+.qa-replies { background:var(--light); border-top:1px solid var(--mid); padding:10px 15px; display:flex; flex-direction:column; gap:8px; }
 .qa-reply { display:flex; gap:9px; }
 .qa-reply-bubble { flex:1; background:white; border-radius:9px; padding:9px 12px; box-shadow:0 1px 4px rgba(0,48,135,0.07); }
-.qa-reply-name { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:12px; color:var(–blue); margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; }
-.qa-reply-text { font-size:12px; color:var(–text); line-height:1.5; }
+.qa-reply-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; color:var(--blue); margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; }
+.qa-reply-text { font-size:12px; color:var(--text); line-height:1.5; }
 .qa-reply-reactions { display:flex; gap:4px; margin-top:6px; flex-wrap:wrap; }
 .qa-reply-reactions .qa-react-btn { font-size:11px; padding:3px 8px; }
 .qa-reply-form { display:flex; gap:8px; margin-top:6px; align-items:flex-end; }
-.qa-reply-input { flex:1; padding:9px 12px; border:1.5px solid var(–mid); border-radius:9px; font-family:‘Barlow’,sans-serif; font-size:13px; color:var(–text); background:white; outline:none; transition:border-color .2s; }
-.qa-reply-input:focus { border-color:var(–blue); }
-.qa-reply-send { background:var(–blue); color:white; border:none; border-radius:9px; padding:9px 14px; font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:13px; cursor:pointer; white-space:nowrap; }
-.qa-empty { text-align:center; padding:40px 20px; color:var(–grey); }
+.qa-reply-input { flex:1; padding:9px 12px; border:1.5px solid var(--mid); border-radius:9px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text); background:white; outline:none; transition:border-color .2s; }
+.qa-reply-input:focus { border-color:var(--blue); }
+.qa-reply-send { background:var(--blue); color:white; border:none; border-radius:9px; padding:9px 14px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; cursor:pointer; white-space:nowrap; }
+.qa-empty { text-align:center; padding:40px 20px; color:var(--grey); }
 body.dark .qa-input-card, body.dark .qa-thread, body.dark .qa-reply-bubble { background:#111827 !important; }
 body.dark .qa-textarea, body.dark .qa-reply-input { background:#0a0c14; border-color:#3a4a6b; color:#e8edf5; }
 body.dark .qa-replies { background:#0d1929; border-color:#3a4a6b; }
 body.dark .qa-react-btn { background:#1a2235; border-color:#3a4a6b; color:#6b7a96; }
 body.dark .qa-body, body.dark .qa-reply-text { color:#e8edf5; }
 /* ADMIN PANEL */
-.admin-panel { position:fixed; inset:0; z-index:800; background:var(–off); overflow-y:auto; display:none; flex-direction:column; }
+.admin-panel { position:fixed; inset:0; z-index:800; background:var(--off); overflow-y:auto; display:none; flex-direction:column; }
 .admin-panel.show { display:flex; }
-.admin-header { background:var(–blue-dark); padding:14px 18px; padding-top:max(env(safe-area-inset-top),14px); display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:10; border-bottom:3px solid var(–red); }
-.admin-back { background:rgba(255,255,255,0.15); border:none; color:white; border-radius:8px; padding:7px 12px; cursor:pointer; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:14px; }
-.admin-title { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:18px; color:white; flex:1; }
+.admin-header { background:var(--blue-dark); padding:14px 18px; padding-top:max(env(safe-area-inset-top),14px); display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:10; border-bottom:3px solid var(--red); }
+.admin-back { background:rgba(255,255,255,0.15); border:none; color:white; border-radius:8px; padding:7px 12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; }
+.admin-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:18px; color:white; flex:1; }
 .admin-body { padding:16px 15px 40px; max-width:480px; margin:0 auto; width:100%; }
-.admin-kamp { background:white; border-radius:var(–r); box-shadow:var(–shadow); margin-bottom:10px; overflow:hidden; }
-.admin-kamp-header { background:var(–light); padding:10px 14px; display:flex; align-items:center; gap:8px; justify-content:space-between; border-bottom:1px solid var(–mid); }
-.admin-kamp-id { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:11px; color:var(–grey); letter-spacing:1px; }
-.admin-kamp-status { font-size:10px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; padding:2px 8px; border-radius:10px; }
+.admin-kamp { background:white; border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:10px; overflow:hidden; }
+.admin-kamp-header { background:var(--light); padding:10px 14px; display:flex; align-items:center; gap:8px; justify-content:space-between; border-bottom:1px solid var(--mid); }
+.admin-kamp-id { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; color:var(--grey); letter-spacing:1px; }
+.admin-kamp-status { font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; padding:2px 8px; border-radius:10px; }
 .admin-kamp-status.snart  { background:#fef3c7; color:#92400e; }
 .admin-kamp-status.klar   { background:#dcfce7; color:#15803d; animation:admpuls 1.5s ease-in-out infinite; }
-.admin-kamp-status.ferdig { background:var(–light); color:var(–grey); }
+.admin-kamp-status.ferdig { background:var(--light); color:var(--grey); }
 @keyframes admpuls { 0%,100%{opacity:1} 50%{opacity:0.5} }
 .admin-kamp-body { padding:12px 14px; }
-.admin-teams { font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:15px; color:var(–text); margin-bottom:10px; }
+.admin-teams { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:15px; color:var(--text); margin-bottom:10px; }
 .admin-score-wrap { display:flex; align-items:center; gap:10px; }
-.admin-score-inp { width:58px; padding:8px; border:2px solid var(–mid); border-radius:8px; font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:22px; text-align:center; color:var(–text); background:var(–off); outline:none; transition:border-color .2s; }
-.admin-score-inp:focus { border-color:var(–blue); }
-.admin-score-dash { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:20px; color:var(–grey); }
-.admin-save-btn { margin-left:auto; background:var(–blue); color:white; border:none; border-radius:8px; padding:9px 16px; font-family:‘Barlow Condensed’,sans-serif; font-weight:800; font-size:13px; cursor:pointer; transition:all .2s; }
-.admin-save-btn.saved { background:var(–green); }
-.admin-lag-tag { display:inline-block; font-size:10px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; padding:2px 7px; border-radius:4px; margin-bottom:6px; }
+.admin-score-inp { width:58px; padding:8px; border:2px solid var(--mid); border-radius:8px; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; text-align:center; color:var(--text); background:var(--off); outline:none; transition:border-color .2s; }
+.admin-score-inp:focus { border-color:var(--blue); }
+.admin-score-dash { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; color:var(--grey); }
+.admin-save-btn { margin-left:auto; background:var(--blue); color:white; border:none; border-radius:8px; padding:9px 16px; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; cursor:pointer; transition:all .2s; }
+.admin-save-btn.saved { background:var(--green); }
+.admin-lag-tag { display:inline-block; font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; padding:2px 7px; border-radius:4px; margin-bottom:6px; }
 body.dark .admin-kamp { background:#111827; }
 body.dark .admin-kamp-header { background:#0d1929; border-color:#3a4a6b; }
 body.dark .admin-score-inp { background:#0a0c14; border-color:#3a4a6b; color:#e8edf5; }
 body.dark .admin-teams { color:#e8edf5; }
-.score-badge { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:17px; color:white; background:var(–blue); padding:3px 10px; border-radius:8px; letter-spacing:1px; }
+.score-badge { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:17px; color:white; background:var(--blue); padding:3px 10px; border-radius:8px; letter-spacing:1px; }
 .score-badge.win  { background:#15803d; }
-.score-badge.loss { background:var(–red); }
+.score-badge.loss { background:var(--red); }
 .score-badge.draw { background:#d97706; }
 /* INLINE EDIT */
 [data-key] { position:relative; }
-.admin-mode [data-key] { cursor:pointer; border-bottom:1.5px dashed var(–blue-mid); padding-bottom:1px; }
+.admin-mode [data-key] { cursor:pointer; border-bottom:1.5px dashed var(--blue-mid); padding-bottom:1px; }
 .admin-mode [data-key]:hover { background:rgba(0,68,187,0.06); border-radius:4px; }
-.admin-mode [data-key]::after { content:‘✏️’; font-size:10px; margin-left:4px; opacity:0.5; }
+.admin-mode [data-key]::after { content:'✏️'; font-size:10px; margin-left:4px; opacity:0.5; }
 .inline-edit-wrap { display:flex; align-items:center; gap:6px; }
-.inline-edit-inp { flex:1; padding:5px 8px; border:2px solid var(–blue); border-radius:7px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:14px; color:var(–text); background:white; outline:none; }
-.inline-edit-ok  { background:var(–green); color:white; border:none; border-radius:6px; padding:5px 10px; font-size:13px; cursor:pointer; flex-shrink:0; }
-.inline-edit-avb { background:var(–grey); color:white; border:none; border-radius:6px; padding:5px 8px; font-size:12px; cursor:pointer; flex-shrink:0; }
+.inline-edit-inp { flex:1; padding:5px 8px; border:2px solid var(--blue); border-radius:7px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; color:var(--text); background:white; outline:none; }
+.inline-edit-ok  { background:var(--green); color:white; border:none; border-radius:6px; padding:5px 10px; font-size:13px; cursor:pointer; flex-shrink:0; }
+.inline-edit-avb { background:var(--grey); color:white; border:none; border-radius:6px; padding:5px 8px; font-size:12px; cursor:pointer; flex-shrink:0; }
 body.dark .inline-edit-inp { background:#111827; color:#e8edf5; }
 
 /* PINNED CARDS */
-.pinned-card { background:white; border-radius:var(–r); box-shadow:var(–shadow); padding:14px 16px; margin-bottom:8px; border-left:4px solid var(–blue); }
-.pinned-card .pinned-label { font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(–blue); margin-bottom:4px; }
-.pinned-card .pinned-title { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:17px; color:var(–text); line-height:1.3; }
-.pinned-card .pinned-sub   { font-size:12px; color:var(–grey); margin-top:3px; }
+.pinned-card { background:white; border-radius:var(--r); box-shadow:var(--shadow); padding:14px 16px; margin-bottom:8px; border-left:4px solid var(--blue); }
+.pinned-card .pinned-label { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:4px; }
+.pinned-card .pinned-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:17px; color:var(--text); line-height:1.3; }
+.pinned-card .pinned-sub   { font-size:12px; color:var(--grey); margin-top:3px; }
 body.dark .pinned-card { background:#111827; }
 
 /* ADMIN PIN */
-.pin-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(–light); cursor:grab; }
+.pin-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--light); cursor:grab; }
 .pin-item:last-child { border-bottom:none; }
-.pin-check { width:22px; height:22px; border-radius:6px; border:2px solid var(–mid); display:flex; align-items:center; justify-content:center; font-size:12px; color:white; flex-shrink:0; transition:all .15s; }
-.pin-check.on { background:var(–blue); border-color:var(–blue); }
-.pin-name { flex:1; font-size:13px; color:var(–text); font-family:‘Barlow Condensed’,sans-serif; font-weight:700; }
-.pin-order { font-family:‘Barlow Condensed’,sans-serif; font-weight:900; font-size:15px; color:var(–blue); width:20px; text-align:center; }
-.drag-handle { color:var(–mid); font-size:16px; cursor:grab; }
+.pin-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--mid); display:flex; align-items:center; justify-content:center; font-size:12px; color:white; flex-shrink:0; transition:all .15s; }
+.pin-check.on { background:var(--blue); border-color:var(--blue); }
+.pin-name { flex:1; font-size:13px; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-weight:700; }
+.pin-order { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:15px; color:var(--blue); width:20px; text-align:center; }
+.drag-handle { color:var(--mid); font-size:16px; cursor:grab; }
 .pin-item.dragging { opacity:0.4; }
-.pin-item.drag-over { border-top:2px solid var(–blue); }
+.pin-item.drag-over { border-top:2px solid var(--blue); }
 
-.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(–green); color:white; padding:11px 22px; border-radius:28px; font-family:‘Barlow Condensed’,sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
+.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--green); color:white; padding:11px 22px; border-radius:28px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; opacity:0; transition:all .28s; z-index:999; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); pointer-events:none; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* EMPTY */
-.empty { text-align:center; padding:40px 20px; color:var(–grey); }
+.empty { text-align:center; padding:40px 20px; color:var(--grey); }
 .empty-icon { font-size:44px; margin-bottom:9px; }
 .empty-text { font-size:14px; line-height:1.5; }
 </style>
-
 </head>
 <body>
 
 <!-- TILGANGSKODE -->
-
 <div class="access-screen" id="access-screen">
   <div class="access-box">
     <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="access-logo" alt="LFH09">
@@ -398,7 +395,6 @@ body.dark .pinned-card { background:#111827; }
 </div>
 
 <!-- HEADER -->
-
 <header class="header">
   <div class="header-inner">
     <div class="header-left">
@@ -417,7 +413,6 @@ body.dark .pinned-card { background:#111827; }
 </header>
 
 <!-- NAV -->
-
 <nav class="nav">
   <button class="nav-btn active" onclick="showView('oversikt')"    id="nav-oversikt"><span class="ni">🏠</span>Oversikt</button>
   <button class="nav-btn"        onclick="showView('program')"     id="nav-program"><span class="ni">🗓</span>Program</button>
@@ -440,7 +435,6 @@ body.dark .pinned-card { background:#111827; }
 <div class="main">
 
   <!-- OVERSIKT -->
-
   <div class="view active" id="view-oversikt">
     <div class="hero-card">
       <div class="hero-label">TURINFO</div>
@@ -466,48 +460,45 @@ body.dark .pinned-card { background:#111827; }
       </div>
     </div>
 
-```
-<div class="st">Hurtiginfo</div>
-<div id="pinned-wrap"></div>
-<div id="oversikt-standard">
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🚗</div>
-    <div>
-      <div class="info-card-title">Avreise</div>
-      <div class="info-card-sub">Fredag 22. mai 2026</div>
+    <div class="st">Hurtiginfo</div>
+    <div id="pinned-wrap"></div>
+    <div id="oversikt-standard">
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚗</div>
+        <div>
+          <div class="info-card-title">Avreise</div>
+          <div class="info-card-sub">Fredag 22. mai 2026</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val">Kl. 14:45</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val">Kl. 15:00 – private biler</span></div>
+      <div class="info-row"><span class="info-label">Møteplass</span><span class="info-val placeholder">Oppdateres</span></div>
     </div>
-  </div>
-  <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val">Kl. 14:45</span></div>
-  <div class="info-row"><span class="info-label">Avreise</span><span class="info-val">Kl. 15:00 – private biler</span></div>
-  <div class="info-row"><span class="info-label">Møteplass</span><span class="info-val placeholder">Oppdateres</span></div>
-</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🏫</div>
-    <div>
-      <div class="info-card-title">Overnatting</div>
-      <div class="info-card-sub">Rød Skole Krakerøy</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🏫</div>
+        <div>
+          <div class="info-card-title">Overnatting</div>
+          <div class="info-card-sub">Rød Skole Krakerøy</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Adresse</span><span class="info-val">Dueveien 2, 1679 Kråkerøy</span></div>
+      <div class="info-row"><span class="info-label">Rom</span><span class="info-val" data-key="bo.rom">225 og 229</span></div>
+      <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag fra 16:30</span></div>
     </div>
-  </div>
-  <div class="info-row"><span class="info-label">Adresse</span><span class="info-val">Dueveien 2, 1679 Kråkerøy</span></div>
-  <div class="info-row"><span class="info-label">Rom</span><span class="info-val" data-key="bo.rom">225 og 229</span></div>
-  <div class="info-row"><span class="info-label">Innsjekk</span><span class="info-val">Fredag fra 16:30</span></div>
-</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">📞</div>
-    <div>
-      <div class="info-card-title">Turansvarlig</div>
-      <div class="info-card-sub">Kontaktperson på turen</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">📞</div>
+        <div>
+          <div class="info-card-title">Turansvarlig</div>
+          <div class="info-card-sub">Kontaktperson på turen</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Navn</span><span class="info-val">Samuel Andersen</span></div>
+      <div class="info-row"><span class="info-label">Telefon</span><span class="info-val"><a href="tel:+4740044442" style="color:var(--blue-mid);text-decoration:none">+47 400 44 442</a></span></div>
     </div>
-  </div>
-  <div class="info-row"><span class="info-label">Navn</span><span class="info-val">Samuel Andersen</span></div>
-  <div class="info-row"><span class="info-label">Telefon</span><span class="info-val"><a href="tel:+4740044442" style="color:var(--blue-mid);text-decoration:none">+47 400 44 442</a></span></div>
-</div>
-</div><!-- /oversikt-standard -->
-```
-
+    </div><!-- /oversikt-standard -->
   </div>
   <div class="view" id="view-program">
     <div class="hero-card" style="margin-bottom:12px">
@@ -516,147 +507,140 @@ body.dark .pinned-card { background:#111827; }
       <div class="hero-sub">22.–25. mai 2026 · Offisielt program + lagets tider</div>
     </div>
 
-```
-<div class="st" style="margin-top:0">Fredag 22. mai</div>
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🚗</div><div><div class="info-card-title">Avreisedag</div></div></div>
-  <div class="info-row"><span class="info-label">14:45</span><span class="info-val">Oppmøte Lillehammer</span></div>
-  <div class="info-row"><span class="info-label">15:00</span><span class="info-val">Avreise – private biler</span></div>
-  <div class="info-row"><span class="info-label">16:00</span><span class="info-val">Sport 1-butikken åpner</span></div>
-  <div class="info-row"><span class="info-label">16:30</span><span class="info-val">Innsjekk bosted åpner</span></div>
-  <div class="info-row"><span class="info-label">Ca. 18:30</span><span class="info-val">Estimert ankomst Fredrikstad</span></div>
-  <div class="info-row"><span class="info-label">Kveld</span><span class="info-val">Middag ved ankomst</span></div>
-</div>
+    <div class="st" style="margin-top:0">Fredag 22. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🚗</div><div><div class="info-card-title">Avreisedag</div></div></div>
+      <div class="info-row"><span class="info-label">14:45</span><span class="info-val">Oppmøte Lillehammer</span></div>
+      <div class="info-row"><span class="info-label">15:00</span><span class="info-val">Avreise – private biler</span></div>
+      <div class="info-row"><span class="info-label">16:00</span><span class="info-val">Sport 1-butikken åpner</span></div>
+      <div class="info-row"><span class="info-label">16:30</span><span class="info-val">Innsjekk bosted åpner</span></div>
+      <div class="info-row"><span class="info-label">Ca. 18:30</span><span class="info-val">Estimert ankomst Fredrikstad</span></div>
+      <div class="info-row"><span class="info-label">Kveld</span><span class="info-val">Middag ved ankomst</span></div>
+    </div>
 
-<div class="st">Lørdag 23. mai</div>
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 1</div></div></div>
-  <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
-  <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
-  <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">11:18 🔴</span><span class="info-val">LFH09 Rød – Kongsten</span></div>
-  <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">13:59 🔴</span><span class="info-val">LFH09 Rød – Lisleby</span></div>
-  <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">14:45 🔵</span><span class="info-val">LFH09 Blå – Lisleby</span></div>
-  <div class="info-row"><span class="info-label">14:00–18:30</span><span class="info-val">🍽 Middag Kongsten Arena</span></div>
-  <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">16:40 🔵</span><span class="info-val">LFH09 Blå – Lisleby</span></div>
-  <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">18:30</span><span class="info-val" style="color:var(--red)">🎵 Konsert – dørene åpner</span></div>
-  <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">19:40–21:20</span><span class="info-val" style="color:var(--red)">🎵 Konsert-show</span></div>
-</div>
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🎵</div><div><div class="info-card-title">Konserten lørdag kveld</div><div class="info-card-sub">Kongsten Arena</div></div></div>
-  <div class="info-row"><span class="info-label">Artister</span><span class="info-val">Bausa, Tigergutt, Puls, Emma, YLVA, Sander Elstad, Streetboys m.fl.</span></div>
-  <div class="info-row"><span class="info-label">Billetter</span><span class="info-val">Inkludert i cupbånd</span></div>
-  <div class="info-row"><span class="info-label">Familie</span><span class="info-val">Kr 400 per ekstra billett</span></div>
-  <div class="tip-box">🎟 Billetten er inkludert i SUPER/BASIC cupbåndet. Familie kjøper ekstra gjennom laget.</div>
-</div>
+    <div class="st">Lørdag 23. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 1</div></div></div>
+      <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
+      <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">11:18 🔴</span><span class="info-val">LFH09 Rød – Kongsten</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">13:59 🔴</span><span class="info-val">LFH09 Rød – Lisleby</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">14:45 🔵</span><span class="info-val">LFH09 Blå – Lisleby</span></div>
+      <div class="info-row"><span class="info-label">14:00–18:30</span><span class="info-val">🍽 Middag Kongsten Arena</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">16:40 🔵</span><span class="info-val">LFH09 Blå – Lisleby</span></div>
+      <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">18:30</span><span class="info-val" style="color:var(--red)">🎵 Konsert – dørene åpner</span></div>
+      <div class="info-row" style="background:rgba(200,16,46,0.08)"><span class="info-label" style="color:var(--red)">19:40–21:20</span><span class="info-val" style="color:var(--red)">🎵 Konsert-show</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🎵</div><div><div class="info-card-title">Konserten lørdag kveld</div><div class="info-card-sub">Kongsten Arena</div></div></div>
+      <div class="info-row"><span class="info-label">Artister</span><span class="info-val">Bausa, Tigergutt, Puls, Emma, YLVA, Sander Elstad, Streetboys m.fl.</span></div>
+      <div class="info-row"><span class="info-label">Billetter</span><span class="info-val">Inkludert i cupbånd</span></div>
+      <div class="info-row"><span class="info-label">Familie</span><span class="info-val">Kr 400 per ekstra billett</span></div>
+      <div class="tip-box">🎟 Billetten er inkludert i SUPER/BASIC cupbåndet. Familie kjøper ekstra gjennom laget.</div>
+    </div>
 
-<div class="st">Søndag 24. mai</div>
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 2</div></div></div>
-  <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
-  <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
-  <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">09:46 🔵</span><span class="info-val">LFH09 Blå – Merkur Arena</span></div>
-  <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">11:41 🔵</span><span class="info-val">LFH09 Blå – Merkur Arena</span></div>
-  <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">12:27 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
-  <div class="info-row"><span class="info-label">14:00–19:00</span><span class="info-val">🍽 Middag Merkur Arena</span></div>
-  <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">14:45 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
-  <div class="info-row"><span class="info-label">11:00–17:00</span><span class="info-val">🏊 Friluftsbad (egne priser)</span></div>
-</div>
+    <div class="st">Søndag 24. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🤾</div><div><div class="info-card-title">Kampdag 2</div></div></div>
+      <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
+      <div class="info-row"><span class="info-label">09:00</span><span class="info-val">Fan Zone åpner</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">09:46 🔵</span><span class="info-val">LFH09 Blå – Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,68,187,0.05)"><span class="info-label">11:41 🔵</span><span class="info-val">LFH09 Blå – Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">12:27 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
+      <div class="info-row"><span class="info-label">14:00–19:00</span><span class="info-val">🍽 Middag Merkur Arena</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)"><span class="info-label">14:45 🔴</span><span class="info-val">LFH09 Rød – Merkur Arena</span></div>
+      <div class="info-row"><span class="info-label">11:00–17:00</span><span class="info-val">🏊 Friluftsbad (egne priser)</span></div>
+    </div>
 
-<div class="st">Mandag 25. mai</div>
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🏆</div><div><div class="info-card-title">Sluttspill & avreise</div></div></div>
-  <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
-  <div class="info-row"><span class="info-label">08:00</span><span class="info-val">Sluttspill starter</span></div>
-  <div class="info-row"><span class="info-label">Ca. 13:00</span><span class="info-val">Finalestart</span></div>
-  <div class="info-row"><span class="info-label">16:30</span><span class="info-val">Fredrikstad Cup 2026 over</span></div>
-  <div class="info-row"><span class="info-label">Avreise</span><span class="info-val placeholder">Etter sluttspill – TBD</span></div>
-</div>
-```
-
+    <div class="st">Mandag 25. mai</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🏆</div><div><div class="info-card-title">Sluttspill & avreise</div></div></div>
+      <div class="info-row"><span class="info-label">06:15–10:00</span><span class="info-val">🍳 Frokost på skolen</span></div>
+      <div class="info-row"><span class="info-label">08:00</span><span class="info-val">Sluttspill starter</span></div>
+      <div class="info-row"><span class="info-label">Ca. 13:00</span><span class="info-val">Finalestart</span></div>
+      <div class="info-row"><span class="info-label">16:30</span><span class="info-val">Fredrikstad Cup 2026 over</span></div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val placeholder">Etter sluttspill – TBD</span></div>
+    </div>
   </div>
 
   <!-- MAT -->
-
   <div class="view" id="view-mat">
     <div class="st" style="margin-top:0">Mat og drikke</div>
 
-```
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🍳</div><div><div class="info-card-title">Frokost</div><div class="info-card-sub">Lør, søn og man · Inkludert (SUPER)</div></div></div>
-  <div class="info-row"><span class="info-label">Tid</span><span class="info-val">06:15–10:00</span></div>
-  <div class="info-row"><span class="info-label">Sted</span><span class="info-val">Rød Skole Kråkerøy</span></div>
-  <div class="info-row"><span class="info-label">Innhold</span><span class="info-val">Brødmat, pålegg, melk, juice, frukt</span></div>
-  <div class="tip-box">⚠️ Det er ikke mulig å smøre matpakke til lunsj på bostedet.</div>
-</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🍳</div><div><div class="info-card-title">Frokost</div><div class="info-card-sub">Lør, søn og man · Inkludert (SUPER)</div></div></div>
+      <div class="info-row"><span class="info-label">Tid</span><span class="info-val">06:15–10:00</span></div>
+      <div class="info-row"><span class="info-label">Sted</span><span class="info-val">Rød Skole Kråkerøy</span></div>
+      <div class="info-row"><span class="info-label">Innhold</span><span class="info-val">Brødmat, pålegg, melk, juice, frukt</span></div>
+      <div class="tip-box">⚠️ Det er ikke mulig å smøre matpakke til lunsj på bostedet.</div>
+    </div>
 
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🥙</div><div><div class="info-card-title">Lunsj</div><div class="info-card-sub">Ordnes selv</div></div></div>
-  <div class="info-row"><span class="info-label">Betaling</span><span class="info-val">Kort og Vipps</span></div>
-  <div class="info-row"><span class="info-label">Arenaene</span><span class="info-val">Baguetter, frukt, snacks, pølser, is</span></div>
-  <div class="info-row"><span class="info-label">Bosteder</span><span class="info-val">Enkel kiosk på de fleste</span></div>
-  <div class="tip-box">🛒 Kontanter fungerer i hovedteltet på hver arena.</div>
-</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🥙</div><div><div class="info-card-title">Lunsj</div><div class="info-card-sub">Ordnes selv</div></div></div>
+      <div class="info-row"><span class="info-label">Betaling</span><span class="info-val">Kort og Vipps</span></div>
+      <div class="info-row"><span class="info-label">Arenaene</span><span class="info-val">Baguetter, frukt, snacks, pølser, is</span></div>
+      <div class="info-row"><span class="info-label">Bosteder</span><span class="info-val">Enkel kiosk på de fleste</span></div>
+      <div class="tip-box">🛒 Kontanter fungerer i hovedteltet på hver arena.</div>
+    </div>
 
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🍽</div><div><div class="info-card-title">Middag – J14 (12–14 år)</div><div class="info-card-sub">Inkludert i cupbånd (SUPER)</div></div></div>
-  <div class="info-row" style="background:rgba(200,16,46,0.04)">
-    <span class="info-label">🌮 Lørdag</span>
-    <span class="info-val">Taco med storfe</span>
-  </div>
-  <div class="info-row">
-    <span class="info-label">Sted lørdag</span>
-    <span class="info-val">Kongsten Arena</span>
-  </div>
-  <div class="info-row">
-    <span class="info-label">Tid lørdag</span>
-    <span class="info-val">14:00–18:30 (siste innslipp 18:00)</span>
-  </div>
-  <div class="info-row" style="background:rgba(0,48,135,0.04)">
-    <span class="info-label">🍛 Søndag</span>
-    <span class="info-val">Baligryte med kylling</span>
-  </div>
-  <div class="info-row">
-    <span class="info-label">Sted søndag</span>
-    <span class="info-val">Merkur Arena</span>
-  </div>
-  <div class="info-row">
-    <span class="info-label">Tid søndag</span>
-    <span class="info-val">14:00–19:00</span>
-  </div>
-  <div class="tip-box">💡 Ferdig på Merkur før 13:00 søndag? Kan spise på Kongsten i stedet. Spis tidlig lørdag – det blir kø rett før konserten!</div>
-</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🍽</div><div><div class="info-card-title">Middag – J14 (12–14 år)</div><div class="info-card-sub">Inkludert i cupbånd (SUPER)</div></div></div>
+      <div class="info-row" style="background:rgba(200,16,46,0.04)">
+        <span class="info-label">🌮 Lørdag</span>
+        <span class="info-val">Taco med storfe</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Sted lørdag</span>
+        <span class="info-val">Kongsten Arena</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Tid lørdag</span>
+        <span class="info-val">14:00–18:30 (siste innslipp 18:00)</span>
+      </div>
+      <div class="info-row" style="background:rgba(0,48,135,0.04)">
+        <span class="info-label">🍛 Søndag</span>
+        <span class="info-val">Baligryte med kylling</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Sted søndag</span>
+        <span class="info-val">Merkur Arena</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Tid søndag</span>
+        <span class="info-val">14:00–19:00</span>
+      </div>
+      <div class="tip-box">💡 Ferdig på Merkur før 13:00 søndag? Kan spise på Kongsten i stedet. Spis tidlig lørdag – det blir kø rett før konserten!</div>
+    </div>
 
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🌿</div><div><div class="info-card-title">Spesialkost og allergi</div><div class="info-card-sub">Ta kontakt med leder på stedet</div></div></div>
-  <div class="info-row"><span class="info-label">Frokost</span><span class="info-val">Fria glutenfritt havrebrød</span></div>
-  <div class="info-row"><span class="info-label">Lørdag</span><span class="info-val">Glutenfrie lefser · Vegetar/hallal</span></div>
-  <div class="info-row"><span class="info-label">Søndag</span><span class="info-val">Gryte er glutenfri + laktosefri · Vegetar/hallal</span></div>
-  <div class="info-row"><span class="info-label">Pommes frites</span><span class="info-val">Fritert uten gluten</span></div>
-  <div class="tip-box">📋 Allergenoversikt publiseres ca. 14 dager før cup på <a href="https://www.fredrikstadcup.no/mat" target="_blank" style="color:var(--blue)">fredrikstadcup.no/mat</a></div>
-</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🌿</div><div><div class="info-card-title">Spesialkost og allergi</div><div class="info-card-sub">Ta kontakt med leder på stedet</div></div></div>
+      <div class="info-row"><span class="info-label">Frokost</span><span class="info-val">Fria glutenfritt havrebrød</span></div>
+      <div class="info-row"><span class="info-label">Lørdag</span><span class="info-val">Glutenfrie lefser · Vegetar/hallal</span></div>
+      <div class="info-row"><span class="info-label">Søndag</span><span class="info-val">Gryte er glutenfri + laktosefri · Vegetar/hallal</span></div>
+      <div class="info-row"><span class="info-label">Pommes frites</span><span class="info-val">Fritert uten gluten</span></div>
+      <div class="tip-box">📋 Allergenoversikt publiseres ca. 14 dager før cup på <a href="https://www.fredrikstadcup.no/mat" target="_blank" style="color:var(--blue)">fredrikstadcup.no/mat</a></div>
+    </div>
 
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🌙</div><div><div class="info-card-title">Kveldsmat</div><div class="info-card-sub">Ordnes selv</div></div></div>
-  <div class="info-row"><span class="info-label">KIWI</span><span class="info-val">600 m fra skolen</span></div>
-  <div class="info-row"><span class="info-label">Kiosk</span><span class="info-val">På bostedet</span></div>
-  <div class="info-row"><span class="info-label">Arenaene</span><span class="info-val">Mat til utpå kvelden</span></div>
-</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🌙</div><div><div class="info-card-title">Kveldsmat</div><div class="info-card-sub">Ordnes selv</div></div></div>
+      <div class="info-row"><span class="info-label">KIWI</span><span class="info-val">600 m fra skolen</span></div>
+      <div class="info-row"><span class="info-label">Kiosk</span><span class="info-val">På bostedet</span></div>
+      <div class="info-row"><span class="info-label">Arenaene</span><span class="info-val">Mat til utpå kvelden</span></div>
+    </div>
 
-<div class="st">Aktiviteter</div>
-<div class="info-card">
-  <div class="info-card-header"><div class="info-card-icon">🎉</div><div><div class="info-card-title">Mer enn håndball!</div><div class="info-card-sub">Fredrikstad Cup-opplevelser</div></div></div>
-  <div class="info-row"><span class="info-label">Fan Zone</span><span class="info-val">Gratis, lør+søn 09:00–18:00</span></div>
-  <div class="info-row"><span class="info-label">Axels Tivoli</span><span class="info-val">Skandinavias største tivoli</span></div>
-  <div class="info-row"><span class="info-label">Friluftsbad</span><span class="info-val">27° vann, 11:00–17:00</span></div>
-  <div class="info-row"><span class="info-label">Minigolf</span><span class="info-val">12 hull ved Kongsten Arena</span></div>
-  <div class="info-row"><span class="info-label">SUMO-håndball</span><span class="info-val">Gratis hele helgen</span></div>
-  <div class="info-row"><span class="info-label">Silent Disco</span><span class="info-val">Dans med hodetelefoner 🎧</span></div>
-  <div class="info-row"><span class="info-label">DNB Glitter</span><span class="info-val">Gratis ansiktspynt lør+søn</span></div>
-  <div class="info-row"><span class="info-label">SELECT Skills</span><span class="info-val">Styrke, spenst og teknikk</span></div>
-  <button class="map-btn" style="margin-top:12px;background:var(--blue-mid)" onclick="window.open('https://www.fredrikstadcup.no/opplevelser','_blank')">🔗 Se alle aktiviteter på fredrikstadcup.no</button>
-</div>
-```
-
+    <div class="st">Aktiviteter</div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon">🎉</div><div><div class="info-card-title">Mer enn håndball!</div><div class="info-card-sub">Fredrikstad Cup-opplevelser</div></div></div>
+      <div class="info-row"><span class="info-label">Fan Zone</span><span class="info-val">Gratis, lør+søn 09:00–18:00</span></div>
+      <div class="info-row"><span class="info-label">Axels Tivoli</span><span class="info-val">Skandinavias største tivoli</span></div>
+      <div class="info-row"><span class="info-label">Friluftsbad</span><span class="info-val">27° vann, 11:00–17:00</span></div>
+      <div class="info-row"><span class="info-label">Minigolf</span><span class="info-val">12 hull ved Kongsten Arena</span></div>
+      <div class="info-row"><span class="info-label">SUMO-håndball</span><span class="info-val">Gratis hele helgen</span></div>
+      <div class="info-row"><span class="info-label">Silent Disco</span><span class="info-val">Dans med hodetelefoner 🎧</span></div>
+      <div class="info-row"><span class="info-label">DNB Glitter</span><span class="info-val">Gratis ansiktspynt lør+søn</span></div>
+      <div class="info-row"><span class="info-label">SELECT Skills</span><span class="info-val">Styrke, spenst og teknikk</span></div>
+      <button class="map-btn" style="margin-top:12px;background:var(--blue-mid)" onclick="window.open('https://www.fredrikstadcup.no/opplevelser','_blank')">🔗 Se alle aktiviteter på fredrikstadcup.no</button>
+    </div>
   </div>
   <div class="view" id="view-avreise">
     <div class="st" style="margin-top:0">Avreise – fredag 22. mai</div>
@@ -702,42 +686,38 @@ body.dark .pinned-card { background:#111827; }
       <div class="tip-box">💡 Merk ALL bagasje med navn og telefonnummer.</div>
     </div>
 
-```
-<div class="st">Buss under turneringen</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🚌</div>
-    <div>
-      <div class="info-card-title">Cup-bussene</div>
-      <div class="info-card-sub">Gratis med deltagerbånd</div>
+    <div class="st">Buss under turneringen</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚌</div>
+        <div>
+          <div class="info-card-title">Cup-bussene</div>
+          <div class="info-card-sub">Gratis med deltagerbånd</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
+      <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">2x i timen</span></div>
+      <div class="info-row"><span class="info-label">Fra skolen</span><span class="info-val">2x i timen</span></div>
+      <div class="info-row"><span class="info-label">Fra Kongsten Arena</span><span class="info-val">2x i timen</span></div>
+      <div class="tip-box">⚠️ Beregn ekstra venting etter konserten lørdag kveld.</div>
     </div>
-  </div>
-  <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
-  <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">2x i timen</span></div>
-  <div class="info-row"><span class="info-label">Fra skolen</span><span class="info-val">2x i timen</span></div>
-  <div class="info-row"><span class="info-label">Fra Kongsten Arena</span><span class="info-val">2x i timen</span></div>
-  <div class="tip-box">⚠️ Beregn ekstra venting etter konserten lørdag kveld.</div>
-</div>
 
-<div class="st">Hjemreise – mandag 25. mai</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🏠</div>
-    <div>
-      <div class="info-card-title">Hjemreise</div>
-      <div class="info-card-sub">Mandag 25. mai 2026</div>
+    <div class="st">Hjemreise – mandag 25. mai</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🏠</div>
+        <div>
+          <div class="info-card-title">Hjemreise</div>
+          <div class="info-card-sub">Mandag 25. mai 2026</div>
+        </div>
+      </div>
+      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val" data-key="avreise.hjemreise">Etter sluttspill</span></div>
+      <div class="info-row"><span class="info-label">Fra</span><span class="info-val" data-key="avreise.hjemfra">Rød Skole Krakerøy</span></div>
+      <div class="tip-box">📦 Husk å rydde rommet og ta med alt. Sjekk under madrassen!</div>
     </div>
-  </div>
-  <div class="info-row"><span class="info-label">Avreise</span><span class="info-val" data-key="avreise.hjemreise">Etter sluttspill</span></div>
-  <div class="info-row"><span class="info-label">Fra</span><span class="info-val" data-key="avreise.hjemfra">Rød Skole Krakerøy</span></div>
-  <div class="tip-box">📦 Husk å rydde rommet og ta med alt. Sjekk under madrassen!</div>
-</div>
-```
-
   </div>
 
   <!-- OVERNATTING -->
-
   <div class="view" id="view-overnatting">
     <div class="st" style="margin-top:0">Overnattingssted</div>
     <div class="info-card">
@@ -785,7 +765,6 @@ body.dark .pinned-card { background:#111827; }
   </div>
 
   <!-- PAKKLISTE -->
-
   <div class="view" id="view-pakkliste">
     <div class="st" style="margin-top:0">Pakkliste</div>
     <div class="info-card" style="margin-bottom:6px">
@@ -793,178 +772,166 @@ body.dark .pinned-card { background:#111827; }
       <div class="prog-label" id="pack-label">0 av 0 pakket</div>
     </div>
 
-```
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🤾</div>
-    <div><div class="info-card-title">Håndballutstyr</div><div class="info-card-sub">Alt til hallen</div></div>
-  </div>
-  <ul class="checklist" id="list-fotball">
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Drakt – hjemme og borte</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Innendørssko / hallsko</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Shorts (2 par)</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Tape / sportstape</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Knebeskytter</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Albuebeskytter</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Håndleddsbeskytter (om nødvendig)</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Vannflaske – merket med navn</span></li>
-  </ul>
-</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🤾</div>
+        <div><div class="info-card-title">Håndballutstyr</div><div class="info-card-sub">Alt til hallen</div></div>
+      </div>
+      <ul class="checklist" id="list-fotball">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Drakt – hjemme og borte</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Innendørssko / hallsko</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Shorts (2 par)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Tape / sportstape</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Knebeskytter</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Albuebeskytter</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Håndleddsbeskytter (om nødvendig)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Vannflaske – merket med navn</span></li>
+      </ul>
+    </div>
 
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">👕</div>
-    <div><div class="info-card-title">Klær og personlig</div><div class="info-card-sub">For 3 overnattinger</div></div>
-  </div>
-  <ul class="checklist" id="list-klar">
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Skift klær (3 dager)</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Regnjakke / vindjakke</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Sko til dagligbruk</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Toalettsaker og tannbørste</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Håndkle</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Liggeunderlag / luftmadrass</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Sovepose eller laken + pute + dyne (i søppelsekk)</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Ekstra liggeunderlag under madrassen (mot kuldegulv)</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Solkrem</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Eventuell medisin (navngitt)</span></li>
-  </ul>
-</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">👕</div>
+        <div><div class="info-card-title">Klær og personlig</div><div class="info-card-sub">For 3 overnattinger</div></div>
+      </div>
+      <ul class="checklist" id="list-klar">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Skift klær (3 dager)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Regnjakke / vindjakke</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Sko til dagligbruk</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Toalettsaker og tannbørste</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Håndkle</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Liggeunderlag / luftmadrass</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Sovepose eller laken + pute + dyne (i søppelsekk)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Ekstra liggeunderlag under madrassen (mot kuldegulv)</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Solkrem</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Eventuell medisin (navngitt)</span></li>
+      </ul>
+    </div>
 
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">📱</div>
-    <div><div class="info-card-title">Praktisk</div><div class="info-card-sub">Ikke glem</div></div>
-  </div>
-  <ul class="checklist" id="list-praktisk">
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Mobiltelefon + lader</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Powerbank</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Lommepenger</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Forsikringskort</span></li>
-    <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">God stemning 💛</span></li>
-  </ul>
-</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">📱</div>
+        <div><div class="info-card-title">Praktisk</div><div class="info-card-sub">Ikke glem</div></div>
+      </div>
+      <ul class="checklist" id="list-praktisk">
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Mobiltelefon + lader</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Powerbank</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Lommepenger</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Forsikringskort</span></li>
+        <li class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">God stemning 💛</span></li>
+      </ul>
+    </div>
 
-<button class="map-btn" style="background:var(--grey)" onclick="nullstillPakkliste()">Nullstill pakkliste</button>
-```
-
+    <button class="map-btn" style="background:var(--grey)" onclick="nullstillPakkliste()">Nullstill pakkliste</button>
   </div>
 
   <!-- KAMPER -->
-
   <div class="view" id="view-kamper">
 
-```
-<!-- LAG-TABS -->
-<div style="display:flex; gap:6px; margin-bottom:14px;">
-  <button class="lag-tab active" id="tab-rod" onclick="visLag('rod')" style="flex:1">
-    <span style="width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-right:5px;"></span>J14 Rød
-  </button>
-  <button class="lag-tab" id="tab-sort" onclick="visLag('sort')" style="flex:1">
-    <span style="width:9px;height:9px;border-radius:50%;background:#0044bb;display:inline-block;margin-right:5px;"></span>J14 Blå
-  </button>
-  <button class="lag-tab" id="tab-g14" onclick="visLag('g14')" style="flex:1">
-    <span style="width:9px;height:9px;border-radius:50%;background:#d4a017;display:inline-block;margin-right:5px;"></span>G14 Biri/LFH
-  </button>
-</div>
+    <!-- LAG-TABS -->
+    <div style="display:flex; gap:6px; margin-bottom:14px;">
+      <button class="lag-tab active" id="tab-rod" onclick="visLag('rod')" style="flex:1">
+        <span style="width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-right:5px;"></span>J14 Rød
+      </button>
+      <button class="lag-tab" id="tab-sort" onclick="visLag('sort')" style="flex:1">
+        <span style="width:9px;height:9px;border-radius:50%;background:#0044bb;display:inline-block;margin-right:5px;"></span>J14 Blå
+      </button>
+      <button class="lag-tab" id="tab-g14" onclick="visLag('g14')" style="flex:1">
+        <span style="width:9px;height:9px;border-radius:50%;background:#d4a017;display:inline-block;margin-right:5px;"></span>G14 Biri/LFH
+      </button>
+    </div>
 
-<div id="lag-rod"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
-<div id="lag-sort" style="display:none"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
-<div id="lag-g14" style="display:none"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
+    <div id="lag-rod"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
+    <div id="lag-sort" style="display:none"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
+    <div id="lag-g14" style="display:none"><div class="empty"><div class="empty-icon" style="font-size:30px">⏳</div><div class="empty-text">Laster kamper…</div></div></div>
 
-<div class="st">Lagoppsett</div>
-<div id="lagoppsett-rod"></div>
-<div id="lagoppsett-sort" style="display:none"></div>
-<div id="lagoppsett-g14" style="display:none"></div>
-<div class="tip-box" id="lagoppsett-hint">Hentes automatisk fra Profixio når tilgjengelig. Trykk 🔄 Hent på laget.</div>
-```
-
+    <div class="st">Lagoppsett</div>
+    <div id="lagoppsett-rod"></div>
+    <div id="lagoppsett-sort" style="display:none"></div>
+    <div id="lagoppsett-g14" style="display:none"></div>
+    <div class="tip-box" id="lagoppsett-hint">Hentes automatisk fra Profixio når tilgjengelig. Trykk 🔄 Hent på laget.</div>
   </div>
 
   <!-- KONTAKTER -->
-
   <div class="view" id="view-kontakt">
     <div class="st" style="margin-top:0">Ansvarlige</div>
 
-```
-<div class="contact-card">
-  <div class="contact-avatar">SA</div>
-  <div style="flex:1">
-    <div class="contact-name" data-key="kontakt.1.navn">Samuel Andersen</div>
-    <div class="contact-role" data-key="kontakt.1.rolle">Trener / turansvarlig</div>
-    <div class="contact-tel" data-key="kontakt.1.tlf">+47 400 44 442</div>
-  </div>
-</div>
-<div class="contact-card">
-  <div class="contact-avatar">AR</div>
-  <div style="flex:1">
-    <div class="contact-name" data-key="kontakt.2.navn">Anne-Line Rosenberg Rotevatn</div>
-    <div class="contact-role" data-key="kontakt.2.rolle">Trener</div>
-    <div class="contact-tel" data-key="kontakt.2.tlf">+47 958 64 622</div>
-  </div>
-</div>
-<div class="contact-card">
-  <div class="contact-avatar">FK</div>
-  <div style="flex:1">
-    <div class="contact-name" data-key="kontakt.3.navn">Foreldrekontakt</div>
-    <div class="contact-role" data-key="kontakt.3.rolle">Foreldreansvarlig</div>
-    <div class="contact-tel" data-key="kontakt.3.tlf">Telefon oppdateres</div>
-  </div>
-</div>
-<div class="contact-card">
-  <div class="contact-avatar" style="font-size:11px">LSL</div>
-  <div style="flex:1">
-    <div class="contact-name" data-key="kontakt.4.navn">Linda Simonsen Løkken</div>
-    <div class="contact-role" data-key="kontakt.4.rolle">Støtteapparat</div>
-    <div class="contact-tel" data-key="kontakt.4.tlf">Telefon oppdateres</div>
-  </div>
-</div>
-<div class="contact-card">
-  <div class="contact-avatar" style="font-size:13px">KN</div>
-  <div style="flex:1">
-    <div class="contact-name" data-key="kontakt.5.navn">Kine Nymoen</div>
-    <div class="contact-role" data-key="kontakt.5.rolle">Støtteapparat</div>
-    <div class="contact-tel" data-key="kontakt.5.tlf">Telefon oppdateres</div>
-  </div>
-</div>
-<div class="contact-card">
-  <div class="contact-avatar" style="background:var(--light);color:var(--grey);font-size:18px">+</div>
-  <div style="flex:1">
-    <div class="contact-name" data-key="kontakt.6.navn" style="color:var(--grey)">Åpen plass</div>
-    <div class="contact-role" data-key="kontakt.6.rolle">Rolle oppdateres</div>
-    <div class="contact-tel" data-key="kontakt.6.tlf" class="placeholder">Telefon oppdateres</div>
-  </div>
-</div>
+    <div class="contact-card">
+      <div class="contact-avatar">SA</div>
+      <div style="flex:1">
+        <div class="contact-name" data-key="kontakt.1.navn">Samuel Andersen</div>
+        <div class="contact-role" data-key="kontakt.1.rolle">Trener / turansvarlig</div>
+        <div class="contact-tel" data-key="kontakt.1.tlf">+47 400 44 442</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">AR</div>
+      <div style="flex:1">
+        <div class="contact-name" data-key="kontakt.2.navn">Anne-Line Rosenberg Rotevatn</div>
+        <div class="contact-role" data-key="kontakt.2.rolle">Trener</div>
+        <div class="contact-tel" data-key="kontakt.2.tlf">+47 958 64 622</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">FK</div>
+      <div style="flex:1">
+        <div class="contact-name" data-key="kontakt.3.navn">Foreldrekontakt</div>
+        <div class="contact-role" data-key="kontakt.3.rolle">Foreldreansvarlig</div>
+        <div class="contact-tel" data-key="kontakt.3.tlf">Telefon oppdateres</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar" style="font-size:11px">LSL</div>
+      <div style="flex:1">
+        <div class="contact-name" data-key="kontakt.4.navn">Linda Simonsen Løkken</div>
+        <div class="contact-role" data-key="kontakt.4.rolle">Støtteapparat</div>
+        <div class="contact-tel" data-key="kontakt.4.tlf">Telefon oppdateres</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar" style="font-size:13px">KN</div>
+      <div style="flex:1">
+        <div class="contact-name" data-key="kontakt.5.navn">Kine Nymoen</div>
+        <div class="contact-role" data-key="kontakt.5.rolle">Støtteapparat</div>
+        <div class="contact-tel" data-key="kontakt.5.tlf">Telefon oppdateres</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar" style="background:var(--light);color:var(--grey);font-size:18px">+</div>
+      <div style="flex:1">
+        <div class="contact-name" data-key="kontakt.6.navn" style="color:var(--grey)">Åpen plass</div>
+        <div class="contact-role" data-key="kontakt.6.rolle">Rolle oppdateres</div>
+        <div class="contact-tel" data-key="kontakt.6.tlf" class="placeholder">Telefon oppdateres</div>
+      </div>
+    </div>
 
-<div class="st">Nødnumre</div>
-<div class="info-card">
-  <div class="info-row"><span class="info-label">Nødetatene</span><span class="info-val" style="color:var(--red)">112</span></div>
-  <div class="info-row"><span class="info-label">Brann</span><span class="info-val" style="color:var(--red)">110</span></div>
-  <div class="info-row"><span class="info-label">Politi</span><span class="info-val" style="color:var(--red)">112</span></div>
-  <div class="info-row"><span class="info-label">Legevakt</span><span class="info-val">116 117</span></div>
-  <div class="info-row"><span class="info-label">Giftinfolinjen</span><span class="info-val">22 59 13 00</span></div>
-</div>
+    <div class="st">Nødnumre</div>
+    <div class="info-card">
+      <div class="info-row"><span class="info-label">Nødetatene</span><span class="info-val" style="color:var(--red)">112</span></div>
+      <div class="info-row"><span class="info-label">Brann</span><span class="info-val" style="color:var(--red)">110</span></div>
+      <div class="info-row"><span class="info-label">Politi</span><span class="info-val" style="color:var(--red)">112</span></div>
+      <div class="info-row"><span class="info-label">Legevakt</span><span class="info-val">116 117</span></div>
+      <div class="info-row"><span class="info-label">Giftinfolinjen</span><span class="info-val">22 59 13 00</span></div>
+    </div>
 
-<div class="st">Turneringskontakt</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🏆</div>
-    <div><div class="info-card-title">Fredrikstad Cup</div><div class="info-card-sub">Norges største håndballcup</div></div>
-  </div>
-  <div class="info-row"><span class="info-label">Servicetelefon</span><span class="info-val"><a href="tel:40001722" style="color:var(--blue-mid);text-decoration:none">4000 17 22</a></span></div>
-  <div class="info-row"><span class="info-label">Åpningstid</span><span class="info-val">07:00–21:00</span></div>
-  <div class="info-row"><span class="info-label">E-post</span><span class="info-val"><a href="mailto:post@fredrikstadcup.no" style="color:var(--blue-mid);text-decoration:none">post@fredrikstadcup.no</a></span></div>
-  <div class="info-row"><span class="info-label">Turneringsleder</span><span class="info-val">Sven Helge Hagen</span></div>
-  <div class="info-row"><span class="info-label">Logistikkleder</span><span class="info-val">Stian Torp</span></div>
-  <div class="info-row"><span class="info-label">Sportssjef</span><span class="info-val">Lars Trygve Olsen</span></div>
-  <div class="info-row"><span class="info-label">Infoskranke</span><span class="info-val">Kongsten & Merkur Arena</span></div>
-  <div class="info-row"><span class="info-label">Nettside</span><span class="info-val"><a href="https://www.fredrikstadcup.no/kontakt" target="_blank" style="color:var(--blue-mid);text-decoration:none">fredrikstadcup.no/kontakt</a></span></div>
-</div>
-```
-
+    <div class="st">Turneringskontakt</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🏆</div>
+        <div><div class="info-card-title">Fredrikstad Cup</div><div class="info-card-sub">Norges største håndballcup</div></div>
+      </div>
+      <div class="info-row"><span class="info-label">Servicetelefon</span><span class="info-val"><a href="tel:40001722" style="color:var(--blue-mid);text-decoration:none">4000 17 22</a></span></div>
+      <div class="info-row"><span class="info-label">Åpningstid</span><span class="info-val">07:00–21:00</span></div>
+      <div class="info-row"><span class="info-label">E-post</span><span class="info-val"><a href="mailto:post@fredrikstadcup.no" style="color:var(--blue-mid);text-decoration:none">post@fredrikstadcup.no</a></span></div>
+      <div class="info-row"><span class="info-label">Turneringsleder</span><span class="info-val">Sven Helge Hagen</span></div>
+      <div class="info-row"><span class="info-label">Logistikkleder</span><span class="info-val">Stian Torp</span></div>
+      <div class="info-row"><span class="info-label">Sportssjef</span><span class="info-val">Lars Trygve Olsen</span></div>
+      <div class="info-row"><span class="info-label">Infoskranke</span><span class="info-val">Kongsten & Merkur Arena</span></div>
+      <div class="info-row"><span class="info-label">Nettside</span><span class="info-val"><a href="https://www.fredrikstadcup.no/kontakt" target="_blank" style="color:var(--blue-mid);text-decoration:none">fredrikstadcup.no/kontakt</a></span></div>
+    </div>
   </div>
 
   <!-- REGLER -->
-
   <div class="view" id="view-regler">
     <div class="st" style="margin-top:0">Lagregler på tur</div>
     <div class="rule-card"><div class="rule-num">1</div><div><div class="rule-title">Møt alltid presis</div><div class="rule-text">Presis til avreise, kamper og felles samling. Respekter lagets tid – og lagets tillit til deg.</div></div></div>
@@ -979,235 +946,223 @@ body.dark .pinned-card { background:#111827; }
   </div>
 
   <!-- KART -->
-
   <div class="view" id="view-kart">
     <div class="st" style="margin-top:0">Viktige steder</div>
     <div class="tip-box" style="margin-bottom:12px">📍 Trykk på et sted for å åpne i Google Maps.</div>
 
-```
-<div class="poi-card" onclick="openMaps('Kongsten idrettshall Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
-  <div>
-    <div class="poi-name">Kongsten idrettshall</div>
-    <div class="poi-addr">Kampbane – LFH09 Rød kamp 1</div>
-    <span class="poi-tag" style="background:var(--red);color:white">Rød</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Torsnesveien 12, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#e8eef7">🏟</div>
-  <div>
-    <div class="poi-name">Kongsten Arena</div>
-    <div class="poi-addr">Torsnesveien 12 · Bane 01–05, 51–54</div>
-    <span class="poi-tag" style="background:var(--red);color:white">Rød</span>
-    <span class="poi-tag" style="background:var(--blue);color:white">Middag lør</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Leiegata 17, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
-  <div>
-    <div class="poi-name">Lislebyhallen</div>
-    <div class="poi-addr">Leiegata 17 · Bane 11</div>
-    <span class="poi-tag" style="background:#0044bb;color:white">Rød + Blå</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Merkurveien 2, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#e8eef7">🏟</div>
-  <div>
-    <div class="poi-name">Merkur Arena</div>
-    <div class="poi-addr">Merkurveien 2 · Bane 21–37</div>
-    <span class="poi-tag" style="background:var(--blue);color:white">Rød + Blå</span>
-    <span class="poi-tag" style="background:#d4a017;color:white">G14</span>
-    <span class="poi-tag" style="background:var(--blue);color:white">Middag søn</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Kvernhusveien 1, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#f0fdf4">🤾</div>
-  <div>
-    <div class="poi-name">Kvernhushallen</div>
-    <div class="poi-addr">Kvernhusveien 1 · Bane 09</div>
-    <span class="poi-tag" style="background:#d4a017;color:white">G14</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Dueveien 2, 1679 Kråkerøy')">
-  <div class="poi-dot-wrap" style="background:#e8eef7">🏫</div>
-  <div>
-    <div class="poi-name">Rød Skole Kråkerøy</div>
-    <div class="poi-addr">Dueveien 2, 1679 Kråkerøy · Rom 225 og 229</div>
-    <span class="poi-tag" style="background:var(--blue-mid);color:white">Bosted</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Jens Wilhelmsens gate 1, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#fef2f2">🏥</div>
-  <div>
-    <div class="poi-name">Legevakta Fredrikstad</div>
-    <div class="poi-addr">Jens Wilhelmsens gate 1</div>
-    <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Jens Wilhelmsens gate 1, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#fef2f2">💊</div>
-  <div>
-    <div class="poi-name">Vakt Apotek</div>
-    <div class="poi-addr">Jens Wilhelmsens gate 1 (samme bygg som legevakt)</div>
-    <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
-  </div>
-</div>
-<div class="poi-card" onclick="openMaps('Kalnesveien 300, Fredrikstad')">
-  <div class="poi-dot-wrap" style="background:#fef2f2">🚑</div>
-  <div>
-    <div class="poi-name">Sykehuset Østfold Kalnes</div>
-    <div class="poi-addr">Kalnesveien 300</div>
-    <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
-  </div>
-</div>
+    <div class="poi-card" onclick="openMaps('Kongsten idrettshall Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
+      <div>
+        <div class="poi-name">Kongsten idrettshall</div>
+        <div class="poi-addr">Kampbane – LFH09 Rød kamp 1</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Rød</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Torsnesveien 12, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🏟</div>
+      <div>
+        <div class="poi-name">Kongsten Arena</div>
+        <div class="poi-addr">Torsnesveien 12 · Bane 01–05, 51–54</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Rød</span>
+        <span class="poi-tag" style="background:var(--blue);color:white">Middag lør</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Leiegata 17, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🤾</div>
+      <div>
+        <div class="poi-name">Lislebyhallen</div>
+        <div class="poi-addr">Leiegata 17 · Bane 11</div>
+        <span class="poi-tag" style="background:#0044bb;color:white">Rød + Blå</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Merkurveien 2, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🏟</div>
+      <div>
+        <div class="poi-name">Merkur Arena</div>
+        <div class="poi-addr">Merkurveien 2 · Bane 21–37</div>
+        <span class="poi-tag" style="background:var(--blue);color:white">Rød + Blå</span>
+        <span class="poi-tag" style="background:#d4a017;color:white">G14</span>
+        <span class="poi-tag" style="background:var(--blue);color:white">Middag søn</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Kvernhusveien 1, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#f0fdf4">🤾</div>
+      <div>
+        <div class="poi-name">Kvernhushallen</div>
+        <div class="poi-addr">Kvernhusveien 1 · Bane 09</div>
+        <span class="poi-tag" style="background:#d4a017;color:white">G14</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Dueveien 2, 1679 Kråkerøy')">
+      <div class="poi-dot-wrap" style="background:#e8eef7">🏫</div>
+      <div>
+        <div class="poi-name">Rød Skole Kråkerøy</div>
+        <div class="poi-addr">Dueveien 2, 1679 Kråkerøy · Rom 225 og 229</div>
+        <span class="poi-tag" style="background:var(--blue-mid);color:white">Bosted</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Jens Wilhelmsens gate 1, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#fef2f2">🏥</div>
+      <div>
+        <div class="poi-name">Legevakta Fredrikstad</div>
+        <div class="poi-addr">Jens Wilhelmsens gate 1</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Jens Wilhelmsens gate 1, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#fef2f2">💊</div>
+      <div>
+        <div class="poi-name">Vakt Apotek</div>
+        <div class="poi-addr">Jens Wilhelmsens gate 1 (samme bygg som legevakt)</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
+      </div>
+    </div>
+    <div class="poi-card" onclick="openMaps('Kalnesveien 300, Fredrikstad')">
+      <div class="poi-dot-wrap" style="background:#fef2f2">🚑</div>
+      <div>
+        <div class="poi-name">Sykehuset Østfold Kalnes</div>
+        <div class="poi-addr">Kalnesveien 300</div>
+        <span class="poi-tag" style="background:var(--red);color:white">Nød</span>
+      </div>
+    </div>
 
-<button class="map-btn" onclick="window.open('https://www.fredrikstadcup.no/kart','_blank')">🗺 Åpne offisielt cup-kart</button>
-<button class="map-btn" style="background:var(--blue-mid);margin-top:8px" onclick="openMaps('Fredrikstad sentrum')">📍 Fredrikstad sentrum i Google Maps</button>
-```
-
+    <button class="map-btn" onclick="window.open('https://www.fredrikstadcup.no/kart','_blank')">🗺 Åpne offisielt cup-kart</button>
+    <button class="map-btn" style="background:var(--blue-mid);margin-top:8px" onclick="openMaps('Fredrikstad sentrum')">📍 Fredrikstad sentrum i Google Maps</button>
   </div>
 
   <!-- BUSS -->
-
   <div class="view" id="view-buss">
 
-```
-<!-- REISEPLANLEGGER -->
-<div class="hero-card" style="margin-bottom:12px">
-  <div class="hero-label">RUTE 9 – KRÅKERØY</div>
-  <div class="hero-title">Buss under cup</div>
-  <div class="hero-sub">Gratis med cupbånd · Avganger ca. hvert 20. min</div>
-</div>
-
-<div class="st" style="margin-top:0">🗺 Finn din buss</div>
-<div class="info-card" style="margin-bottom:10px">
-  <div class="info-card-header">
-    <div class="info-card-icon">🧭</div>
-    <div><div class="info-card-title">Reiseplanlegger</div><div class="info-card-sub">Fra/til – vi viser deg ruten</div></div>
-  </div>
-  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-    <select id="buss-fra" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--mid);border-radius:9px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);background:var(--off);outline:none" onchange="oppdaterBussRute()">
-      <option value="">Fra...</option>
-      <option value="rod_skole">🏫 Rød Skole Kråkerøy (bosted)</option>
-      <option value="kongsten">🏟 Kongsten Arena</option>
-      <option value="merkur">🏟 Merkur Arena</option>
-      <option value="lisleby">🤾 Lisleby</option>
-      <option value="kvernhuset">🤾 Kvernhuset</option>
-      <option value="sentrum">🔄 Sentrum (knutepunkt)</option>
-    </select>
-    <select id="buss-til" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--mid);border-radius:9px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);background:var(--off);outline:none" onchange="oppdaterBussRute()">
-      <option value="">Til...</option>
-      <option value="rod_skole">🏫 Rød Skole Kråkerøy (bosted)</option>
-      <option value="kongsten">🏟 Kongsten Arena</option>
-      <option value="merkur">🏟 Merkur Arena</option>
-      <option value="lisleby">🤾 Lisleby</option>
-      <option value="kvernhuset">🤾 Kvernhuset</option>
-      <option value="sentrum">🔄 Sentrum (knutepunkt)</option>
-    </select>
-  </div>
-  <div id="buss-resultat"></div>
-</div>
-
-<!-- KONSERTPLAN -->
-<div class="st">🎵 Konsertplan lørdag</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🎵</div>
-    <div><div class="info-card-title">Hjem og dusj før konsert</div><div class="info-card-sub">Viktig plan for lørdag kveld!</div></div>
-  </div>
-  <div class="info-row" style="background:rgba(200,16,46,0.05)"><span class="info-label" style="color:var(--red)">⚠️ Viktig</span><span class="info-val" style="color:var(--red);font-size:12px">Ta siste kamp-buss hjem senest 17:45!</span></div>
-  <div class="info-row"><span class="info-label">17:45</span><span class="info-val">Buss fra Kongsten → hjem</span></div>
-  <div class="info-row"><span class="info-label">18:15</span><span class="info-val">Ankomst Rød Skole</span></div>
-  <div class="info-row"><span class="info-label">18:15–18:40</span><span class="info-val">🚿 Dusj og skifte</span></div>
-  <div class="info-row"><span class="info-label">18:45</span><span class="info-val">Buss fra Rød Skole → Kongsten</span></div>
-  <div class="info-row"><span class="info-label">18:40</span><span class="info-val">🎵 Dørene åpner Kongsten</span></div>
-  <div class="info-row"><span class="info-label">19:15</span><span class="info-val">Ankomst Kongsten</span></div>
-  <div class="info-row" style="background:rgba(0,48,135,0.05)"><span class="info-label">19:40</span><span class="info-val">🎵 Konserten starter!</span></div>
-  <div class="tip-box" style="margin-top:10px">💡 LFH09 Rød sin siste kamp er kl. 14:45 – god tid til dusj og konsert. Trenere gir signal når det er klart for konsertbuss.</div>
-</div>
-
-<!-- ETTER KONSERT -->
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🌙</div>
-    <div><div class="info-card-title">Buss etter konserten</div><div class="info-card-sub">Ca. 21:00 fra Kongsten Arena</div></div>
-  </div>
-  <div class="info-row"><span class="info-label">Oppstart</span><span class="info-val">Ca. 21:00 fra Kongsten</span></div>
-  <div class="info-row"><span class="info-label">Ventetid</span><span class="info-val">Opptil 1 time</span></div>
-  <div class="info-row"><span class="info-label">Kapasitet</span><span class="info-val">Ca. 34 busser</span></div>
-  <div class="tip-box" style="border-left-color:#f59e0b;background:#fffbeb;color:#92400e">⚠️ Ikke alle kommer med første avgang. Alle blir fraktet hjem, men det tar tid. Hold laget samlet og vent på trener.</div>
-</div>
-
-<!-- RUTE 9 OVERSIKT -->
-<div class="st">🚌 Rute 9 – Stoppesteder</div>
-<div class="info-card">
-  <div class="info-card-header">
-    <div class="info-card-icon">🚏</div>
-    <div><div class="info-card-title">Vår rute – Kråkerøy</div><div class="info-card-sub">Rekkefølge på stoppestedene</div></div>
-  </div>
-  <div style="padding:8px 0">
-    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
-      <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
-      <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Kongsten Arena</div><div style="font-size:11px;color:var(--grey)">Knutepunkt for alle ruter</div></div>
+    <!-- REISEPLANLEGGER -->
+    <div class="hero-card" style="margin-bottom:12px">
+      <div class="hero-label">RUTE 9 – KRÅKERØY</div>
+      <div class="hero-title">Buss under cup</div>
+      <div class="hero-sub">Gratis med cupbånd · Avganger ca. hvert 20. min</div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
-      <div style="width:28px;height:28px;border-radius:50%;background:var(--blue-mid);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
-      <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Sentrum (knutepunkt)</div><div style="font-size:11px;color:var(--grey)">Bytt her for Merkur Arena (rute 4/5/8) · ca. 10 min fra Kongsten</div></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
-      <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
-      <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Akademiet / Wang / HiOF</div><div style="font-size:11px;color:var(--grey)">Ca. 2 min fra Sentrum</div></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
-      <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">4</div>
-      <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Rødsmyra skole</div><div style="font-size:11px;color:var(--grey)">Ca. 5 min fra Sentrum</div></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
-      <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">5</div>
-      <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Kråkerøy ungdomsskole / Blomsterøyhallen</div><div style="font-size:11px;color:var(--grey)">Ca. 7 min fra Sentrum</div></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:7px 0">
-      <div style="width:28px;height:28px;border-radius:50%;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">★</div>
-      <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--red)">Rød Skole Kråkerøy ← VÅRT BOSTED</div><div style="font-size:11px;color:var(--grey)">Ca. 10 min fra Sentrum · Endestasjon</div></div>
-    </div>
-  </div>
-  <div class="tip-box">🔄 For Merkur Arena: ta Rute 9 til <strong>Sentrum</strong>, bytt til <strong>Rute 4, 5 eller 8</strong> mot Merkur Arena.</div>
-</div>
 
-<!-- PRAKTISK -->
-<div class="st">ℹ️ Praktisk</div>
-<div class="info-card">
-  <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
-  <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">Ca. hvert 20. min</span></div>
-  <div class="info-row"><span class="info-label">Prioritet</span><span class="info-val">Lag til kamp prioriteres</span></div>
-  <div class="info-row"><span class="info-label">Fredag</span><span class="info-val">Ingen faste avganger – ring</span></div>
-  <div class="info-row"><span class="info-label">Servicetelefon</span><span class="info-val"><a href="tel:40001722" style="color:var(--blue-mid);text-decoration:none">4000 17 22</a></span></div>
-  <div class="tip-box">📱 Ring <strong>4000 17 22</strong> ved spørsmål. Infoskranke på Kongsten og Merkur Arena.</div>
-</div>
+    <div class="st" style="margin-top:0">🗺 Finn din buss</div>
+    <div class="info-card" style="margin-bottom:10px">
+      <div class="info-card-header">
+        <div class="info-card-icon">🧭</div>
+        <div><div class="info-card-title">Reiseplanlegger</div><div class="info-card-sub">Fra/til – vi viser deg ruten</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+        <select id="buss-fra" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--mid);border-radius:9px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);background:var(--off);outline:none" onchange="oppdaterBussRute()">
+          <option value="">Fra...</option>
+          <option value="rod_skole">🏫 Rød Skole Kråkerøy (bosted)</option>
+          <option value="kongsten">🏟 Kongsten Arena</option>
+          <option value="merkur">🏟 Merkur Arena</option>
+          <option value="lisleby">🤾 Lisleby</option>
+          <option value="kvernhuset">🤾 Kvernhuset</option>
+          <option value="sentrum">🔄 Sentrum (knutepunkt)</option>
+        </select>
+        <select id="buss-til" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--mid);border-radius:9px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);background:var(--off);outline:none" onchange="oppdaterBussRute()">
+          <option value="">Til...</option>
+          <option value="rod_skole">🏫 Rød Skole Kråkerøy (bosted)</option>
+          <option value="kongsten">🏟 Kongsten Arena</option>
+          <option value="merkur">🏟 Merkur Arena</option>
+          <option value="lisleby">🤾 Lisleby</option>
+          <option value="kvernhuset">🤾 Kvernhuset</option>
+          <option value="sentrum">🔄 Sentrum (knutepunkt)</option>
+        </select>
+      </div>
+      <div id="buss-resultat"></div>
+    </div>
 
-<button class="map-btn" onclick="window.open('https://www.fredrikstadcup.no/busstider','_blank')">🔗 Åpne offisiell rutetabell (fredrikstadcup.no)</button>
-```
+    <!-- KONSERTPLAN -->
+    <div class="st">🎵 Konsertplan lørdag</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🎵</div>
+        <div><div class="info-card-title">Hjem og dusj før konsert</div><div class="info-card-sub">Viktig plan for lørdag kveld!</div></div>
+      </div>
+      <div class="info-row" style="background:rgba(200,16,46,0.05)"><span class="info-label" style="color:var(--red)">⚠️ Viktig</span><span class="info-val" style="color:var(--red);font-size:12px">Ta siste kamp-buss hjem senest 17:45!</span></div>
+      <div class="info-row"><span class="info-label">17:45</span><span class="info-val">Buss fra Kongsten → hjem</span></div>
+      <div class="info-row"><span class="info-label">18:15</span><span class="info-val">Ankomst Rød Skole</span></div>
+      <div class="info-row"><span class="info-label">18:15–18:40</span><span class="info-val">🚿 Dusj og skifte</span></div>
+      <div class="info-row"><span class="info-label">18:45</span><span class="info-val">Buss fra Rød Skole → Kongsten</span></div>
+      <div class="info-row"><span class="info-label">18:40</span><span class="info-val">🎵 Dørene åpner Kongsten</span></div>
+      <div class="info-row"><span class="info-label">19:15</span><span class="info-val">Ankomst Kongsten</span></div>
+      <div class="info-row" style="background:rgba(0,48,135,0.05)"><span class="info-label">19:40</span><span class="info-val">🎵 Konserten starter!</span></div>
+      <div class="tip-box" style="margin-top:10px">💡 LFH09 Rød sin siste kamp er kl. 14:45 – god tid til dusj og konsert. Trenere gir signal når det er klart for konsertbuss.</div>
+    </div>
 
+    <!-- ETTER KONSERT -->
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🌙</div>
+        <div><div class="info-card-title">Buss etter konserten</div><div class="info-card-sub">Ca. 21:00 fra Kongsten Arena</div></div>
+      </div>
+      <div class="info-row"><span class="info-label">Oppstart</span><span class="info-val">Ca. 21:00 fra Kongsten</span></div>
+      <div class="info-row"><span class="info-label">Ventetid</span><span class="info-val">Opptil 1 time</span></div>
+      <div class="info-row"><span class="info-label">Kapasitet</span><span class="info-val">Ca. 34 busser</span></div>
+      <div class="tip-box" style="border-left-color:#f59e0b;background:#fffbeb;color:#92400e">⚠️ Ikke alle kommer med første avgang. Alle blir fraktet hjem, men det tar tid. Hold laget samlet og vent på trener.</div>
+    </div>
+
+    <!-- RUTE 9 OVERSIKT -->
+    <div class="st">🚌 Rute 9 – Stoppesteder</div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-card-icon">🚏</div>
+        <div><div class="info-card-title">Vår rute – Kråkerøy</div><div class="info-card-sub">Rekkefølge på stoppestedene</div></div>
+      </div>
+      <div style="padding:8px 0">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Kongsten Arena</div><div style="font-size:11px;color:var(--grey)">Knutepunkt for alle ruter</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--blue-mid);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Sentrum (knutepunkt)</div><div style="font-size:11px;color:var(--grey)">Bytt her for Merkur Arena (rute 4/5/8) · ca. 10 min fra Kongsten</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Akademiet / Wang / HiOF</div><div style="font-size:11px;color:var(--grey)">Ca. 2 min fra Sentrum</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">4</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Rødsmyra skole</div><div style="font-size:11px;color:var(--grey)">Ca. 5 min fra Sentrum</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--light)">
+          <div style="width:28px;height:28px;border-radius:50%;background:#6b7a96;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">5</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--text)">Kråkerøy ungdomsskole / Blomsterøyhallen</div><div style="font-size:11px;color:var(--grey)">Ca. 7 min fra Sentrum</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">★</div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--red)">Rød Skole Kråkerøy ← VÅRT BOSTED</div><div style="font-size:11px;color:var(--grey)">Ca. 10 min fra Sentrum · Endestasjon</div></div>
+        </div>
+      </div>
+      <div class="tip-box">🔄 For Merkur Arena: ta Rute 9 til <strong>Sentrum</strong>, bytt til <strong>Rute 4, 5 eller 8</strong> mot Merkur Arena.</div>
+    </div>
+
+    <!-- PRAKTISK -->
+    <div class="st">ℹ️ Praktisk</div>
+    <div class="info-card">
+      <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
+      <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">Ca. hvert 20. min</span></div>
+      <div class="info-row"><span class="info-label">Prioritet</span><span class="info-val">Lag til kamp prioriteres</span></div>
+      <div class="info-row"><span class="info-label">Fredag</span><span class="info-val">Ingen faste avganger – ring</span></div>
+      <div class="info-row"><span class="info-label">Servicetelefon</span><span class="info-val"><a href="tel:40001722" style="color:var(--blue-mid);text-decoration:none">4000 17 22</a></span></div>
+      <div class="tip-box">📱 Ring <strong>4000 17 22</strong> ved spørsmål. Infoskranke på Kongsten og Merkur Arena.</div>
+    </div>
+
+    <button class="map-btn" onclick="window.open('https://www.fredrikstadcup.no/busstider','_blank')">🔗 Åpne offisiell rutetabell (fredrikstadcup.no)</button>
   </div>
 
   <!-- SPØRSMÅL & SVAR -->
-
   <div class="view" id="view-sporsmal">
     <div class="st" style="margin-top:0">Spør laget 💬</div>
 
-```
-<div id="qa-input-wrap">
-  <div class="qa-login-hint">🔒 Logg inn med Google for å stille spørsmål og svare</div>
-</div>
+    <div id="qa-input-wrap">
+      <div class="qa-login-hint">🔒 Logg inn med Google for å stille spørsmål og svare</div>
+    </div>
 
-<div id="qa-list">
-  <div class="qa-empty">
-    <div style="font-size:40px;margin-bottom:8px">💬</div>
-    <div style="font-size:14px">Ingen spørsmål ennå.<br>Vær den første!</div>
-  </div>
-</div>
-```
-
+    <div id="qa-list">
+      <div class="qa-empty">
+        <div style="font-size:40px;margin-bottom:8px">💬</div>
+        <div style="font-size:14px">Ingen spørsmål ennå.<br>Vær den første!</div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1215,7 +1170,6 @@ body.dark .pinned-card { background:#111827; }
 <div class="toast" id="toast"></div>
 
 <!-- ADMIN PANEL -->
-
 <div class="admin-panel" id="admin-panel">
   <div class="admin-header">
     <button class="admin-back" onclick="lukkAdmin()">← Tilbake</button>
@@ -1226,12 +1180,10 @@ body.dark .pinned-card { background:#111827; }
   </div>
 </div>
 
+
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-
 <script>
 // Firebase compat – ingen ES modules, fungerer i alle nettlesere inkl. Safari
 // Firebase compat API - alle funksjoner er tilgjengelige direkte
@@ -3155,6 +3107,5 @@ initSpillere();
 
 
 </script>
-
 </body>
 </html>
