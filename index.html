@@ -1298,13 +1298,35 @@ window.toggleDark = () => {
 initDark();
 
 // ── Auth ─────────────────────────────────────────────────────
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   currentUser = user;
+
+  // Hvis anonym bruker - sjekk om vi har lokal kode-bruker info
+  if (user && user.isAnonymous) {
+    const lagret = localStorage.getItem('lfh-kode-bruker');
+    if (lagret) {
+      try {
+        const info = JSON.parse(lagret);
+        if (info.uid === user.uid) {
+          kodeBrukerInfo = info;
+        } else {
+          // uid har endret seg - oppdater
+          info.uid = user.uid;
+          kodeBrukerInfo = info;
+          localStorage.setItem('lfh-kode-bruker', JSON.stringify(info));
+        }
+      } catch(e) { kodeBrukerInfo = null; }
+    }
+  } else if (!user) {
+    kodeBrukerInfo = null;
+  }
+
   updateAuthUI();
   renderQAInput();
+
   if (user) {
     subscribePakkliste(user.uid);
-    if (typeof ADMINS !== 'undefined' && ADMINS.includes(user.email)) {
+    if (typeof ADMINS !== 'undefined' && user.email && ADMINS.includes(user.email)) {
       setTimeout(aktiverInlineEdit, 500);
     }
     if (typeof lyttPaaMinSignatur === 'function') lyttPaaMinSignatur();
@@ -1321,31 +1343,44 @@ auth.onAuthStateChanged(user => {
 function updateAuthUI() {
   const bar = document.getElementById('auth-bar');
   bar.innerHTML = '';
-  if (currentUser) {
+
+  const akt = aktivBruker();
+
+  if (akt) {
     const info = document.createElement('div');
     info.className = 'auth-info';
-    if (currentUser.photoURL) {
+    if (akt.foto) {
       const img = document.createElement('img');
-      img.src = currentUser.photoURL;
+      img.src = akt.foto;
       img.className = 'auth-avatar';
       info.appendChild(img);
+    } else {
+      // Initialer som avatar for kode-bruker
+      const av = document.createElement('div');
+      av.className = 'auth-avatar';
+      av.style.cssText = 'background:var(--blue-mid);color:white;display:flex;align-items:center;justify-content:center;font-family:Barlow Condensed,sans-serif;font-weight:900;font-size:11px';
+      av.textContent = akt.navn.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+      info.appendChild(av);
     }
     const wrap = document.createElement('div');
     const nm = document.createElement('span');
     nm.className = 'auth-name';
-    nm.textContent = currentUser.displayName || currentUser.email;
+    nm.innerHTML = (akt.type === 'kode' ? '🔑 ' : '') + akt.navn;
     const sb = document.createElement('span');
     sb.className = 'auth-sub';
-    sb.textContent = 'Pakkliste, signering og spør laget';
+    sb.textContent = akt.type === 'kode' ? 'Innlogget med kode' : 'Pakkliste, signering og spør laget';
     wrap.appendChild(nm);
     wrap.appendChild(sb);
     info.appendChild(wrap);
     const btn = document.createElement('button');
     btn.className = 'auth-btn sign-out';
     btn.textContent = 'Logg ut';
-    btn.onclick = () => auth.signOut();
+    btn.onclick = () => {
+      if (akt.type === 'kode') loggUtKodeBruker();
+      else auth.signOut();
+    };
     bar.appendChild(info);
-    // Admin-knapp for Samuel
+    // Admin-knapp
     if (isAdmin()) {
       const adminBtn = document.createElement('button');
       adminBtn.className = 'auth-btn';
@@ -1379,6 +1414,15 @@ function updateAuthUI() {
     });
     bar.appendChild(info);
     bar.appendChild(btn);
+
+    // Knapp for innlogging med kode
+    const kodeBtn = document.createElement('button');
+    kodeBtn.className = 'auth-btn';
+    kodeBtn.style.cssText = 'background:rgba(255,255,255,0.1);color:white;margin-right:4px;font-size:11px';
+    kodeBtn.title = 'Logg inn med kode fra trener';
+    kodeBtn.innerHTML = '🔑 Kode';
+    kodeBtn.onclick = () => globalThis.apneKodeInnlogging();
+    bar.appendChild(kodeBtn);
   }
   // Alltid legg til dark-toggle på slutten
   const toggle = document.createElement('button');
@@ -2542,6 +2586,7 @@ function byggAdminPanel() {
     { key:'g14',         farge:'#d4a017', label:'G14 Biri' },
     { key:'oversikt',    farge:'#003087', label:'📌 Pin' },
     { key:'signaturer',  farge:'#15803d', label:'✍️ Sig' },
+    { key:'koder',       farge:'#7c3aed', label:'🔑 Koder' },
   ];
 
   tabs.forEach((tab, i) => {
@@ -2575,6 +2620,12 @@ function byggAdminPanel() {
 
     if (tab.key === 'signaturer') {
       byggSignaturPanel(seksjon);
+      body.appendChild(seksjon);
+      return;
+    }
+
+    if (tab.key === 'koder') {
+      byggKodePanel(seksjon);
       body.appendChild(seksjon);
       return;
     }
@@ -3228,8 +3279,9 @@ function initSignering() {
 
 function lyttPaaMinSignatur() {
   if (unsubMinSig) unsubMinSig();
-  if (!currentUser) return;
-  unsubMinSig = db.collection('signaturer').doc(currentUser.uid).onSnapshot(snap => {
+  const akt = aktivBruker();
+  if (!akt) return;
+  unsubMinSig = db.collection('signaturer').doc(akt.uid).onSnapshot(snap => {
     minSignatur = snap.exists ? snap.data() : null;
     renderSignerBoks();
   });
@@ -3239,10 +3291,10 @@ function renderSignerBoks() {
   const boks = document.getElementById('signer-boks');
   if (!boks) return;
 
-  const user = currentUser || auth.currentUser;
+  const akt = aktivBruker();
 
-  if (!user) {
-    boks.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:32px">🔒</div><div class="empty-text">Logg inn med Google øverst på siden for å signere reglene</div></div>';
+  if (!akt) {
+    boks.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:32px">🔒</div><div class="empty-text">Logg inn øverst på siden for å signere reglene</div></div>';
     return;
   }
 
@@ -3253,7 +3305,7 @@ function renderSignerBoks() {
       '<div class="signed-badge">' +
         '<div class="ikon">✅</div>' +
         '<div class="info-tekst">' +
-          '<div class="navn">Du har signert: ' + (minSignatur.navn || user.displayName) + '</div>' +
+          '<div class="navn">Du har signert: ' + (minSignatur.navn || akt.navn) + '</div>' +
           '<div class="tid">' + tidTxt + '</div>' +
         '</div>' +
       '</div>' +
@@ -3266,7 +3318,7 @@ function renderSignerBoks() {
 
   const tip = document.createElement('div');
   tip.style.cssText = 'font-size:12px;color:var(--grey);margin-bottom:10px;line-height:1.5';
-  tip.innerHTML = 'Hei <strong>' + (user.displayName || user.email) + '</strong>! Når du krysser av og signerer, registrerer vi at du har lest og forstått reglene over. Trenere kan se hvem som har signert.';
+  tip.innerHTML = 'Hei <strong>' + akt.navn + '</strong>! Når du krysser av og signerer, registrerer vi at du har lest og forstått reglene over. Trenere kan se hvem som har signert.';
   boks.appendChild(tip);
 
   const checkRow = document.createElement('div');
@@ -3292,8 +3344,8 @@ function renderSignerBoks() {
 }
 
 async function signerRegler() {
-  const user = currentUser || auth.currentUser;
-  if (!user) {
+  const akt = aktivBruker();
+  if (!akt) {
     showToast('Du må være innlogget for å signere', '#dc2626');
     return;
   }
@@ -3302,19 +3354,21 @@ async function signerRegler() {
   btn.textContent = '⏳ Signerer…';
 
   try {
-    console.log('[Signer] Lagrer for uid:', user.uid, 'epost:', user.email);
-    await db.collection('signaturer').doc(user.uid).set({
-      uid: user.uid,
-      navn: user.displayName || user.email,
-      epost: user.email,
+    console.log('[Signer] Lagrer for uid:', akt.uid, 'navn:', akt.navn);
+    await db.collection('signaturer').doc(akt.uid).set({
+      uid: akt.uid,
+      navn: akt.navn,
+      epost: akt.epost || '',
       tid: firebase.firestore.FieldValue.serverTimestamp(),
       tidString: new Date().toISOString(),
       reglerVersjon: '2026-05-08',
-      reglerTekst: REGLENE_TEKST
+      reglerTekst: REGLENE_TEKST,
+      kilde: akt.type,
+      lagKey: akt.lagKey || null,
+      spillerNr: akt.spillerNr || null
     });
     console.log('[Signer] ✓ Lagret til Firestore');
     showToast('Signert! ✍️ Takk for forpliktelsen.');
-    // onSnapshot-listener vil oppdatere minSignatur og kalle renderSignerBoks
   } catch(e) {
     console.error('[Signer] FEIL:', e.code, e.message);
     btn.disabled = false;
@@ -3325,10 +3379,10 @@ async function signerRegler() {
 
 window.avSignerRegler = async () => {
   if (!confirm('Er du sikker på at du vil trekke tilbake signaturen?')) return;
-  const user = currentUser || auth.currentUser;
-  if (!user) return;
+  const akt = aktivBruker();
+  if (!akt) return;
   try {
-    await db.collection('signaturer').doc(user.uid).delete();
+    await db.collection('signaturer').doc(akt.uid).delete();
     minSignatur = null;
     showToast('Signatur trukket tilbake', '#888');
     renderSignerBoks();
@@ -3453,6 +3507,363 @@ function byggSignaturPanel(seksjon) {
   }
 }
 
+// ── Spillerkoder (innlogging uten Google) ────────────────────
+let spillerkoder = {};
+let unsubKoder = null;
+
+function initSpillerkoder() {
+  unsubKoder = db.collection('spillerkoder').onSnapshot(
+    snap => {
+      spillerkoder = {};
+      snap.forEach(doc => { spillerkoder[doc.id] = doc.data(); });
+      // Re-render admin-panelet hvis åpent
+      if (document.getElementById('admin-panel').classList.contains('show')) {
+        const sek = document.getElementById('admin-seksjon-koder');
+        if (sek) byggKodePanel(sek);
+      }
+    },
+    err => { console.log('Kan ikke lese spillerkoder:', err.code); }
+  );
+}
+
+function genererKode() {
+  // 6-sifret kode
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function kodeStatus(kodeData) {
+  if (!kodeData) return 'ingen';
+  if (kodeData.brukt) return 'brukt';
+  const utlopt = new Date(kodeData.gyldigTil).getTime() < Date.now();
+  return utlopt ? 'utlopt' : 'ubrukt';
+}
+
+async function lagNyKodeForSpiller(lagKey, spillerNr, spillerNavn) {
+  const kode = genererKode();
+  const docId = lagKey + '-' + spillerNr;
+  const gyldigTil = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+  await db.collection('spillerkoder').doc(docId).set({
+    kode,
+    lagKey,
+    spillerNr,
+    spillerNavn,
+    opprettet: new Date().toISOString(),
+    gyldigTil,
+    brukt: false,
+    brukerUid: null
+  });
+  return kode;
+}
+
+async function bekreftKode(lagKey, spillerNr, kode) {
+  const docId = lagKey + '-' + spillerNr;
+  const snap = await db.collection('spillerkoder').doc(docId).get();
+  if (!snap.exists) return { ok: false, feil: 'Ingen kode finnes for denne spilleren' };
+  const data = snap.data();
+  if (data.kode !== kode) return { ok: false, feil: 'Feil kode' };
+  if (data.brukt) return { ok: false, feil: 'Kode allerede brukt – be trener om en ny' };
+  if (new Date(data.gyldigTil).getTime() < Date.now()) return { ok: false, feil: 'Kode utløpt – be trener om en ny' };
+
+  // Logg inn anonymt
+  const cred = await auth.signInAnonymously();
+
+  // Marker koden som brukt
+  await db.collection('spillerkoder').doc(docId).update({
+    brukt: true,
+    brukerUid: cred.user.uid,
+    brukt_tid: new Date().toISOString()
+  });
+
+  // Lagre i Firestore at denne uid er knyttet til denne spilleren
+  await db.collection('kodebrukere').doc(cred.user.uid).set({
+    uid: cred.user.uid,
+    lagKey,
+    spillerNr,
+    spillerNavn: data.spillerNavn,
+    innlogget_tid: new Date().toISOString()
+  });
+
+  // Lagre lokalt
+  localStorage.setItem('lfh-kode-bruker', JSON.stringify({
+    uid: cred.user.uid,
+    navn: data.spillerNavn,
+    lagKey,
+    spillerNr
+  }));
+
+  return { ok: true, navn: data.spillerNavn };
+}
+
+let kodeBrukerInfo = null; // satt hvis innlogget med kode
+
+async function gjenopprettLokalKodeBruker() {
+  const lagret = localStorage.getItem('lfh-kode-bruker');
+  if (!lagret) return false;
+  try {
+    const info = JSON.parse(lagret);
+    // Sjekk at uid stemmer (hvis Firebase fortsatt har anonym session)
+    if (auth.currentUser && auth.currentUser.uid === info.uid) {
+      kodeBrukerInfo = info;
+      return true;
+    }
+    // Logg inn anonymt på nytt hvis vi mistet session
+    const cred = await auth.signInAnonymously();
+    if (cred.user) {
+      // Oppdater lagret uid
+      info.uid = cred.user.uid;
+      localStorage.setItem('lfh-kode-bruker', JSON.stringify(info));
+      kodeBrukerInfo = info;
+      // Oppdater kodebrukere-dokument
+      await db.collection('kodebrukere').doc(cred.user.uid).set({
+        uid: cred.user.uid,
+        lagKey: info.lagKey,
+        spillerNr: info.spillerNr,
+        spillerNavn: info.navn,
+        innlogget_tid: new Date().toISOString()
+      });
+      return true;
+    }
+  } catch(e) { console.error('Gjenoppretting feilet:', e); }
+  return false;
+}
+
+function loggUtKodeBruker() {
+  localStorage.removeItem('lfh-kode-bruker');
+  kodeBrukerInfo = null;
+  auth.signOut();
+}
+
+// Effektiv "currentUser" – bruker enten Google eller kode
+function aktivBruker() {
+  if (currentUser && !currentUser.isAnonymous) {
+    return {
+      uid: currentUser.uid,
+      navn: currentUser.displayName || currentUser.email,
+      epost: currentUser.email,
+      type: 'google',
+      foto: currentUser.photoURL
+    };
+  }
+  if (kodeBrukerInfo) {
+    return {
+      uid: kodeBrukerInfo.uid,
+      navn: kodeBrukerInfo.navn,
+      epost: '',
+      type: 'kode',
+      foto: null,
+      lagKey: kodeBrukerInfo.lagKey,
+      spillerNr: kodeBrukerInfo.spillerNr
+    };
+  }
+  return null;
+}
+
+// ── Innlogging-modal med kode ────────────────────────────────
+window.apneKodeInnlogging = () => {
+  const eks = document.getElementById('kode-modal');
+  if (eks) eks.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'kode-modal';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1500;display:flex;align-items:center;justify-content:center;padding:20px;';
+
+  const boks = document.createElement('div');
+  boks.style.cssText = 'background:white;border-radius:16px;padding:24px;max-width:380px;width:100%;max-height:90vh;overflow-y:auto;';
+  if (document.body.classList.contains('dark')) boks.style.background = '#111827';
+
+  boks.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:900;font-size:20px;color:var(--blue)">🔑 Logg inn med kode</div><button id="kode-lukk" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--grey)">✕</button></div>' +
+    '<div style="font-size:13px;color:var(--grey);margin-bottom:16px;line-height:1.5">Få kode fra trener. Velg laget ditt og navnet ditt, og skriv inn koden du har fått.</div>' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Lag</div>' +
+    '<select id="kode-lag" style="width:100%;padding:11px 14px;border:1.5px solid var(--mid);border-radius:9px;font-family:\'Barlow\',sans-serif;font-size:14px;color:var(--text);background:var(--off);outline:none;margin-bottom:12px"><option value="">Velg lag…</option><option value="rod">J14 Rød</option><option value="sort">J14 Blå</option><option value="g14">G14 Biri/LFH</option></select>' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Navn</div>' +
+    '<select id="kode-spiller" style="width:100%;padding:11px 14px;border:1.5px solid var(--mid);border-radius:9px;font-family:\'Barlow\',sans-serif;font-size:14px;color:var(--text);background:var(--off);outline:none;margin-bottom:12px" disabled><option value="">Velg lag først…</option></select>' +
+    '<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Engangskode (6 siffer)</div>' +
+    '<input type="text" id="kode-input" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="000000" style="width:100%;padding:14px;border:1.5px solid var(--mid);border-radius:9px;font-family:\'Barlow Condensed\',sans-serif;font-weight:900;font-size:24px;text-align:center;letter-spacing:8px;color:var(--text);background:var(--off);outline:none;margin-bottom:14px">' +
+    '<div id="kode-feil" style="color:var(--red);font-size:12px;margin-bottom:10px;text-align:center;min-height:18px"></div>' +
+    '<button id="kode-bekreft" style="width:100%;padding:14px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:15px;letter-spacing:1px;cursor:pointer">Logg inn</button>';
+
+  overlay.appendChild(boks);
+  document.body.appendChild(overlay);
+
+  const lagSelect     = document.getElementById('kode-lag');
+  const spillerSelect = document.getElementById('kode-spiller');
+  const kodeInput     = document.getElementById('kode-input');
+  const feilEl        = document.getElementById('kode-feil');
+  const bekreftBtn    = document.getElementById('kode-bekreft');
+
+  document.getElementById('kode-lukk').onclick = () => overlay.remove();
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  lagSelect.onchange = () => {
+    const lag = lagSelect.value;
+    spillerSelect.innerHTML = '<option value="">Velg navn…</option>';
+    if (!lag) { spillerSelect.disabled = true; return; }
+    const data = spillerData[lag];
+    if (!data || !data.spillere) {
+      spillerSelect.innerHTML += '<option value="">Ingen spillere ennå</option>';
+      return;
+    }
+    // Spillere
+    [...data.spillere].sort((a,b) => parseInt(a.nr) - parseInt(b.nr)).forEach(sp => {
+      const opt = document.createElement('option');
+      opt.value = sp.nr;
+      opt.textContent = '#' + sp.nr + ' ' + sp.navn;
+      spillerSelect.appendChild(opt);
+    });
+    // Trenere
+    if (data.trenere && data.trenere.length) {
+      const optGroup = document.createElement('optgroup');
+      optGroup.label = '🧑‍🏫 Trenere';
+      data.trenere.forEach((t, i) => {
+        const opt = document.createElement('option');
+        opt.value = 'T' + i;
+        opt.textContent = t.navn;
+        optGroup.appendChild(opt);
+      });
+      spillerSelect.appendChild(optGroup);
+    }
+    spillerSelect.disabled = false;
+  };
+
+  kodeInput.oninput = () => { kodeInput.value = kodeInput.value.replace(/[^0-9]/g,'').slice(0,6); };
+
+  bekreftBtn.onclick = async () => {
+    const lag     = lagSelect.value;
+    const spiller = spillerSelect.value;
+    const kode    = kodeInput.value.trim();
+    feilEl.textContent = '';
+
+    if (!lag || !spiller || kode.length !== 6) {
+      feilEl.textContent = 'Fyll inn alle feltene';
+      return;
+    }
+
+    bekreftBtn.disabled = true;
+    bekreftBtn.textContent = 'Sjekker…';
+
+    try {
+      const res = await bekreftKode(lag, spiller, kode);
+      if (!res.ok) {
+        feilEl.textContent = res.feil;
+        bekreftBtn.disabled = false;
+        bekreftBtn.textContent = 'Logg inn';
+        return;
+      }
+      bekreftBtn.textContent = '✓ Logget inn!';
+      showToast('Velkommen, ' + res.navn + '!');
+      setTimeout(() => {
+        overlay.remove();
+        location.reload();
+      }, 800);
+    } catch(e) {
+      feilEl.textContent = 'Innlogging feilet: ' + (e.code || e.message);
+      bekreftBtn.disabled = false;
+      bekreftBtn.textContent = 'Logg inn';
+    }
+  };
+};
+
+// ── Admin: Kode-panel ────────────────────────────────────────
+function byggKodePanel(seksjon) {
+  seksjon.innerHTML = '';
+
+  const tip = document.createElement('div');
+  tip.className = 'tip-box';
+  tip.style.marginBottom = '12px';
+  tip.innerHTML = 'Generer 6-sifrede engangskoder for spillere/trenere uten Google-konto. Send koden via SMS – gyldig 7 dager.';
+  seksjon.appendChild(tip);
+
+  ['rod','sort','g14'].forEach(lagKey => {
+    const data = spillerData[lagKey];
+    if (!data || !data.spillere) return;
+
+    const lagFarge = LAG_CONFIG[lagKey].farge;
+    const lagSt = document.createElement('div');
+    lagSt.className = 'st';
+    lagSt.style.cssText = 'margin-top:14px;color:' + lagFarge;
+    lagSt.textContent = data.lag;
+    seksjon.appendChild(lagSt);
+
+    const card = document.createElement('div');
+    card.className = 'info-card';
+
+    // Spillere
+    [...data.spillere].sort((a,b) => parseInt(a.nr) - parseInt(b.nr)).forEach(sp => {
+      const docId = lagKey + '-' + sp.nr;
+      const kodeData = spillerkoder[docId];
+      const status = kodeStatus(kodeData);
+      card.appendChild(byggKodeRad(lagKey, sp.nr, sp.navn, kodeData, status));
+    });
+
+    // Trenere
+    if (data.trenere && data.trenere.length) {
+      const trenerSt = document.createElement('div');
+      trenerSt.style.cssText = 'font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);padding:10px 0 4px;border-top:1px solid var(--light);margin-top:6px';
+      trenerSt.textContent = '🧑‍🏫 Trenere';
+      card.appendChild(trenerSt);
+
+      data.trenere.forEach((t, i) => {
+        const docId = lagKey + '-T' + i;
+        const kodeData = spillerkoder[docId];
+        const status = kodeStatus(kodeData);
+        card.appendChild(byggKodeRad(lagKey, 'T' + i, t.navn, kodeData, status));
+      });
+    }
+
+    seksjon.appendChild(card);
+  });
+}
+
+function byggKodeRad(lagKey, spillerNr, navn, kodeData, status) {
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--light)';
+
+  const navnEl = document.createElement('div');
+  navnEl.style.cssText = 'flex:1;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:13px';
+  const erTrener = String(spillerNr).startsWith('T');
+  navnEl.innerHTML = (erTrener ? '' : '<span style="color:var(--blue);font-weight:900">#' + spillerNr + '</span> ') + navn;
+  row.appendChild(navnEl);
+
+  if (status === 'ubrukt') {
+    const kodeEl = document.createElement('div');
+    kodeEl.style.cssText = 'font-family:\'Barlow Condensed\',sans-serif;font-weight:900;font-size:18px;letter-spacing:3px;color:var(--blue);background:var(--light);padding:4px 10px;border-radius:6px;cursor:pointer';
+    kodeEl.textContent = kodeData.kode;
+    kodeEl.title = 'Trykk for å kopiere';
+    kodeEl.onclick = () => {
+      navigator.clipboard.writeText(kodeData.kode).then(() => showToast('Kode kopiert: ' + kodeData.kode));
+    };
+    row.appendChild(kodeEl);
+  } else if (status === 'brukt') {
+    const eskEl = document.createElement('div');
+    eskEl.style.cssText = 'font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;color:var(--green);padding:3px 8px;background:#dcfce7;border-radius:6px';
+    eskEl.textContent = '✓ Brukt';
+    row.appendChild(eskEl);
+  } else if (status === 'utlopt') {
+    const utlEl = document.createElement('div');
+    utlEl.style.cssText = 'font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:11px;color:#92400e;padding:3px 8px;background:#fef3c7;border-radius:6px';
+    utlEl.textContent = 'Utløpt';
+    row.appendChild(utlEl);
+  }
+
+  const btn = document.createElement('button');
+  btn.style.cssText = 'background:var(--blue);color:white;border:none;border-radius:7px;padding:6px 12px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:12px;cursor:pointer;flex-shrink:0';
+  btn.textContent = status === 'ingen' ? 'Lag kode' : 'Ny kode';
+  btn.onclick = async () => {
+    if (status === 'brukt' && !confirm('Spilleren har allerede brukt en kode. Lage ny? (gammel blir ugyldig)')) return;
+    btn.textContent = '…';
+    try {
+      const kode = await lagNyKodeForSpiller(lagKey, spillerNr, navn);
+      showToast('Kode laget: ' + kode);
+    } catch(e) {
+      showToast('Feil: ' + e.code, '#dc2626');
+    }
+  };
+  row.appendChild(btn);
+
+  return row;
+}
+
 // ── Init ──────────────────────────────────────────────────────
 oppdaterOversikt();
 lastInnPakket(JSON.parse(localStorage.getItem('lfh-cup-pakket') || '{}'));
@@ -3463,6 +3874,7 @@ initPinned();
 initSluttspill();
 initSpillere();
 initSignering();
+initSpillerkoder();
 
 
 </script>
