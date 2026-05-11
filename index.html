@@ -673,77 +673,179 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
     </div>
   </div>
   <div class="view" id="view-avreise">
-    <div class="st" style="margin-top:0">Avreise – fredag 22. mai</div>
-    <div class="info-card">
-      <div class="info-card-header">
-        <div class="info-card-icon">🚗</div>
-        <div>
-          <div class="info-card-title">Avreise Lillehammer</div>
-          <div class="info-card-sub">Fredag 22. mai 2026</div>
-        </div>
-      </div>
-      <div class="info-row"><span class="info-label">Oppmøte</span><span class="info-val" data-key="avreise.oppmote">Ca. kl. 14:45</span></div>
-      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val" data-key="avreise.avgang">Kl. 15:00</span></div>
-      <div class="info-row"><span class="info-label">Møtested</span><span class="info-val" data-key="avreise.motested">Oppdateres</span></div>
-      <div class="info-row"><span class="info-label">Transport</span><span class="info-val" data-key="avreise.transport">Private biler</span></div>
-      <div class="info-row"><span class="info-label">Kjøretid</span><span class="info-val" data-key="avreise.kjoretid">Ca. 3,5 timer</span></div>
-      <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val" data-key="avreise.ankomst">Ca. kl. 18:30</span></div>
-      <div class="tip-box">⚠️ Møt <strong>alltid</strong> 15 minutter før angitt tid. Vi kjører ikke uten deg!</div>
-    </div>
-    <div class="info-card">
-      <div class="info-card-header">
-        <div class="info-card-icon">💰</div>
-        <div>
-          <div class="info-card-title">Reisekostnader</div>
-          <div class="info-card-sub">Deling av kjørekostnader</div>
-        </div>
-      </div>
-      <div class="info-row"><span class="info-label">Passasjer betaler</span><span class="info-val" data-key="avreise.passasjer">Kr 500 til sjåfør</span></div>
-      <div class="info-row"><span class="info-label">Antall biler</span><span class="info-val" data-key="avreise.antallbiler">Minst 8 biler</span></div>
-      <div class="tip-box">💡 Betales direkte til sjåfør – samme pris for alle passasjerer.</div>
-    </div>
-    <div class="info-card">
-      <div class="info-card-header">
-        <div class="info-card-icon">🧳</div>
-        <div>
-          <div class="info-card-title">Bagasje</div>
-          <div class="info-card-sub">Hva du tar med</div>
-        </div>
-      </div>
-      <div class="info-row"><span class="info-label">Håndbagasje</span><span class="info-val">Liten sekk / skolesekk</span></div>
-      <div class="info-row"><span class="info-label">Stor sekk</span><span class="info-val">Merkes med navn</span></div>
-      <div class="info-row"><span class="info-label">Sportsbag</span><span class="info-val">Håndballutstyr</span></div>
-      <div class="tip-box">💡 Merk ALL bagasje med navn og telefonnummer.</div>
+    <div class="hero-card" style="margin-bottom:12px;background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%)">
+      <div class="hero-label">REISE</div>
+      <div class="hero-title">Avreise & hjemreise</div>
+      <div class="hero-sub">9 biler tur, 6 biler retur · Privat transport</div>
     </div>
 
-    <div class="st">Buss under turneringen</div>
-    <div class="info-card">
-      <div class="info-card-header">
-        <div class="info-card-icon">🚌</div>
-        <div>
-          <div class="info-card-title">Cup-bussene</div>
-          <div class="info-card-sub">Gratis med deltagerbånd</div>
-        </div>
-      </div>
-      <div class="info-row"><span class="info-label">Pris</span><span class="info-val">Gratis med cupbånd</span></div>
-      <div class="info-row"><span class="info-label">Frekvens</span><span class="info-val">2x i timen</span></div>
-      <div class="info-row"><span class="info-label">Fra skolen</span><span class="info-val">2x i timen</span></div>
-      <div class="info-row"><span class="info-label">Fra Kongsten Arena</span><span class="info-val">2x i timen</span></div>
-      <div class="tip-box">⚠️ Beregn ekstra venting etter konserten lørdag kveld.</div>
+    <!-- Fane-knapper -->
+    <div style="display:flex;gap:6px;margin-bottom:14px;">
+      <button class="lag-tab active" id="reise-tab-tur"  onclick="visReise('tur')"  style="flex:1">🚗 Til Fredrikstad</button>
+      <button class="lag-tab"        id="reise-tab-hjem" onclick="visReise('hjem')" style="flex:1">🏠 Til Lillehammer</button>
     </div>
 
-    <div class="st">Hjemreise – mandag 25. mai</div>
-    <div class="info-card">
-      <div class="info-card-header">
-        <div class="info-card-icon">🏠</div>
-        <div>
-          <div class="info-card-title">Hjemreise</div>
-          <div class="info-card-sub">Mandag 25. mai 2026</div>
-        </div>
+    <!-- TUR -->
+    <div id="reise-tur">
+      <div class="tip-box" style="margin-bottom:12px">⚠️ <strong>Fredag 22. mai</strong> · Møt 15 min før avgang. Vi kjører ikke uten deg!</div>
+
+      <!-- BIL 1 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#3b82f6">🚗</div><div><div class="info-card-title" data-key="bil1.tur.sjafor">Bil 1 · Linda, Kine</div><div class="info-card-sub" data-key="bil1.tur.tid">Oppmøte 14:45 · Avreise 15:00</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil1.tur.sted">Circle K Strandtorget</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil1.tur.p1">Mie</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil1.tur.p2">Ella</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil1.tur.p3">Nikoline</span></div>
       </div>
-      <div class="info-row"><span class="info-label">Avreise</span><span class="info-val" data-key="avreise.hjemreise">Etter sluttspill</span></div>
-      <div class="info-row"><span class="info-label">Fra</span><span class="info-val" data-key="avreise.hjemfra">Rød Skole Krakerøy</span></div>
-      <div class="tip-box">📦 Husk å rydde rommet og ta med alt. Sjekk under madrassen!</div>
+
+      <!-- BIL 2 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#8b5cf6">🚗</div><div><div class="info-card-title" data-key="bil2.tur.sjafor">Bil 2 · Anne-Line</div><div class="info-card-sub" data-key="bil2.tur.tid">Oppmøte 14:45 · Avreise 15:00</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil2.tur.sted">Circle K Strandtorget</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil2.tur.p1">Alma Rosenberg</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil2.tur.p2">Milla</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil2.tur.p3">Idun</span></div>
+      </div>
+
+      <!-- BIL 3 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:var(--red)">🚗</div><div><div class="info-card-title" data-key="bil3.tur.sjafor">Bil 3 · Samuel</div><div class="info-card-sub" data-key="bil3.tur.tid">Oppmøte 14:45 · Avreise 15:00</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil3.tur.sted">Circle K Strandtorget</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil3.tur.p1">Millian</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil3.tur.p2">Anastasiia</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil3.tur.p3">Rakel</span></div>
+      </div>
+
+      <!-- BIL 4 - Brøttum -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#facc15;color:#000">🚗</div><div><div class="info-card-title" data-key="bil4.tur.sjafor">Bil 4 · Kris</div><div class="info-card-sub" data-key="bil4.tur.tid">Oppmøte 14:45 · Avreise 15:00</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil4.tur.sted">Brøttum kirke</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil4.tur.p1">Christina</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil4.tur.p2">Hanna</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil4.tur.p3">Malin</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 4</span><span class="info-val" data-key="bil4.tur.p4">Elin</span></div>
+      </div>
+
+      <!-- BIL 5 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#059669">🚗</div><div><div class="info-card-title" data-key="bil5.tur.sjafor">Bil 5 · Forelder Thuva</div><div class="info-card-sub" data-key="bil5.tur.tid">Oppmøte 14:45 · Avreise 15:00</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil5.tur.sted">Circle K Strandtorget</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil5.tur.p1">Thuva Thoresen</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil5.tur.p2">Edith</span></div>
+      </div>
+
+      <!-- BIL 6 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#0891b2">🚗</div><div><div class="info-card-title" data-key="bil6.tur.sjafor">Bil 6 · Elise</div><div class="info-card-sub" data-key="bil6.tur.tid">Oppmøte 14:45 · Avreise 15:00</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil6.tur.sted">Circle K Strandtorget</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil6.tur.p1">Alisa</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil6.tur.p2">Lone</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil6.tur.p3">Lotte</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 4</span><span class="info-val" data-key="bil6.tur.p4">Nora</span></div>
+      </div>
+
+      <!-- BIL 7 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#dc2626">🚗</div><div><div class="info-card-title" data-key="bil7.tur.sjafor">Bil 7 · Forelder Aurora</div><div class="info-card-sub" data-key="bil7.tur.tid">Direkte til Fredrikstad</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil7.tur.sted">Ankommer ca. 18:30 Fredrikstad</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil7.tur.p1">Aurora Fredrikke</span></div>
+      </div>
+
+      <!-- BIL 8 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#7c3aed">🚗</div><div><div class="info-card-title" data-key="bil8.tur.sjafor">Bil 8 · Forelder Aurora</div><div class="info-card-sub" data-key="bil8.tur.tid">Direkte til Fredrikstad</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil8.tur.sted">Ankommer ca. 18:30 Fredrikstad</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil8.tur.p1">Aurora Reinvik</span></div>
+      </div>
+
+      <!-- BIL 9 -->
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#db2777">🚗</div><div><div class="info-card-title" data-key="bil9.tur.sjafor">Bil 9 · Forelder Andrine</div><div class="info-card-sub" data-key="bil9.tur.tid">Direkte til Fredrikstad</div></div></div>
+        <div class="info-row"><span class="info-label">Sted</span><span class="info-val" data-key="bil9.tur.sted">Ankommer ca. 18:30 Fredrikstad</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil9.tur.p1">Andrine Raae</span></div>
+      </div>
+
+      <div class="st">💰 Reisekostnad</div>
+      <div class="info-card">
+        <div class="info-row"><span class="info-label">Passasjer betaler</span><span class="info-val" data-key="avreise.passasjer">Kr 500 til sjåfør</span></div>
+        <div class="info-row"><span class="info-label">Antall biler</span><span class="info-val">9 biler</span></div>
+        <div class="info-row"><span class="info-label">Kjøretid</span><span class="info-val">Ca. 3,5 timer</span></div>
+        <div class="info-row"><span class="info-label">Estimert ankomst</span><span class="info-val" data-key="avreise.ankomst">Ca. kl. 18:30</span></div>
+        <div class="tip-box">💡 Betales direkte til sjåfør – samme pris for alle passasjerer.</div>
+      </div>
+
+      <div class="st">🧳 Bagasje</div>
+      <div class="info-card">
+        <div class="info-row"><span class="info-label">Håndbagasje</span><span class="info-val">Liten sekk / skolesekk</span></div>
+        <div class="info-row"><span class="info-label">Stor sekk</span><span class="info-val">Merkes med navn</span></div>
+        <div class="info-row"><span class="info-label">Sportsbag</span><span class="info-val">Håndballutstyr</span></div>
+        <div class="tip-box">💡 Merk ALL bagasje med navn og telefonnummer.</div>
+      </div>
+    </div>
+
+    <!-- HJEM -->
+    <div id="reise-hjem" style="display:none">
+      <div class="tip-box" style="margin-bottom:12px">🏠 <strong>Mandag 25. mai</strong> · Avreise etter sluttspill. Husk å rydde rommet!</div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#3b82f6">🚗</div><div><div class="info-card-title" data-key="bil1.hjem.sjafor">Bil 1 · Linda, Kine</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil1.hjem.p1">Mie</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil1.hjem.p2">Ella</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil1.hjem.p3">Nikoline</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#8b5cf6">🚗</div><div><div class="info-card-title" data-key="bil2.hjem.sjafor">Bil 2 · Anne-Line</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil2.hjem.p1">Alma Rosenberg</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil2.hjem.p2">Milla</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil2.hjem.p3">Idun</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:var(--red)">🚗</div><div><div class="info-card-title" data-key="bil3.hjem.sjafor">Bil 3 · Samuel</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil3.hjem.p1">Millian</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil3.hjem.p2">Anastasiia</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil3.hjem.p3">Rakel</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#facc15;color:#000">🚗</div><div><div class="info-card-title" data-key="bil4.hjem.sjafor">Bil 4 · Kris</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil4.hjem.p1">Christina</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil4.hjem.p2">Hanna</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil4.hjem.p3">Malin</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 4</span><span class="info-val" data-key="bil4.hjem.p4">Elin</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#059669">🚗</div><div><div class="info-card-title" data-key="bil5.hjem.sjafor">Bil 5 · Forelder Thuva</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil5.hjem.p1">Thuva Thoresen</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil5.hjem.p2">Edith</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#0891b2">🚗</div><div><div class="info-card-title" data-key="bil6.hjem.sjafor">Bil 6 · Stig</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil6.hjem.p1">Lone</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 2</span><span class="info-val" data-key="bil6.hjem.p2">Alisa</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 3</span><span class="info-val" data-key="bil6.hjem.p3">Lotte</span></div>
+        <div class="info-row"><span class="info-label">Passasjer 4</span><span class="info-val" data-key="bil6.hjem.p4">Nora</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#dc2626">🚗</div><div><div class="info-card-title" data-key="bil7.hjem.sjafor">Bil 7 · Forelder Aurora</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil7.hjem.p1">Aurora Fredrikke</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#7c3aed">🚗</div><div><div class="info-card-title" data-key="bil8.hjem.sjafor">Bil 8 · Forelder Aurora</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil8.hjem.p1">Aurora Reinvik</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon" style="background:#db2777">🚗</div><div><div class="info-card-title" data-key="bil9.hjem.sjafor">Bil 9 · Forelder Andrine</div></div></div>
+        <div class="info-row"><span class="info-label">Passasjer 1</span><span class="info-val" data-key="bil9.hjem.p1">Andrine Raae</span></div>
+      </div>
+
+      <div class="tip-box">📦 Husk å rydde rommet og ta med alt. Sjekk under madrassen før dere drar!</div>
     </div>
   </div>
 
@@ -1319,6 +1421,25 @@ auth.onAuthStateChanged(async user => {
     }
   } else if (!user) {
     kodeBrukerInfo = null;
+
+    // Hvis vi har lagret kode-bruker men ingen Firebase-session – logg inn anonymt på nytt
+    const lagret = localStorage.getItem('lfh-kode-bruker');
+    if (lagret) {
+      try {
+        const info = JSON.parse(lagret);
+        console.log('[Auth] Gjenoppretter kode-bruker:', info.navn);
+        const cred = await auth.signInAnonymously();
+        if (cred.user) {
+          info.uid = cred.user.uid;
+          localStorage.setItem('lfh-kode-bruker', JSON.stringify(info));
+          // onAuthStateChanged vil trigge igjen med ny user – la flowen ta seg av resten
+        }
+        return;
+      } catch(e) {
+        console.error('Kunne ikke gjenopprette kode-session:', e);
+        localStorage.removeItem('lfh-kode-bruker');
+      }
+    }
   }
 
   updateAuthUI();
@@ -1512,6 +1633,13 @@ window.showView = name => {
   if (name === 'regler' && typeof renderSignerBoks === 'function') {
     renderSignerBoks();
   }
+};
+
+window.visReise = (modus) => {
+  document.getElementById('reise-tur').style.display  = modus === 'tur'  ? 'block' : 'none';
+  document.getElementById('reise-hjem').style.display = modus === 'hjem' ? 'block' : 'none';
+  document.getElementById('reise-tab-tur').classList.toggle('active',  modus === 'tur');
+  document.getElementById('reise-tab-hjem').classList.toggle('active', modus === 'hjem');
 };
 
 // ── Lag-tabs ──────────────────────────────────────────────────
