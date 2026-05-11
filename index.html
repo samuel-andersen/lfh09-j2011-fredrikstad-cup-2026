@@ -3169,17 +3169,62 @@ let pinnedData = [];
 let unsubPinned = null;
 
 const ALLE_PINS = [
-  { id:'neste-rod',   ikon:'🔴', label:'Neste kamp',    tittelFn: () => nestKampTittel('rod'),   subFn: () => nestKampSub('rod') },
-  { id:'neste-sort',  ikon:'⚫', label:'Neste kamp',    tittelFn: () => nestKampTittel('sort'),  subFn: () => nestKampSub('sort') },
-  { id:'neste-g14',   ikon:'🟢', label:'Neste kamp',    tittelFn: () => nestKampTittel('g14'),   subFn: () => nestKampSub('g14') },
-  { id:'avreise',     ikon:'🚗', label:'Avreise',       tittelFn: () => redigerData['avreise.avgang'] || 'Kl. 15:00 fra Lillehammer', subFn: () => redigerData['avreise.motested'] || 'Møtested oppdateres' },
-  { id:'overnatting', ikon:'🏫', label:'Overnatting',   tittelFn: () => redigerData['bo.adresse'] || 'Dueveien 2, 1679 Kråkerøy', subFn: () => 'Rom ' + (redigerData['bo.rom'] || '225 og 229') },
-  { id:'konsert',     ikon:'🎵', label:'Konsert',       tittelFn: () => 'Lørdag 23. mai kl. 19:40', subFn: () => 'Kongsten Arena · Cupbånd inkl.' },
-  { id:'middag-lor',  ikon:'🌮', label:'Middag lørdag', tittelFn: () => 'Taco med storfe', subFn: () => 'Kongsten Arena 14:00–18:30' },
-  { id:'middag-son',  ikon:'🍛', label:'Middag søndag', tittelFn: () => 'Baligryte med kylling', subFn: () => 'Merkur Arena 14:00–19:00' },
-  { id:'leggetid',    ikon:'🌙', label:'Leggetid',      tittelFn: () => redigerData['bo.leggetid'] || 'Oppdateres', subFn: () => 'Bestemt av trenere' },
-  { id:'kontakt1',    ikon:'📞', label:'Kontakt',       tittelFn: () => redigerData['kontakt.1.navn'] || 'Samuel Andersen', subFn: () => redigerData['kontakt.1.tlf'] || '+47 400 44 442' },
+  // Neste kamp
+  { id:'neste-rod',   ikon:'🔴', label:'Neste kamp Rød',    tittelFn: () => nestKampTittel('rod'),   subFn: () => nestKampSub('rod') },
+  { id:'neste-sort',  ikon:'🔵', label:'Neste kamp Blå',    tittelFn: () => nestKampTittel('sort'),  subFn: () => nestKampSub('sort') },
+  { id:'neste-g14',   ikon:'🟡', label:'Neste kamp G14',    tittelFn: () => nestKampTittel('g14'),   subFn: () => nestKampSub('g14') },
+
+  // Reise - TUR (egen seksjon)
+  { id:'reise-tur',         ikon:'🚗', label:'Til Fredrikstad', tittelFn: () => 'Fredag 22. mai · Kl. 15:00', subFn: () => '9 biler · Møt 14:45 Circle K Strandtorget' },
+  { id:'reise-tur-brottum', ikon:'⛪', label:'Brøttum kirke',   tittelFn: () => 'Bil 4 (Kris) – Brøttum kirke', subFn: () => 'Oppmøte 14:45 · Avreise 15:00' },
+
+  // Reise - HJEM (egen seksjon)
+  { id:'reise-hjem',  ikon:'🏠', label:'Til Lillehammer',  tittelFn: () => 'Mandag 25. mai',           subFn: () => 'Etter sluttspill · 6 hovedbiler' },
+
+  // Overnatting
+  { id:'overnatting', ikon:'🏫', label:'Overnatting',     tittelFn: () => redigerData['bo.adresse']    || 'Dueveien 2, 1679 Kråkerøy', subFn: () => 'Rom ' + (redigerData['bo.rom'] || '225 og 229') },
+  { id:'leggetid',    ikon:'🌙', label:'Leggetid',        tittelFn: () => redigerData['bo.leggetid']   || 'Oppdateres', subFn: () => 'Bestemt av trenere' },
+  { id:'frokost',     ikon:'🍳', label:'Frokost',         tittelFn: () => '06:15–10:00 Rød Skole',    subFn: () => 'Inkludert i cupbånd' },
+
+  // Mat
+  { id:'middag-lor',  ikon:'🌮', label:'Middag lørdag',   tittelFn: () => 'Taco med storfe',          subFn: () => 'Kongsten Arena 14:00–18:30' },
+  { id:'middag-son',  ikon:'🍛', label:'Middag søndag',   tittelFn: () => 'Baligryte med kylling',    subFn: () => 'Merkur Arena 14:00–19:00' },
+
+  // Konsert
+  { id:'konsert',     ikon:'🎵', label:'Konsert lørdag',  tittelFn: () => 'Kl. 19:40 · Kongsten Arena', subFn: () => 'Bausa, Tigergutt, Puls m.fl. · Cupbånd inkl.' },
+
+  // Buss
+  { id:'buss-konsert', ikon:'🚌', label:'Konsertbuss',    tittelFn: () => '17:45 · Hjem og dusj',     subFn: () => '18:45 · Tilbake til Kongsten' },
+
+  // Sluttspill
+  { id:'sluttspill',  ikon:'🏆', label:'Sluttspill',      tittelFn: () => 'Mandag 25. mai · 08:00',   subFn: () => 'Finale ca. 13:00 · Cup slutt 16:30' },
+
+  // Regler
+  { id:'regler',      ikon:'📋', label:'Lagets regler',   tittelFn: () => '9 regler vi forplikter oss til', subFn: () => 'Husk å signere!' },
+
+  // Kontakt
+  { id:'kontakt1',    ikon:'📞', label:'Samuel (trener)', tittelFn: () => redigerData['kontakt.1.navn'] || 'Samuel Andersen', subFn: () => redigerData['kontakt.1.tlf'] || '+47 400 44 442' },
+  { id:'kontakt2',    ikon:'📞', label:'Anne-Line',       tittelFn: () => redigerData['kontakt.2.navn'] || 'Anne-Line Rosenberg Rotevatn', subFn: () => redigerData['kontakt.2.tlf'] || '+47 958 64 622' },
+
+  // Nød
+  { id:'nodnummer',   ikon:'🚨', label:'Nødetater',       tittelFn: () => '112 · 110 · 113',           subFn: () => 'Legevakt: 116 117' },
+  { id:'legevakt',    ikon:'🏥', label:'Legevakt',        tittelFn: () => 'Jens Wilhelmsens gate 1',  subFn: () => 'Tlf: 116 117' },
+
+  // Cup-tlf
+  { id:'cup-tlf',     ikon:'☎️', label:'Cup-servicetlf.', tittelFn: () => '4000 17 22',               subFn: () => 'Åpen 07:00–21:00' },
 ];
+
+const PIN_NAV_MAP = {
+  'neste-rod': 'kamper', 'neste-sort': 'kamper', 'neste-g14': 'kamper',
+  'reise-tur': 'avreise', 'reise-tur-brottum': 'avreise', 'reise-hjem': 'avreise',
+  'overnatting': 'overnatting', 'leggetid': 'overnatting', 'frokost': 'mat',
+  'middag-lor': 'mat', 'middag-son': 'mat',
+  'konsert': 'program', 'buss-konsert': 'buss',
+  'sluttspill': 'kamper', 'regler': 'regler',
+  'kontakt1': 'kontakt', 'kontakt2': 'kontakt',
+  'nodnummer': 'kontakt', 'legevakt': 'kart',
+  'cup-tlf': 'kontakt',
+};
 
 function nestKampTittel(lag) {
   const cfg = LAG_CONFIG[lag];
@@ -3233,7 +3278,7 @@ function renderPinnedOversikt() {
       '<div class="pinned-title">' + pin.tittelFn() + '</div>' +
       '<div class="pinned-sub">'   + pin.subFn()    + '</div>';
     // Klikk går til riktig seksjon
-    const navMap = { 'neste-rod':'kamper','neste-sort':'kamper','neste-g14':'kamper','avreise':'avreise','overnatting':'overnatting','konsert':'program','middag-lor':'mat','middag-son':'mat','leggetid':'overnatting','kontakt1':'kontakt' };
+    const navMap = PIN_NAV_MAP;
     if (navMap[pinId]) card.style.cursor = 'pointer';
     card.onclick = () => { if (navMap[pinId]) window.showView(navMap[pinId]); };
     wrap.appendChild(card);
