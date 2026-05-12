@@ -417,7 +417,7 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
 
 <div class="access-screen" id="access-screen">
   <div class="access-box">
-    <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="access-logo" alt="LFH09">
+    <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="access-logo" alt="LFH09" onerror="this.style.display='none'">
     <div class="access-title">LFH09 J2011</div>
     <div class="access-cup">FREDRIKSTAD CUP 2026</div>
     <div class="access-sub">Skriv inn lagets kode for å gå inn i turappen.</div>
@@ -432,7 +432,7 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
 <header class="header">
   <div class="header-inner">
     <div class="header-left">
-      <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="club-logo" alt="LFH09" onclick="showView('oversikt')" style="cursor:pointer">
+      <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="club-logo" alt="LFH09" onclick="showView('oversikt')" style="cursor:pointer" onerror="this.style.display='none'">
       <div>
         <div class="logo-club">J2011</div>
         <div class="logo-sub">Lillehammer Fåberg Håndball</div>
@@ -1381,6 +1381,17 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
 <script>
+// Global error handler for å fange og logge feil
+window.addEventListener('error', function(e) {
+  console.log('[Global error]', e.message, 'at', e.filename, ':', e.lineno);
+  // Ikke la én feil stoppe resten av appen
+  return false;
+}, true);
+
+window.addEventListener('unhandledrejection', function(e) {
+  console.log('[Unhandled promise]', e.reason);
+});
+
 // Firebase compat – ingen ES modules, fungerer i alle nettlesere inkl. Safari
 // Firebase compat API - alle funksjoner er tilgjengelige direkte
 
