@@ -414,7 +414,7 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
 <!-- TILGANGSKODE -->
 <div class="access-screen" id="access-screen">
   <div class="access-box">
-    <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="access-logo" alt="LFH09" onerror="this.style.display='none'">
+    <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="access-logo" alt="LFH09">
     <div class="access-title">LFH09 J2011</div>
     <div class="access-cup">FREDRIKSTAD CUP 2026</div>
     <div class="access-sub">Skriv inn lagets kode for å gå inn i turappen.</div>
@@ -428,7 +428,7 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
 <header class="header">
   <div class="header-inner">
     <div class="header-left">
-      <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="club-logo" alt="LFH09" onclick="showView('oversikt')" style="cursor:pointer" onerror="this.style.display='none'">
+      <img src="https://raw.githubusercontent.com/samuel-andersen/lfh09-j20111trening/main/lfh09-logo.svg" class="club-logo" alt="LFH09" onclick="showView('oversikt')" style="cursor:pointer">
       <div>
         <div class="logo-club">J2011</div>
         <div class="logo-sub">Lillehammer Fåberg Håndball</div>
@@ -1330,45 +1330,6 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
-// Global error handler for å fange og logge feil
-window.addEventListener('error', function(e) {
-  console.log('[Global error]', e.message, 'at', e.filename, ':', e.lineno);
-  // Ikke la én feil stoppe resten av appen
-  return false;
-}, true);
-
-window.addEventListener('unhandledrejection', function(e) {
-  console.log('[Unhandled promise]', e.reason);
-});
-
-// ── Tilgangskode (defineres FØR Firebase så den alltid fungerer) ──
-const KODE = '201126';
-
-window.sjekkKode = function() {
-  const inp  = document.getElementById('access-input');
-  const feil = document.getElementById('access-feil');
-  if (!inp) { console.log('access-input ikke funnet'); return; }
-  const kode = inp.value.trim().toUpperCase();
-  if (kode === KODE) {
-    localStorage.setItem('lfh-cup-tilgang', KODE);
-    document.getElementById('access-screen').style.display = 'none';
-  } else {
-    inp.classList.add('feil');
-    if (feil) feil.textContent = 'Feil kode – prøv igjen';
-    setTimeout(function() { inp.classList.remove('feil'); }, 400);
-    inp.value = '';
-    inp.focus();
-  }
-};
-
-function sjekkTilgang() {
-  if (localStorage.getItem('lfh-cup-tilgang') === KODE) {
-    const el = document.getElementById('access-screen');
-    if (el) el.style.display = 'none';
-  }
-}
-sjekkTilgang();
-
 // Firebase compat – ingen ES modules, fungerer i alle nettlesere inkl. Safari
 // Firebase compat API - alle funksjoner er tilgjengelige direkte
 
@@ -1386,10 +1347,9 @@ const fbApp    = firebase.initializeApp(firebaseConfig);
 const auth     = firebase.auth(fbApp);
 const db       = firebase.firestore(fbApp);
 
-// Force long-polling for Safari/iOS for å unngå CORS/access control-feil
-// Safari blokkerer fetch streaming, så vi tvinger long-polling
+// Auto-detect long-polling for Safari/iOS for å unngå access control-feil
 db.settings({
-  experimentalForceLongPolling: true,
+  experimentalAutoDetectLongPolling: true,
   merge: true
 });
 
@@ -1397,6 +1357,31 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 let currentUser = null;
 let unsubPakk   = null;
+
+// ── Tilgangskode ─────────────────────────────────────────────
+const KODE = '201126';
+
+function sjekkTilgang() {
+  if (localStorage.getItem('lfh-cup-tilgang') === KODE)
+    document.getElementById('access-screen').style.display = 'none';
+}
+
+window.sjekkKode = () => {
+  const inp  = document.getElementById('access-input');
+  const feil = document.getElementById('access-feil');
+  const kode = inp.value.trim().toUpperCase();
+  if (kode === KODE) {
+    localStorage.setItem('lfh-cup-tilgang', KODE);
+    document.getElementById('access-screen').style.display = 'none';
+  } else {
+    inp.classList.add('feil');
+    feil.textContent = 'Feil kode – prøv igjen';
+    setTimeout(() => inp.classList.remove('feil'), 400);
+    inp.value = '';
+    inp.focus();
+  }
+};
+sjekkTilgang();
 
 // ── Dark mode ─────────────────────────────────────────────────
 function initDark() {
