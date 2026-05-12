@@ -1341,6 +1341,34 @@ window.addEventListener('unhandledrejection', function(e) {
   console.log('[Unhandled promise]', e.reason);
 });
 
+// ── Tilgangskode (defineres FØR Firebase så den alltid fungerer) ──
+const KODE = '201126';
+
+window.sjekkKode = function() {
+  const inp  = document.getElementById('access-input');
+  const feil = document.getElementById('access-feil');
+  if (!inp) { console.log('access-input ikke funnet'); return; }
+  const kode = inp.value.trim().toUpperCase();
+  if (kode === KODE) {
+    localStorage.setItem('lfh-cup-tilgang', KODE);
+    document.getElementById('access-screen').style.display = 'none';
+  } else {
+    inp.classList.add('feil');
+    if (feil) feil.textContent = 'Feil kode – prøv igjen';
+    setTimeout(function() { inp.classList.remove('feil'); }, 400);
+    inp.value = '';
+    inp.focus();
+  }
+};
+
+function sjekkTilgang() {
+  if (localStorage.getItem('lfh-cup-tilgang') === KODE) {
+    const el = document.getElementById('access-screen');
+    if (el) el.style.display = 'none';
+  }
+}
+sjekkTilgang();
+
 // Firebase compat – ingen ES modules, fungerer i alle nettlesere inkl. Safari
 // Firebase compat API - alle funksjoner er tilgjengelige direkte
 
@@ -1369,31 +1397,6 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 let currentUser = null;
 let unsubPakk   = null;
-
-// ── Tilgangskode ─────────────────────────────────────────────
-const KODE = '201126';
-
-function sjekkTilgang() {
-  if (localStorage.getItem('lfh-cup-tilgang') === KODE)
-    document.getElementById('access-screen').style.display = 'none';
-}
-
-window.sjekkKode = () => {
-  const inp  = document.getElementById('access-input');
-  const feil = document.getElementById('access-feil');
-  const kode = inp.value.trim().toUpperCase();
-  if (kode === KODE) {
-    localStorage.setItem('lfh-cup-tilgang', KODE);
-    document.getElementById('access-screen').style.display = 'none';
-  } else {
-    inp.classList.add('feil');
-    feil.textContent = 'Feil kode – prøv igjen';
-    setTimeout(() => inp.classList.remove('feil'), 400);
-    inp.value = '';
-    inp.focus();
-  }
-};
-sjekkTilgang();
 
 // ── Dark mode ─────────────────────────────────────────────────
 function initDark() {
