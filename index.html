@@ -1005,11 +1005,11 @@ body.dark .sign-checkbox { background:#111827; border-color:#3a4a6b; }
       </div>
     </div>
     <div class="contact-card">
-      <div class="contact-avatar">FK</div>
+      <div class="contact-avatar">RC</div>
       <div style="flex:1">
-        <div class="contact-name" data-key="kontakt.3.navn">Foreldrekontakt</div>
-        <div class="contact-role" data-key="kontakt.3.rolle">Foreldreansvarlig</div>
-        <div class="contact-tel" data-key="kontakt.3.tlf">Telefon oppdateres</div>
+        <div class="contact-name" data-key="kontakt.3.navn">Robert Cortas Reid</div>
+        <div class="contact-role" data-key="kontakt.3.rolle">Teamskoordinator</div>
+        <div class="contact-tel" data-key="kontakt.3.tlf">+47 971 84 528</div>
       </div>
     </div>
     <div class="contact-card">
@@ -2406,7 +2406,7 @@ function lagTabell(ids, farge, lagKey) {
 }
 
 // ── Q&A Forum ─────────────────────────────────────────────────
-const ADMINS = ['samuel.andersen@gmail.com', 'kuttutashop@gmail.com'];
+const ADMINS = ['samuel.andersen@gmail.com', 'kuttutashop@gmail.com', 'robertcortasreid@gmail.com'];
 const REACTIONS = ['👍','❤️','😂'];
 
 function isAdmin() {
@@ -3234,6 +3234,7 @@ const ALLE_PINS = [
   // Kontakt
   { id:'kontakt1',    ikon:'📞', label:'Samuel (trener)', tittelFn: () => redigerData['kontakt.1.navn'] || 'Samuel Andersen', subFn: () => redigerData['kontakt.1.tlf'] || '+47 400 44 442' },
   { id:'kontakt2',    ikon:'📞', label:'Anne-Line',       tittelFn: () => redigerData['kontakt.2.navn'] || 'Anne-Line Rosenberg Rotevatn', subFn: () => redigerData['kontakt.2.tlf'] || '+47 958 64 622' },
+  { id:'kontakt3',    ikon:'📞', label:'Robert (koord.)', tittelFn: () => redigerData['kontakt.3.navn'] || 'Robert Cortas Reid', subFn: () => redigerData['kontakt.3.tlf'] || '+47 971 84 528' },
 
   // Nød
   { id:'nodnummer',   ikon:'🚨', label:'Nødetater',       tittelFn: () => '112 · 110 · 113',           subFn: () => 'Legevakt: 116 117' },
@@ -3250,7 +3251,7 @@ const PIN_NAV_MAP = {
   'middag-lor': 'mat', 'middag-son': 'mat',
   'konsert': 'program', 'buss-konsert': 'buss',
   'sluttspill': 'kamper', 'regler': 'regler',
-  'kontakt1': 'kontakt', 'kontakt2': 'kontakt',
+  'kontakt1': 'kontakt', 'kontakt2': 'kontakt', 'kontakt3': 'kontakt',
   'nodnummer': 'kontakt', 'legevakt': 'kart',
   'cup-tlf': 'kontakt',
 };
