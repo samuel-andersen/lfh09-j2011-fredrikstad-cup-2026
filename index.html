@@ -1401,6 +1401,7 @@ initDark();
 
 // ── Auth ─────────────────────────────────────────────────────
 auth.onAuthStateChanged(async user => {
+  const tidligereUser = currentUser;
   currentUser = user;
 
   // Hvis anonym bruker - sjekk om vi har lokal kode-bruker info
@@ -1420,6 +1421,22 @@ auth.onAuthStateChanged(async user => {
       } catch(e) { kodeBrukerInfo = null; }
     }
   } else if (!user) {
+    // Logg utlogging hvis vi var innlogget
+    if (tidligereUser && typeof loggHendelse === 'function') {
+      try {
+        await db.collection('audit').add({
+          type: 'logout',
+          detaljer: {},
+          brukerUid: tidligereUser.uid,
+          brukerNavn: tidligereUser.displayName || (kodeBrukerInfo && kodeBrukerInfo.navn) || tidligereUser.email || 'Ukjent',
+          brukerType: tidligereUser.isAnonymous ? 'kode' : 'google',
+          tid: firebase.firestore.FieldValue.serverTimestamp(),
+          tidString: new Date().toISOString()
+        });
+        await db.collection('aktive_sesjoner').doc(tidligereUser.uid).delete();
+      } catch(e) {}
+    }
+    if (typeof stoppHeartbeat === 'function') stoppHeartbeat();
     kodeBrukerInfo = null;
 
     // Hvis vi har lagret kode-bruker men ingen Firebase-session – logg inn anonymt på nytt
@@ -1432,7 +1449,6 @@ auth.onAuthStateChanged(async user => {
         if (cred.user) {
           info.uid = cred.user.uid;
           localStorage.setItem('lfh-kode-bruker', JSON.stringify(info));
-          // onAuthStateChanged vil trigge igjen med ny user – la flowen ta seg av resten
         }
         return;
       } catch(e) {
@@ -1440,6 +1456,11 @@ auth.onAuthStateChanged(async user => {
         localStorage.removeItem('lfh-kode-bruker');
       }
     }
+  }
+
+  // Logg ny Google-innlogging
+  if (user && !user.isAnonymous && !tidligereUser && typeof loggHendelse === 'function') {
+    setTimeout(() => loggHendelse('login_google', {}), 500);
   }
 
   updateAuthUI();
@@ -1451,6 +1472,7 @@ auth.onAuthStateChanged(async user => {
       setTimeout(aktiverInlineEdit, 500);
     }
     if (typeof lyttPaaMinSignatur === 'function') lyttPaaMinSignatur();
+    if (typeof startHeartbeat === 'function') setTimeout(startHeartbeat, 1000);
   } else {
     if (unsubPakk) { unsubPakk(); unsubPakk = null; }
     if (typeof unsubMinSig !== 'undefined' && unsubMinSig) { unsubMinSig(); unsubMinSig = null; }
@@ -2715,6 +2737,7 @@ function byggAdminPanel() {
     { key:'oversikt',    farge:'#003087', label:'📌 Pin' },
     { key:'signaturer',  farge:'#15803d', label:'✍️ Sig' },
     { key:'koder',       farge:'#7c3aed', label:'🔑 Koder' },
+    { key:'audit',       farge:'#f59e0b', label:'📋 Logg' },
   ];
 
   tabs.forEach((tab, i) => {
@@ -2754,6 +2777,12 @@ function byggAdminPanel() {
 
     if (tab.key === 'koder') {
       byggKodePanel(seksjon);
+      body.appendChild(seksjon);
+      return;
+    }
+
+    if (tab.key === 'audit') {
+      byggAuditPanel(seksjon);
       body.appendChild(seksjon);
       return;
     }
@@ -3541,6 +3570,7 @@ async function signerRegler() {
       spillerNr: akt.spillerNr || null
     });
     console.log('[Signer] ✓ Lagret til Firestore');
+    if (typeof loggHendelse === 'function') loggHendelse('signer', {});
     showToast('Signert! ✍️ Takk for forpliktelsen.');
   } catch(e) {
     console.error('[Signer] FEIL:', e.code, e.message);
@@ -3556,6 +3586,7 @@ window.avSignerRegler = async () => {
   if (!akt) return;
   try {
     await db.collection('signaturer').doc(akt.uid).delete();
+    if (typeof loggHendelse === 'function') loggHendelse('signer_av', {});
     minSignatur = null;
     showToast('Signatur trukket tilbake', '#888');
     renderSignerBoks();
@@ -3680,6 +3711,217 @@ function byggSignaturPanel(seksjon) {
   }
 }
 
+// ── Audit log ─────────────────────────────────────────────────
+let auditLogg = [];
+let unsubAudit = null;
+
+async function loggHendelse(type, detaljer) {
+  try {
+    const akt = aktivBruker();
+    await db.collection('audit').add({
+      type,
+      detaljer: detaljer || {},
+      brukerUid:  akt ? akt.uid  : null,
+      brukerNavn: akt ? akt.navn : null,
+      brukerType: akt ? akt.type : 'anonym',
+      tid: firebase.firestore.FieldValue.serverTimestamp(),
+      tidString: new Date().toISOString(),
+      userAgent: navigator.userAgent.substring(0, 200)
+    });
+  } catch(e) { console.log('Audit-logging feilet:', e.code); }
+}
+
+async function oppdaterHeartbeat() {
+  const akt = aktivBruker();
+  if (!akt) return;
+  try {
+    await db.collection('aktive_sesjoner').doc(akt.uid).set({
+      uid: akt.uid,
+      navn: akt.navn,
+      type: akt.type,
+      epost: akt.epost || '',
+      lagKey: akt.lagKey || null,
+      spillerNr: akt.spillerNr || null,
+      sist_aktiv: firebase.firestore.FieldValue.serverTimestamp(),
+      sist_aktiv_string: new Date().toISOString()
+    });
+  } catch(e) { /* stille feil */ }
+}
+
+let heartbeatInterval = null;
+function startHeartbeat() {
+  if (heartbeatInterval) clearInterval(heartbeatInterval);
+  oppdaterHeartbeat();
+  heartbeatInterval = setInterval(oppdaterHeartbeat, 60 * 1000); // hvert minutt
+}
+function stoppHeartbeat() {
+  if (heartbeatInterval) clearInterval(heartbeatInterval);
+  heartbeatInterval = null;
+}
+
+function initAudit() {
+  unsubAudit = db.collection('audit').orderBy('tid', 'desc').limit(100).onSnapshot(
+    snap => {
+      auditLogg = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (document.getElementById('admin-panel').classList.contains('show')) {
+        const sek = document.getElementById('admin-seksjon-audit');
+        if (sek) byggAuditPanel(sek);
+      }
+    },
+    err => { console.log('Kan ikke lese audit (kun admin):', err.code); }
+  );
+}
+
+let aktiveSesjoner = [];
+let unsubAktive = null;
+function lyttPaaAktiveSesjoner() {
+  unsubAktive = db.collection('aktive_sesjoner').onSnapshot(
+    snap => {
+      aktiveSesjoner = snap.docs.map(d => d.data());
+      if (document.getElementById('admin-panel').classList.contains('show')) {
+        const sek = document.getElementById('admin-seksjon-audit');
+        if (sek) byggAuditPanel(sek);
+      }
+    },
+    err => { /* stille */ }
+  );
+}
+
+function byggAuditPanel(seksjon) {
+  seksjon.innerHTML = '';
+
+  // ── Hvem er innlogget nå ──
+  const tit1 = document.createElement('div');
+  tit1.className = 'st';
+  tit1.style.marginTop = '0';
+  tit1.textContent = '🟢 Innlogget akkurat nå';
+  seksjon.appendChild(tit1);
+
+  const now = Date.now();
+  const aktive = aktiveSesjoner.filter(s => {
+    const sist = new Date(s.sist_aktiv_string).getTime();
+    return (now - sist) < 5 * 60 * 1000; // siste 5 min
+  });
+
+  if (aktive.length === 0) {
+    const tom = document.createElement('div');
+    tom.className = 'empty';
+    tom.style.padding = '20px';
+    tom.innerHTML = '<div style="font-size:14px">Ingen aktive sesjoner siste 5 minutter</div>';
+    seksjon.appendChild(tom);
+  } else {
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    aktive.sort((a,b) => new Date(b.sist_aktiv_string) - new Date(a.sist_aktiv_string)).forEach((s, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:9px;padding:9px 0' + (i < aktive.length - 1 ? ';border-bottom:1px solid var(--light)' : '');
+
+      const dot = document.createElement('div');
+      dot.style.cssText = 'width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:admpuls 1.5s infinite;flex-shrink:0';
+      row.appendChild(dot);
+
+      const navnEl = document.createElement('div');
+      navnEl.style.cssText = 'flex:1;font-family:\'Barlow Condensed\',sans-serif';
+      const sist = new Date(s.sist_aktiv_string);
+      const sek = Math.floor((now - sist.getTime()) / 1000);
+      const tidTxt = sek < 60 ? 'nå' : sek < 300 ? Math.floor(sek/60) + ' min siden' : 'lenge siden';
+      navnEl.innerHTML =
+        '<div style="font-weight:800;font-size:13px">' + (s.type === 'kode' ? '🔑 ' : '🔵 ') + s.navn + '</div>' +
+        '<div style="font-size:11px;color:var(--grey);font-family:Barlow,sans-serif">' + tidTxt + ' · ' + (s.type === 'kode' ? 'kode' : s.epost || 'Google') + '</div>';
+      row.appendChild(navnEl);
+
+      card.appendChild(row);
+    });
+    seksjon.appendChild(card);
+  }
+
+  // ── Innlogging-feil siste 24t ──
+  const feil = auditLogg.filter(a => a.type === 'kode_feil' && (Date.now() - new Date(a.tidString).getTime()) < 24 * 60 * 60 * 1000);
+  if (feil.length > 0) {
+    const tit2 = document.createElement('div');
+    tit2.className = 'st';
+    tit2.style.color = 'var(--red)';
+    tit2.textContent = '⚠️ Mislykkede kode-forsøk (siste 24t)';
+    seksjon.appendChild(tit2);
+
+    const card2 = document.createElement('div');
+    card2.className = 'info-card';
+    feil.slice(0, 15).forEach((f, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:8px 0;font-size:12px' + (i < feil.length - 1 ? ';border-bottom:1px solid var(--light)' : '');
+      const tid = new Date(f.tidString);
+      const tidTxt = tid.toLocaleString('no', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+      row.innerHTML =
+        '<div style="font-family:Barlow Condensed,sans-serif;font-weight:700">' +
+          (f.detaljer.spillerNavn || '–') +
+          ' <span style="color:var(--grey);font-weight:400">(' + (f.detaljer.lagKey || '') + ')</span>' +
+        '</div>' +
+        '<div style="color:var(--red);font-size:11px">Feil kode: ' + (f.detaljer.forsoektKode || '?') + ' · ' + (f.detaljer.aarsak || 'Ukjent') + '</div>' +
+        '<div style="color:var(--grey);font-size:10px">' + tidTxt + '</div>';
+      card2.appendChild(row);
+    });
+    seksjon.appendChild(card2);
+  }
+
+  // ── Full audit log ──
+  const tit3 = document.createElement('div');
+  tit3.className = 'st';
+  tit3.textContent = '📜 Aktivitetslogg (siste 100)';
+  seksjon.appendChild(tit3);
+
+  if (auditLogg.length === 0) {
+    const tom = document.createElement('div');
+    tom.className = 'empty';
+    tom.style.padding = '20px';
+    tom.textContent = 'Ingen aktivitet ennå';
+    seksjon.appendChild(tom);
+  } else {
+    const card3 = document.createElement('div');
+    card3.className = 'info-card';
+    auditLogg.forEach((a, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:9px;padding:8px 0;font-size:12px' + (i < auditLogg.length - 1 ? ';border-bottom:1px solid var(--light)' : '');
+
+      const ikoner = {
+        'login_google':    '🔵', 'login_kode':       '🔑',
+        'logout':          '🚪', 'signer':           '✍️',
+        'signer_av':       '↩️', 'kode_feil':        '❌',
+        'kode_opprettet':  '🆕', 'app_lastet':       '📱'
+      };
+      const ikon = ikoner[a.type] || '•';
+
+      const ikonEl = document.createElement('div');
+      ikonEl.style.cssText = 'font-size:16px;flex-shrink:0';
+      ikonEl.textContent = ikon;
+      row.appendChild(ikonEl);
+
+      const innh = document.createElement('div');
+      innh.style.flex = '1';
+      const tid = new Date(a.tidString);
+      const tidTxt = tid.toLocaleString('no', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+      let beskr = '';
+      switch(a.type) {
+        case 'login_google':   beskr = (a.brukerNavn || 'Ukjent') + ' logget inn med Google'; break;
+        case 'login_kode':     beskr = (a.brukerNavn || 'Ukjent') + ' logget inn med kode'; break;
+        case 'logout':         beskr = (a.brukerNavn || 'Ukjent') + ' logget ut'; break;
+        case 'signer':         beskr = (a.brukerNavn || 'Ukjent') + ' signerte reglene'; break;
+        case 'signer_av':      beskr = (a.brukerNavn || 'Ukjent') + ' trakk tilbake signatur'; break;
+        case 'kode_feil':      beskr = 'Mislykket innlogging for ' + (a.detaljer.spillerNavn || '?') + ' (' + (a.detaljer.aarsak || 'feil') + ')'; break;
+        case 'kode_opprettet': beskr = (a.brukerNavn || 'Admin') + ' laget kode for ' + (a.detaljer.spillerNavn || '?'); break;
+        case 'app_lastet':     beskr = (a.brukerNavn || 'Ukjent bruker') + ' åpnet appen'; break;
+        default: beskr = a.type + ' · ' + JSON.stringify(a.detaljer || {});
+      }
+      innh.innerHTML =
+        '<div style="font-family:Barlow,sans-serif">' + beskr + '</div>' +
+        '<div style="color:var(--grey);font-size:10px;font-family:Barlow,sans-serif">' + tidTxt + '</div>';
+      row.appendChild(innh);
+
+      card3.appendChild(row);
+    });
+    seksjon.appendChild(card3);
+  }
+}
+
 // ── Spillerkoder (innlogging uten Google) ────────────────────
 let spillerkoder = {};
 let unsubKoder = null;
@@ -3725,17 +3967,33 @@ async function lagNyKodeForSpiller(lagKey, spillerNr, spillerNavn) {
     brukt: false,
     brukerUid: null
   });
+  if (typeof loggHendelse === 'function') loggHendelse('kode_opprettet', { lagKey, spillerNr, spillerNavn });
   return kode;
 }
 
 async function bekreftKode(lagKey, spillerNr, kode) {
   const docId = lagKey + '-' + spillerNr;
   const snap = await db.collection('spillerkoder').doc(docId).get();
-  if (!snap.exists) return { ok: false, feil: 'Ingen kode finnes for denne spilleren' };
+
+  // Hjelper for å logge feil (uten å være innlogget)
+  const loggFeil = async (aarsak) => {
+    try {
+      await db.collection('audit').add({
+        type: 'kode_feil',
+        detaljer: { lagKey, spillerNr, spillerNavn: (snap.exists ? snap.data().spillerNavn : '?'), forsoektKode: kode, aarsak },
+        brukerUid: null, brukerNavn: null, brukerType: 'anonym',
+        tid: firebase.firestore.FieldValue.serverTimestamp(),
+        tidString: new Date().toISOString(),
+        userAgent: navigator.userAgent.substring(0, 200)
+      });
+    } catch(e) {}
+  };
+
+  if (!snap.exists)               { await loggFeil('Ingen kode finnes'); return { ok: false, feil: 'Ingen kode finnes for denne spilleren' }; }
   const data = snap.data();
-  if (data.kode !== kode) return { ok: false, feil: 'Feil kode' };
-  if (data.brukt) return { ok: false, feil: 'Kode allerede brukt – be trener om en ny' };
-  if (new Date(data.gyldigTil).getTime() < Date.now()) return { ok: false, feil: 'Kode utløpt – be trener om en ny' };
+  if (data.kode !== kode)         { await loggFeil('Feil kode');         return { ok: false, feil: 'Feil kode' }; }
+  if (data.brukt)                 { await loggFeil('Allerede brukt');    return { ok: false, feil: 'Kode allerede brukt – be trener om en ny' }; }
+  if (new Date(data.gyldigTil).getTime() < Date.now()) { await loggFeil('Utløpt'); return { ok: false, feil: 'Kode utløpt – be trener om en ny' }; }
 
   // Logg inn anonymt
   const cred = await auth.signInAnonymously();
@@ -3763,6 +4021,12 @@ async function bekreftKode(lagKey, spillerNr, kode) {
     lagKey,
     spillerNr
   }));
+
+  // Sett kodeBrukerInfo umiddelbart (før auth state ferdig)
+  kodeBrukerInfo = { uid: cred.user.uid, navn: data.spillerNavn, lagKey, spillerNr };
+
+  // Logg vellykket innlogging
+  await loggHendelse('login_kode', { lagKey, spillerNr, spillerNavn: data.spillerNavn });
 
   return { ok: true, navn: data.spillerNavn };
 }
@@ -4048,6 +4312,8 @@ initSluttspill();
 initSpillere();
 initSignering();
 initSpillerkoder();
+initAudit();
+lyttPaaAktiveSesjoner();
 
 
 </script>
